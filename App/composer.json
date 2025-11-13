@@ -1,0 +1,17 @@
+{
+    "name": "sergio/app",
+    "require": {
+        "league/plates": "^3.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "sergiojmnz8gh",
+            "email": "jimenezelichesergio@gmail.com"
+        }
+    ]
+}
