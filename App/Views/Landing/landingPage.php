@@ -12,7 +12,7 @@
                 <div class="card">
                     <p class="titulillo">¿Eres un alumno finalizando o que acaba de finalizar estudios de FP?</p>
                     <p>Prepara tu CV y te ayudamos a buscar las ofertas que se adapten a tus habilidades y conocimientos.</p>
-                    <a href="index.php?pagina=registroalumno"><button class="btn2" id="empresa">Soy Alumno</button></a>
+                    <a href="index.php?page=registroalumno"><button class="btn2" id="empresa">Soy Alumno</button></a>
                 </div>
                 <img class="imagen" src="img/alumno.jpg" alt="Alumno de FP">
             </div>
@@ -21,7 +21,7 @@
                 <div class="card">
                     <p class="titulillo">¿Eres una empresa en busca de talento de FP?</p>
                     <p>Cuéntanos lo que buscas y te ayudamos a encontrar y seleccionar los empleados ideales para impulsar tu empresa.</p>
-                    <a href="index.php?pagina=registroempresa"><button class="btn2">Soy Empresa</button></a>
+                    <a href="index.php?page=registroempresa"><button class="btn2">Soy Empresa</button></a>
                 </div>
             </div>
         </article>

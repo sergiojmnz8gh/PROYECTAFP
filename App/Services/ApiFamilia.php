@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Services;
 
 use App\Repositories\RepoFamilia;
 
-class FamiliaController
-{
+class ApiFamilia {
     public static function getAllFamilias() {
         header('Content-Type: application/json');
         $familias = RepoFamilia::findAll();

@@ -12,9 +12,6 @@ class RepoCiclo {
     private static $conexion;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {
@@ -72,6 +69,7 @@ class RepoCiclo {
             return self::findById($conexion->lastInsertId());
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -90,6 +88,7 @@ class RepoCiclo {
             return self::findById($ciclo->id);
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -111,6 +110,7 @@ class RepoCiclo {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }

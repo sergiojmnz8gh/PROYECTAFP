@@ -12,9 +12,6 @@ class RepoEmpresa {
     private static $conexion;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {
@@ -87,6 +84,7 @@ class RepoEmpresa {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -131,6 +129,7 @@ class RepoEmpresa {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -173,6 +172,7 @@ class RepoEmpresa {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }

@@ -71,6 +71,22 @@ class Modal {
         });
     }
 
+    modalOk(mensaje) {
+        return new Promise((resolve) => {
+            this.abrirModal();
+            this.content.innerHTML = `
+                    <h1 class="modal-title">${mensaje}</h1>
+                    <div class="modal-confirm-buttons">
+                        <button class="btn btn2" id="modalOk">Ok</button>
+                    </div>
+                `;
+            document.getElementById('modalOk').onclick = () => {
+                this.cerrarModal();
+                resolve(true);
+            };
+        });
+    }
+
     modalDiv(div) {
         this.abrirModal();
         this.content.innerHTML = div;

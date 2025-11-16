@@ -10,9 +10,6 @@ class RepoUser {
     private static $conexion = null;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {

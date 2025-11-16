@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Services;
 
 use App\Repositories\RepoCiclo;
 
-class CicloController
-{
+class ApiCiclo {
     public static function getAllCiclos() {
         header('Content-Type: application/json');
         $ciclos = RepoCiclo::findAll();

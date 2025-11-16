@@ -1,7 +1,6 @@
 <?php $this->layout('layout', ['title' => 'Registro de Alumno | ProyectaFP']) ?>
 
 <?php $this->start('js') ?>
-    <script src="js/camara.js"></script>
     <script src="js/registroAlumno.js"></script>
 <?php $this->stop() ?>
 
@@ -9,13 +8,14 @@
 
 <section class="auth-container">
     <div class="auth-card">
-        <form action="/index.php?api=alumnos" method="POST" enctype="multipart/form-data">
+        <form action="/index.php?page=registroalumnopost" method="POST" enctype="multipart/form-data">
             <h1>Registro de Alumno</h1>
 
             <div class="form-group">
                 <label for="foto">Foto:</label>
                 <input type="file" name="foto" id="foto">
                 <div>
+                    <button id="abrirCamara">Activar Cámara</button>
                     <video id="video" class="video" playsinline autoplay></video>
                 </div>
                 <div class="controller">
@@ -59,13 +59,13 @@
             </div>
 
             <div class="form-group">
-                <label for="direccion">Dirección:</label>
-                <input type="text" name="direccion" id="direccion" required>
+                <label for="telefono">Teléfono:</label>
+                <input type="text" name="telefono" id="telefono">
             </div>
 
             <div class="form-group">
-                <label for="telefono">Teléfono:</label>
-                <input type="text" name="telefono" id="telefono">
+                <label for="direccion">Dirección:</label>
+                <input type="text" name="direccion" id="direccion" required>
             </div>
 
             <div class="form-group">

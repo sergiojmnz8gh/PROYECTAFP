@@ -7,10 +7,11 @@ class Alumno {
     public $email;
     public $nombre;
     public $apellidos;
-    public $direccion;
     public $telefono;
+    public $direccion;
     public $foto;
     public $cv;
+    public $ciclo_id;
     public $user_id;
     public $remember_token;
     public $activo;

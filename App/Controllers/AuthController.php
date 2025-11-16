@@ -3,60 +3,28 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Alumno;
+use App\Models\Empresa;
 use App\Repositories\RepoUser;
+use App\Repositories\RepoAlumno;
+use App\Repositories\RepoEmpresa;
 use App\Helpers\Login;
 use App\Helpers\Adapter;
 use App\Helpers\Sesion;
+use App\Helpers\Security;
 use Exception;
 
 class AuthController {
-    // ESTE MÉTODO ES PARA EL ENDPOINT API (ej. llamado por JavaScript)
-    public static function login(string $body) {
-        header('Content-Type: application/json');
-        $data = json_decode($body, true);
 
-        $email = $data['email'] ?? '';
-        $password = $data['password'] ?? '';
+    public static function login() {
 
-        if (empty($email) || empty($password)) {
-            http_response_code(400); // Bad Request
-            echo json_encode(['success' => false, 'message' => 'Email o contraseña no proporcionados.']);
-            exit;
-        }
-
-        try {
-            $user = RepoUser::findUser($email);
-
-            if ($user && password_verify($password, $user->password)) {
-                $userDTO = Adapter::userToDTO($user);
-                Login::login($userDTO); // Inicia sesión
-                http_response_code(200);
-                echo json_encode(['success' => true, 'message' => 'Login exitoso.', 'user' => $userDTO]);
-            } else {
-                http_response_code(401); // Unauthorized
-                echo json_encode(['success' => false, 'message' => 'Credenciales incorrectas.']);
-            }
-        } catch (Exception $e) {
-            error_log("Error en AuthController::login (API): " . $e->getMessage());
-            http_response_code(500); // Internal Server Error
-            echo json_encode(['success' => false, 'message' => 'Ocurrió un error en el servidor.']);
-        }
-        exit;
-    }
-
-    // ESTE MÉTODO ES PARA EL FORMULARIO HTML (llamado por el Router para peticiones POST)
-    public static function handleLoginPost() {
-        Sesion::abrirSesion(); // Asegurarse de que la sesión esté iniciada
-
-        // Verificamos si la petición es POST y si los datos están en $_POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
-            // $recuerdame = isset($_POST['recuerdame']); // Si quieres implementar "Recuérdame"
 
             if (empty($email) || empty($password)) {
                 Sesion::escribirSesion('login_error', 'Por favor, introduce email y contraseña.');
-                header('Location: /index.php?action=showlogin'); // Redirige al formulario con error
+                header('Location: /index.php?page=login');
                 exit;
             }
 
@@ -64,69 +32,168 @@ class AuthController {
                 $user = RepoUser::findUser($email);
 
                 if ($user !== null) {
-                    if (password_verify($password, $user->password)) {
+                    if (Security::verifyPassword($password, $user->password)) {
                         $userDTO = Adapter::userToDTO($user);
-                        Login::login($userDTO); // Inicia la sesión
-
-                        // Redirigir a una página protegida (ej. el dashboard o inicio)
-                        header('Location: /index.php?action=dashboard'); 
+                        Login::login($userDTO);
+                        Sesion::escribirSesion('welcome_message', '¡Bienvenido de nuevo, ' . $user->email . '!');
+                        header('Location: /index.php?page=home');
                         exit;
                     } else {
                         Sesion::escribirSesion('login_error', 'Contraseña incorrecta.');
-                        header('Location: /index.php?action=showlogin');
+                        header('Location: /index.php?page=login');
                         exit;
                     }
                 } else {
                     Sesion::escribirSesion('login_error', 'Usuario no encontrado.');
-                    header('Location: /index.php?action=showlogin');
+                    header('Location: /index.php?page=login');
                     exit;
                 }
             } catch (Exception $e) {
-                error_log("Error en AuthController::handleLoginPost: " . $e->getMessage());
+                error_log("Error de login: " . $e->getMessage());
                 Sesion::escribirSesion('login_error', 'Ocurrió un error inesperado. Intenta de nuevo.');
-                header('Location: /index.php?action=showlogin');
+                header('Location: /index.php?page=login');
                 exit;
             }
         } else {
-            // Si no es un POST (ej. alguien intenta acceder directamente con GET)
-            header('Location: /index.php?action=showlogin');
+            header('Location: /index.php?page=login');
             exit;
         }
     }
 
-    // Método para registro API (si lo mantienes)
-    public static function register(string $body) { /* ... */ }
-    
-    // Método para logout API (si lo mantienes)
-    public static function logout() { 
-        Sesion::abrirSesion(); // Asegurarse de que la sesión esté iniciada para logout API
-        Login::logout();
-        header('Content-Type: application/json');
-        http_response_code(200);
-        echo json_encode(['success' => true, 'message' => 'Sesión cerrada exitosamente.']);
-        exit;
-    }
-    
-    // Método para checkAuth API (si lo mantienes)
-    public static function checkAuth() { 
-        Sesion::abrirSesion(); // Asegurarse de que la sesión esté iniciada para checkAuth
-        header('Content-Type: application/json');
-        if (Login::estaLogeado()) {
-            http_response_code(200);
-            echo json_encode(['success' => true, 'logged_in' => true, 'user_email' => Login::getLoggedInUserEmail(), 'user_rol' => Login::getLoggedInUserRol()]);
+    public static function registroAlumno() {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $nombre = $_POST['nombre'] ?? '';
+            $apellidos = $_POST['apellidos'] ?? '';
+            $ciclo = $_POST['ciclo_id'] ?? '';
+            $telefono = $_POST['telefono'] ?? null;
+            $direccion = $_POST['direccion'] ?? null;
+            $foto = $_POST['canvas'] ?? null;
+            $cv = $_FILES['cv'] ?? null;
+
+            if (empty($email) || empty($password) || empty($nombre) || empty($apellidos)) {
+                Sesion::escribirSesion('registro_error', 'Faltan campos obligatorios para el registro de alumno.');
+                header('Location: /index.php?page=registroalumno');
+                exit;
+            }
+
+            try {
+                if (RepoUser::findUser($email) !== null) {
+                    Sesion::escribirSesion('registro_error', 'El email ya está registrado.');
+                    header('Location: /index.php?page=registroalumno');
+                    exit;
+                }
+
+                $hashedPassword = Security::hashPassword($password);
+
+                $alumno = new Alumno();
+                $alumno->nombre = $nombre;
+                $alumno->apellidos = $apellidos;
+                $alumno->ciclo_id = $ciclo;
+                $alumno->telefono = $telefono;
+                $alumno->direccion = $direccion;
+                $alumno->foto = $foto;
+                $alumno->email = $email;
+                $alumno->cv = $cv;
+                $alumno->activo = true;
+
+                $newAlumno = RepoAlumno::create($alumno, $hashedPassword);
+
+                if ($newAlumno) {
+                    $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
+                    Login::login($userDTO);
+                    Sesion::escribirSesion('welcome_message', '¡Bienvenido ' . $newAlumno->nombre . ', tu registro ha sido exitoso!');
+                    header('Location: /index.php?page=home');
+                    exit;
+                } else {
+                    Sesion::escribirSesion('registro_error', 'Error al registrar el alumno en la base de datos.');
+                    header('Location: /index.php?page=registroalumno');
+                    exit;
+                }
+            } catch (Exception $e) {
+                error_log("Error de registro de alumno: " . $e->getMessage());
+                Sesion::escribirSesion('registro_error', 'Ocurrió un error inesperado durante el registro.');
+                header('Location: /index.php?page=registroalumno');
+                exit;
+            }
         } else {
-            http_response_code(200); // 200 si solo informamos el estado
-            echo json_encode(['success' => true, 'logged_in' => false, 'message' => 'No hay sesión activa.']);
+            header('Location: /index.php?page=registroalumno');
+            exit;
         }
-        exit;
     }
 
-    // Este es el método de logout para el frontend PHP (redirecciona)
-    public static function handleLogout() {
-        Sesion::abrirSesion();
+    public static function registroEmpresa() {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $reppassword = $_POST['reppassword'] ?? '';
+            $nombre = $_POST['nombre'] ?? '';
+            $telefono = $_POST['telefono'] ?? null;
+            $direccion = $_POST['direccion'] ?? null;
+            $logo = $_POST['logo'] ?? null;
+
+            if (empty($email) || empty($password) || empty($nombre_empresa)) {
+                Sesion::escribirSesion('registro_error', 'Faltan campos obligatorios para el registro de empresa.');
+                header('Location: /index.php?page=registroempresa');
+                exit;
+            }
+
+            if ($password !== $reppassword) {
+                Sesion::escribirSesion('registro_error', 'Las contraseñas no coinciden.');
+                header('Location: /index.php?page=registroempresa');
+                exit;
+            }
+
+            try {
+                if (RepoUser::findUser($email) !== null) {
+                    Sesion::escribirSesion('registro_error', 'El email ya está registrado.');
+                    header('Location: /index.php?page=registroempresa');
+                    exit;
+                }
+
+                $hashedPassword = Security::hashPassword($password);
+
+                $empresa = new Empresa();
+                $empresa->nombre = $nombre;
+                $empresa->telefono = $telefono;
+                $empresa->direccion = $direccion;
+                $empresa->logo = $logo;
+                $empresa->email = $email;
+                $empresa->activo = true;
+
+                $newEmpresa = RepoEmpresa::create($empresa, $hashedPassword);
+
+                if ($newEmpresa) {
+                    $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
+                    Login::login($userDTO);
+                    Sesion::escribirSesion('welcome_message', '¡Bienvenida ' . $newEmpresa->nombre_empresa . ', tu registro ha sido exitoso!');
+                    header('Location: /index.php?page=home');
+                    exit;
+                } else {
+                    Sesion::escribirSesion('registro_error', 'Error al registrar la empresa en la base de datos.');
+                    header('Location: /index.php?page=registroempresa');
+                    exit;
+                }
+            } catch (Exception $e) {
+                error_log("Error de registro de empresa: " . $e->getMessage());
+                Sesion::escribirSesion('registro_error', 'Ocurrió un error inesperado durante el registro.');
+                header('Location: /index.php?page=registroempresa');
+                exit;
+            }
+        } else {
+            header('Location: /index.php?page=registroempresa');
+            exit;
+        }
+    }
+    
+    public static function logout() {
         Login::logout();
+        Sesion::cerrarSesion();
         Sesion::escribirSesion('login_message', 'Has cerrado sesión correctamente.');
-        header('Location: /index.php?action=showlogin');
+        header('Location: /index.php?page=login');
         exit;
     }
 }

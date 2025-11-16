@@ -14,7 +14,17 @@
         <div class="search-controls">
             <div class="search-group">
                 <input type="text" name="buscar" id="buscar" placeholder="Buscar alumno..." class="search-input">
-                <button type="button" id="btnbuscar" class="btn btn2">Buscar</button> </div>
+                <button type="button" id="btnbuscar" class="btn btn2">Buscar</button> 
+            </div>
+            <div class="filter-group">
+                <label for="filterCiclo">Filtrar por Ciclo:</label>
+                <select name="familia_id" id="filterFamilia" class="filter-input">
+                    <option value="">Selecciona una familia</option>
+                </select>
+                <select name="ciclo_id" id="filterCiclo" class="filter-input">
+                    <option value="">Selecciona un ciclo</option>
+                </select>
+            </div>
             <div class="btn-crud-right"> 
                 <button type="button" id="add" class="btn-action btn2">+ Añadir</button>
                 <button type="button" id="massAdd" class="btn-small btn1">++</button>
@@ -25,10 +35,11 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre <img class="icon" src="img/orden.png" alt=""></th>
-                        <th>Apellidos <img class="icon" src="img/orden.png" alt=""></th>
-                        <th>Email</th>
+                        <th class="ordenable">ID</th>
+                        <th class="ordenable">Nombre <img class="icon" src="img/orden.png" alt=""></th>
+                        <th class="ordenable">Apellidos <img class="icon" src="img/orden.png" alt=""></th>
+                        <th>Ciclo Formativo</th>
+                        <th>Contacto</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

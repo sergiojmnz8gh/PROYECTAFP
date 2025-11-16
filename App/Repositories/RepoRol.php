@@ -12,9 +12,6 @@ class RepoRol {
     private static $conexion;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {
@@ -60,6 +57,7 @@ class RepoRol {
             return self::findById($conexion->lastInsertId());
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -77,6 +75,7 @@ class RepoRol {
             return self::findById($rol->id);
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -92,6 +91,7 @@ class RepoRol {
             return $stmt->rowCount() > 0;
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }

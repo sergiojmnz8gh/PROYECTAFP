@@ -12,9 +12,6 @@ class RepoSolicitud {
     private static $conexion;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {
@@ -69,6 +66,7 @@ class RepoSolicitud {
             return self::findById($conexion->lastInsertId());
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -90,6 +88,7 @@ class RepoSolicitud {
             return self::findById($solicitud->id);
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -105,6 +104,7 @@ class RepoSolicitud {
             return $stmt->rowCount() > 0;
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }

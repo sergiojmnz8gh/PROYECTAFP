@@ -12,9 +12,6 @@ class RepoAlumno {
     private static $conexion;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {
@@ -27,9 +24,11 @@ class RepoAlumno {
     private static function getBaseQuery() {
         return "SELECT 
                     a.*, 
-                    u.email, u.activo
+                    u.email, u.activo,
+                    c.nombre AS ciclo_id
                 FROM alumnos a 
-                JOIN users u ON a.user_id = u.id";
+                JOIN users u ON a.user_id = u.id
+                JOIN ciclos c ON a.ciclo_id = c.id";
     }
 
     public static function findById($id) {
@@ -52,7 +51,21 @@ class RepoAlumno {
         return $stmt->fetchAll();
     }
 
-    public static function create(Alumno $alumno, string $hashedPassword) {
+    public static function findSizedList($filtersAndPagination) {
+        $page = $filtersAndPagination['page'] ?? 1;
+        $size = $filtersAndPagination['size'] ?? 10;
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " LIMIT :size OFFSET :offset";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindvalue(':size', $size, PDO::PARAM_INT);
+        $stmt->bindvalue(':offset', ($page - 1) * $size, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Alumno::class);
+        return $stmt->fetchAll();
+    }
+
+    public static function create($alumno, $hashedPassword) {
         $conexion = self::getConexion();
         $conexion->beginTransaction();
         try {
@@ -62,7 +75,7 @@ class RepoAlumno {
             
             $stmtUser->bindvalue(':email', $alumno->email); 
             $stmtUser->bindvalue(':password', $hashedPassword);
-            $stmtUser->bindvalue(':rol_id', 2, PDO::PARAM_INT); 
+            $stmtUser->bindvalue(':rol_id', 3, PDO::PARAM_INT); 
             $stmtUser->bindvalue(':activo', $alumno->activo, PDO::PARAM_BOOL); 
             
             $stmtUser->execute();
@@ -87,11 +100,12 @@ class RepoAlumno {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }
 
-    public static function update(Alumno $alumno, ?string $newHashedPassword = null) {
+    public static function update($alumno, $newHashedPassword = null) {
         $conexion = self::getConexion();
         $conexion->beginTransaction();
         try {
@@ -131,6 +145,7 @@ class RepoAlumno {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -162,6 +177,7 @@ class RepoAlumno {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }

@@ -30,8 +30,7 @@ window.addEventListener("load", function() {
             this.tBodies[0].appendChild(ordenados[i]);
         }
     }
-
-    const ths = document.querySelectorAll("th");
+    const ths = document.querySelectorAll("th.ordenable");
     let tam = ths.length;
 
     for (let i = 0; i < tam; i++) {

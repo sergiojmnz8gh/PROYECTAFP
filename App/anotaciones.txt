@@ -39,3 +39,12 @@ Login, registro, notificaciones, PDF php
 Mantener sesion abierta (recuerdame) js mediante token generado y guardado en localstorage
 Al terminar periodo oferta pantalla con boton notificar con un texto que será
 el contenido del email al elegir los candidatos con boton de me gusta. -> Valoraciones js
+
+
+
+
+hacer ipe idea de negocio
+hacer que la foto de perfil, el cv y tal se guarde bien en bbdd el registro
+hacer carga masiva sin crear alumno hacerlo enviando correos con forms rellenos, 
+hacer pdf y ver como se hace todo eso y todo lo de docker
+carrusel empresas en landing

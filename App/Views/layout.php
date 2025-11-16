@@ -10,6 +10,8 @@
 
     <?= $this->section('css') ?>
     <?= $this->section('js') ?>
+    <script src="js/token.js"></script>
+    
 </head>
 
 <body>
@@ -23,19 +25,19 @@
                         echo '<li><a href="index.php?">Perfil</a></li>';
                     }
                     if ($_SESSION['rol'] == 'alumno') {
-                        echo '<li><a href="index.php?pagina=">Buscar ofertas</a></li>
-                            <li><a href="index.php?pagina=">Mis solicitudes</a></li>
-                            <li><a href="index.php?pagina="><button class="btn1">Perfil</button></a></li>';
+                        echo '<li><a href="index.php?page=">Buscar ofertas</a></li>
+                            <li><a href="index.php?page=">Mis solicitudes</a></li>
+                            <li><a href="index.php?page="><button class="btn1">Perfil</button></a></li>';
                     }
                     if ($_SESSION['rol'] == 'empresa') {
-                        echo '<li><a href="index.php?pagina=">Nueva oferta</a></li>
-                            <li><a href="index.php?pagina=">Mis ofertas</a></li>
-                            <li><a href="index.php?pagina="><button class="btn1">Perfil</button></a></li>';
+                        echo '<li><a href="index.php?page=">Nueva oferta</a></li>
+                            <li><a href="index.php?page=">Mis ofertas</a></li>
+                            <li><a href="index.php?page="><button class="btn1">Perfil</button></a></li>';
                     }
                 } else {
                     echo '<li><a href="index.php#alumno">Soy Alumno</a></li>
                         <li><a href="index.php?#empresa">Soy Empresa</a></li>
-                        <li><a href="index.php?pagina=login"><button class="btn1">Iniciar Sesión</button></a></li>';
+                        <li><a href="index.php?page=login"><button class="btn1">Iniciar Sesión</button></a></li>';
                 }
                 ?>
             </ul>

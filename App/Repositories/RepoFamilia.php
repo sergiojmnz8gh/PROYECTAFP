@@ -12,9 +12,6 @@ class RepoFamilia {
     private static $conexion;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {
@@ -60,6 +57,7 @@ class RepoFamilia {
             return self::findById($conexion->lastInsertId());
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -77,6 +75,7 @@ class RepoFamilia {
             return self::findById($familia->id);
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -111,6 +110,7 @@ class RepoFamilia {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }

@@ -12,9 +12,6 @@ class RepoOferta {
     private static $conexion;
 
     public function __construct() {
-        if (self::$conexion === null) {
-            self::$conexion = DB::getConexion();
-        }
     }
 
     private static function getConexion() {
@@ -74,6 +71,7 @@ class RepoOferta {
             return self::findById($conexion->lastInsertId());
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -100,6 +98,7 @@ class RepoOferta {
             return self::findById($oferta->id);
             
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             return false;
         }
     }
@@ -121,6 +120,7 @@ class RepoOferta {
             
         } catch (PDOException $e) {
             $conexion->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }

@@ -19,6 +19,7 @@ class Adapter
             'direccion' => $alumno->direccion,
             'foto' => $alumno->foto,
             'cv' => $alumno->cv,
+            'ciclo' => $alumno->ciclo_id,
             'activo' => $alumno->activo,
         ];
     }
@@ -35,6 +36,7 @@ class Adapter
         $alumno->direccion = $data['direccion'] ?? null;
         $alumno->foto = $data['foto'] ?? null;
         $alumno->cv = $data['cv'] ?? null;
+        $alumno->ciclo_id = $data['ciclo'] ?? null;
         $alumno->activo = $data['activo'] ?? true;
         return $alumno;
     }
@@ -60,10 +62,11 @@ class Adapter
         $alumno->id = $data['id'] ?? null;
         $alumno->nombre = $data['nombre'] ?? '';
         $alumno->apellidos = $data['apellidos'] ?? '';
-        $alumno->direccion = $data['direccion'] ?? null;
         $alumno->telefono = $data['telefono'] ?? null;
+        $alumno->direccion = $data['direccion'] ?? null;
         $alumno->foto = $data['foto'] ?? null;
         $alumno->cv = $data['cv'] ?? null;
+        $alumno->ciclo_id = $data['ciclo'] ?? null;
         
         return ['alumno' => $alumno, 'user' => $user];
     }

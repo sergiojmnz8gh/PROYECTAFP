@@ -18,7 +18,7 @@
         ?>
 
         <div class="auth-card">
-            <form action="/index.php?action=login" method="POST"> 
+            <form action="/index.php?page=loginpost" method="POST"> 
                 <h1>Iniciar Sesión</h1>
                 <div class="form-group">
                     <label for="email">Email:</label>
