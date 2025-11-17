@@ -51,6 +51,20 @@ class RepoOferta {
         return $stmt->fetchAll();
     }
 
+    public static function findSizedList($pagination) {
+        $page = $pagination['page'] ?? 1;
+        $size = $pagination['size'] ?? 5;
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " LIMIT :size OFFSET :offset";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindvalue(':size', $size, PDO::PARAM_INT);
+        $stmt->bindvalue(':offset', ($page - 1) * $size, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Oferta::class);
+        return $stmt->fetchAll();
+    }
+
     public static function create(Oferta $oferta) {
         $conexion = self::getConexion();
         try {

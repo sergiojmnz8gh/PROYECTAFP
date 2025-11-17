@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const API_FAMILIAS_URL = '/index.php?api=familias';
     const API_CICLOS_URL = '/index.php?api=ciclos';
 
+    const validator = new Validator();
+
     async function obtenerFamilias(idElementoSelect, valorSeleccionado = null) {
         const select = document.getElementById(idElementoSelect);
         select.innerHTML = '<option value="" disabled selected>Cargando familias...</option>';
@@ -119,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 elementoVideo.play();
             })
             .catch(error => {
-                alert("No se pudo acceder a la cámara. Asegúrate de tener una cámara y dar permisos.");
                 detenerCamara();
             });
     }
@@ -219,32 +220,74 @@ document.addEventListener("DOMContentLoaded", function () {
         const cvFileSelected = document.getElementById('cv').files[0];
         const fotoFileManuallySelected = document.getElementById('foto').files[0];
 
-
-        if (!email || email.trim() === '') { alert("El email es obligatorio."); return; }
-        if (!password || password.trim() === '') { alert("La contraseña es obligatoria."); return; }
-        if (!reppassword || reppassword.trim() === '') { alert("Repetir contraseña es obligatorio."); return; }
-        if (password !== reppassword) { alert("Las contraseñas no coinciden."); return; }
-        if (!nombre || nombre.trim() === '') { alert("El nombre es obligatorio."); return; }
-        if (!apellidos || apellidos.trim() === '') { alert("Los apellidos son obligatorios."); return; }
-        if (!familiaId || familiaId.trim() === '') { alert("La familia profesional es obligatoria."); return; }
-        if (!cicloId || cicloId.trim() === '') { alert("El ciclo formativo es obligatorio."); return; }
-        if (!telefono || telefono.trim() === '') { alert("El teléfono es obligatorio."); return; }
-        if (!direccion || direccion.trim() === '') { alert("La dirección es obligatoria."); return; }
-        
         let finalFotoFile = fotoCapturadaPorCamara;
         if (!finalFotoFile && fotoFileManuallySelected) {
             finalFotoFile = fotoFileManuallySelected;
         }
 
-        if (!finalFotoFile) { alert("La foto de perfil es obligatoria."); return; }
-        if (!cvFileSelected) { alert("El CV es obligatorio."); return; }
-        
-        if (cvFileSelected.type !== 'application/pdf') { alert("El CV debe ser un archivo PDF."); return; }
+        const validationData = {
+            email: email,
+            password: password,
+            reppassword: reppassword,
+            nombre: nombre,
+            apellidos: apellidos,
+            addFamilia: familiaId,
+            addCiclo: cicloId,
+            telefono: telefono,
+            direccion: direccion,
+            cv: cvFileSelected,
+            foto: finalFotoFile
+        };
 
+        validator.setData(validationData);
+
+        validator.requerido('email', "El email es obligatorio.");
+        validator.email('email', "El email debe ser válido.");
+        validator.requerido('password', "La contraseña es obligatoria.");
+        validator.requerido('reppassword', "Repetir contraseña es obligatorio.");
+        
+        if (validator.getValor('password') !== validator.getValor('reppassword')) {
+             validator.addError('reppassword', "Las contraseñas no coinciden.");
+        }
+
+        validator.requerido('nombre', "El nombre es obligatorio.");
+        validator.requerido('apellidos', "Los apellidos son obligatorios.");
+        validator.requerido('addFamilia', "La familia profesional es obligatoria.");
+        validator.requerido('addCiclo', "El ciclo formativo es obligatorio.");
+        validator.requerido('telefono', "El teléfono es obligatorio.");
+        validator.requerido('direccion', "La dirección es obligatoria.");
+        
+        if (!validator.getValor('foto')) {
+            validator.addError('foto', "La foto de perfil es obligatoria.");
+        }
+
+        if (!validator.getValor('cv')) {
+            validator.addError('cv', "El CV es obligatorio.");
+        } else if (validator.getValor('cv').type !== 'application/pdf') {
+            validator.addError('cv', "El CV debe ser un archivo PDF.");
+        }
+
+        if (!validator.validacionPasada()) {
+            const errores = validator.getErrors();
+            let mensajeError = "Corrige los siguientes errores:\n";
+            for (const campo in errores) {
+                mensajeError += `- ${errores[campo]}\n`;
+            }
+            return;
+        }
 
         const formData = new FormData(formulario); 
         
         formData.set('foto', finalFotoFile, finalFotoFile.name); 
+        formData.set('email', email);
+        formData.set('password', password);
+        formData.set('reppassword', reppassword);
+        formData.set('nombre', nombre);
+        formData.set('apellidos', apellidos);
+        formData.set('familiaId', familiaId);
+        formData.set('cicloId', cicloId);
+        formData.set('telefono', telefono);
+        formData.set('direccion', direccion);
 
         fetch(formulario.action, {
             method: 'POST',
@@ -253,14 +296,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => {
             if (response.redirected) {
                 window.location.href = response.url;
-            } else {
-                console.error("Respuesta inesperada del servidor:", response);
-                alert("Hubo un problema con la respuesta del servidor o la redirección.");
             }
         })
         .catch(error => {
             console.error('Error al enviar el formulario:', error);
-            alert('Ocurrió un error inesperado al registrar. Intenta de nuevo.');
         });
     });
 

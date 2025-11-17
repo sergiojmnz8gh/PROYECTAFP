@@ -24,11 +24,12 @@ class RepoSolicitud {
     private static function getBaseQuery() {
         return "SELECT 
                     s.*, 
-                    o.titulo AS oferta_titulo, 
-                    u.email AS alumno_email
+                    o.titulo AS oferta_titulo,
+                    a.nombre AS alumno_nombre,
+                    a.apellidos AS alumno_apellidos
                 FROM solicitudes s 
                 JOIN ofertas o ON s.oferta_id = o.id
-                JOIN users u ON s.user_id = u.id";
+                JOIN alumnos a ON s.alumno_id = a.id";
     }
 
     public static function findById($id) {
@@ -46,6 +47,20 @@ class RepoSolicitud {
         $conexion = self::getConexion();
         $sql = self::getBaseQuery();
         $stmt = $conexion->query($sql);
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Solicitud::class);
+        return $stmt->fetchAll();
+    }
+
+    public static function findSizedList($pagination) {
+        $page = $pagination['page'] ?? 1;
+        $size = $pagination['size'] ?? 4;
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " LIMIT :size OFFSET :offset";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindvalue(':size', $size, PDO::PARAM_INT);
+        $stmt->bindvalue(':offset', ($page - 1) * $size, PDO::PARAM_INT);
+        $stmt->execute();
         
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Solicitud::class);
         return $stmt->fetchAll();

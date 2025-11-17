@@ -426,6 +426,15 @@ table th {
     vertical-align: middle;
 }
 
+th a {
+    color: var(--color-white);
+}
+
+th a:hover {
+    text-decoration: none;
+    color: white;
+}
+
 table tbody tr:nth-child(even) {
     background-color: var(--color-background);
 }
@@ -890,9 +899,75 @@ table tbody tr:hover {
     width: calc(100% - 250px - var(--spacing-lg));
 }
 
+/*12. Carrusel*/
+
+.seccion-empresas-colaboradoras {
+    padding: 0;
+    text-align: center;
+    background-color: transparent;
+    overflow: hidden; 
+}
+
+.seccion-empresas-colaboradoras h2 {
+    margin: var(--spacing-md) 0;
+    font-size: 2em;
+    color: var(--color-primary);
+}
+
+.carrusel-contenedor {
+    position: relative;
+    max-width: 1200px;
+    width: 60%; 
+    margin: 0 auto;
+    overflow: hidden; 
+    padding: 0;
+    box-shadow: none;
+    border-radius: var(--border-radius-lg);
+}
+
+.carrusel-pista {
+    display: flex; 
+    transition: transform 1.0s ease-in-out;
+    gap: 0; 
+}
+
+.carrusel-item {
+    min-width: calc(100% / 3);
+    box-sizing: border-box;
+    padding: var(--spacing-md);
+    flex-shrink: 0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-empresa {
+    max-width: 220px;
+    max-height: 140px;
+    width: 100%; 
+    height: auto; 
+    object-fit: contain;
+    transition: transform 0.3s ease; 
+}
+
+.logo-empresa:hover {
+    transform: scale(1.08);
+}
+
+@media (max-width: 992px) {
+    .carrusel-item {
+        min-width: calc(100% / 2);
+    }
+}
+
+@media (max-width: 576px) {
+    .carrusel-item {
+        min-width: 100%;
+    }
+}
 
 /* ====================== */
-/* === 12. Media Queries === */
+/* === 13. Media Queries === */
 /* ====================== */
 
 /* Estándar Tablet (hasta 768px) */

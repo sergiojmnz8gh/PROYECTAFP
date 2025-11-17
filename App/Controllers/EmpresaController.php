@@ -19,9 +19,11 @@ class EmpresaController {
     }
 
     public function list() {
-        $buscarEmpresa = $_GET['buscarEmpresa'] ?? null;
+        $buscarEmpresa = $_GET['buscarempresa'] ?? null;
+        $ordenarPor = $_GET['ordenarpor'] ?? 'id';
+        $orden = $_GET['orden'] ?? 'ASC';
         
-        $empresas = RepoEmpresa::findAll($buscarEmpresa);
+        $empresas = RepoEmpresa::findAll($buscarEmpresa, $ordenarPor, $orden);
 
         echo $this->templates->render('Admin/listadoEmpresas', [
             'empresas' => $empresas,
@@ -44,10 +46,14 @@ class EmpresaController {
         }
 
         $this->validator->Requerido('nombre');
+        $this->validator->CadenaRango('nombre', 100, 3);
+        
         $this->validator->Requerido('email');
         $this->validator->Email('email');
+        
         $this->validator->Requerido('password');
-        $this->validator->CadenaRango('nombre', 100, 3);
+        
+        $this->validator->Requerido('telefono');
         $this->validator->Patron('telefono', '/^[0-9]{9}$/');
 
         if (!$this->validator->ValidacionPasada()) {
@@ -71,13 +77,13 @@ class EmpresaController {
     }
     
     public function edit() {
-        $id = (int)$_POST['id'];
-
-        if (!$id) {
+        if (!isset($_POST['id']) || empty($_POST['id'])) {
             Sesion::escribirSesion('error', 'ID de empresa no proporcionado.');
             header('Location: /index.php?admin=empresas');
             exit;
         }
+
+        $id = (int)$_POST['id'];
 
         $empresa = RepoEmpresa::findById($id);
         
@@ -96,26 +102,32 @@ class EmpresaController {
     }
 
     public function save_edit() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['id'])) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?admin=empresas');
             exit;
         }
-
-        $id = (int)$_POST['id'];
-
+        
+        $id = (int)($_POST['id'] ?? 0);
+        
+        $this->validator->Requerido('id');
+        
         $this->validator->Requerido('nombre');
+        $this->validator->CadenaRango('nombre', 100, 3);
+        
         $this->validator->Requerido('email');
         $this->validator->Email('email');
-        $this->validator->CadenaRango('nombre', 100, 3);
-        $this->validator->Patron('telefono', '/^[0-9]{9}$/');
         
-        if (!empty($_POST['password'])) {
+        if (isset($_POST['password']) && !empty($_POST['password'])) {
             $this->validator->CadenaRango('password', 30, 6); 
         }
 
+        $this->validator->Requerido('telefono');
+        $this->validator->Patron('telefono', '/^[0-9]{9}$/');
+        
         if (!$this->validator->ValidacionPasada()) {
             Sesion::escribirSesion('error', 'Por favor, corrige los errores del formulario.');
             Sesion::escribirSesion('old_input', $_POST);
+            
             header("Location: /index.php?admin=editarempresa&id=$id");
             exit;
         }
@@ -134,7 +146,7 @@ class EmpresaController {
             $newHashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
         }
 
-        if (RepoEmpresa::update($empresa, $newHashedPassword)) { // Aquí se actualiza el objeto $empresa
+        if (RepoEmpresa::update($empresa, $newHashedPassword)) {
             Sesion::escribirSesion('success', 'Empresa actualizada correctamente.');
         } else {
             Sesion::escribirSesion('error', 'Error al actualizar la empresa. El email podría estar en uso.');
@@ -145,8 +157,16 @@ class EmpresaController {
     }
     
     public function delete() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['id'])) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             Sesion::escribirSesion('error', 'Petición de borrado inválida.');
+            header('Location: /index.php?admin=empresas');
+            exit;
+        }
+
+        $this->validator->Requerido('id');
+
+        if (!$this->validator->ValidacionPasada()) {
+            Sesion::escribirSesion('error', 'ID de empresa no proporcionado para el borrado.');
             header('Location: /index.php?admin=empresas');
             exit;
         }
@@ -164,13 +184,13 @@ class EmpresaController {
     }
 
     public function showFicha() {
-        $id = $_GET['id'];
-
-        if (!$id) {
+        if (!isset($_GET['id']) || empty($_GET['id'])) {
             Sesion::escribirSesion('error', 'ID de empresa no proporcionado.');
             header('Location: /index.php?admin=empresas');
             exit;
         }
+        
+        $id = (int)$_GET['id'];
 
         $empresa = RepoEmpresa::findById($id);
         

@@ -2,6 +2,7 @@
 
 <?php $this->start('js') ?>
     <script src="js/registroAlumno.js"></script>
+    <script src="js/validator.js"></script>
 <?php $this->stop() ?>
 
 <?php $this->start('contenidoPagina') ?>

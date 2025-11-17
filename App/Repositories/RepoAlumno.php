@@ -62,9 +62,9 @@ class RepoAlumno {
         return $stmt->fetchAll();
     }
 
-    public static function findSizedList($filtersAndPagination) {
-        $page = $filtersAndPagination['page'] ?? 1;
-        $size = $filtersAndPagination['size'] ?? 5;
+    public static function findSizedList($pagination) {
+        $page = $pagination['page'] ?? 1;
+        $size = $pagination['size'] ?? 5;
         $conexion = self::getConexion();
         $sql = self::getBaseQuery() . " LIMIT :size OFFSET :offset";
         $stmt = $conexion->prepare($sql);

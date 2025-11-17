@@ -6,10 +6,9 @@ use League\Plates\Engine;
 use App\Helpers\Sesion; 
 use App\Helpers\Login;   
 use App\Services\ApiAlumno;
-use App\Services\ApiAuth;
 use App\Services\ApiCiclo;
 use App\Services\ApiFamilia;
-use App\Controllers\AlumnoController;
+use App\Services\ApiSolicitud;
 use App\Controllers\EmpresaController;
 use App\Controllers\AuthController;
 
@@ -27,7 +26,6 @@ class Router {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         if (isset($_GET['api'])) {
             $api = strtolower($_GET['api']);
-            $id = $_GET['id'] ?? null;
             $requestBody = file_get_contents('php://input');
             header('Content-Type: application/json');
 
@@ -41,6 +39,9 @@ class Router {
                 case 'ciclos':
                     $familiaId = $_GET['familia_id'] ?? null;
                     (new ApiCiclo())->getCiclosByFamilia($familiaId);
+                    break;
+                case 'solicitudes':
+                    (new ApiSolicitud())->handleRequest($requestMethod, $requestBody);
                     break;
                 default:
                     http_response_code(404);
@@ -109,7 +110,7 @@ class Router {
             $paginaPath = strtolower($_GET['page']);
             switch ($paginaPath) {
                 case 'index': 
-                    echo $this->templates->render('Landing/landingPage');
+                    (new LandingController($this->templates))->landingPage();
                     break;
                 case 'registroalumno':
                     echo $this->templates->render('Landing/registroAlumno');
@@ -160,6 +161,6 @@ class Router {
             exit;
         }
 
-        echo $this->templates->render('Landing/landingPage');
+        (new LandingController($this->templates))->landingPage();
     }
 }

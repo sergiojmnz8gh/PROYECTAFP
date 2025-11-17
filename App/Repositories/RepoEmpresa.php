@@ -51,18 +51,44 @@ class RepoEmpresa {
         return $stmt->fetch();
     }
 
-    public static function findAll($nombre = null) {
+    public static function findAll(
+        $nombre = null, 
+        $orderBy = 'nombre',
+        $orderDirection = 'ASC'
+    ) {
+
         $conexion = self::getConexion();
         $sql = self::getBaseQuery();
         
         $params = [];
-        
+        $allowedOrderByColumns = ['id', 'nombre'];
+
         if ($nombre) {
             $sql .= " WHERE e.nombre LIKE :nombre";
-            $params[':nombre'] = '%' . $nombre . '%';
+            $params[':nombre'] = '%'.$nombre .'%';
         }
-        
-        $sql .= " ORDER BY e.nombre ASC";
+
+        $actualOrderBy = 'e.id';
+        if (in_array($orderBy, $allowedOrderByColumns)) {
+            if ($orderBy === 'email' || $orderBy === 'activo') {
+                $actualOrderBy = 'u.' . $orderBy;
+            } else {
+                $actualOrderBy = 'e.' . $orderBy;
+            }
+        } else {
+            error_log("ADVERTENCIA: Intento de ordenar por columna no permitida: " . $orderBy);
+        }
+
+        $actualOrderDirection = strtoupper($orderDirection);
+        if ($actualOrderDirection !== 'ASC' && $actualOrderDirection !== 'DESC') {
+            $actualOrderDirection = 'ASC';
+        }
+
+        $sql .= " ORDER BY " . $actualOrderBy . " " . $actualOrderDirection;
+
+        error_log("DEBUG RepoEmpresa::findAll SQL: " . $sql);
+        error_log("DEBUG RepoEmpresa::findAll PARAMS: " . print_r($params, true));
+
 
         $stmt = $conexion->prepare($sql);
         $stmt->execute($params);

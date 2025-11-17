@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnAdd = document.getElementById("add");
     const btnMassAdd = document.getElementById("massAdd");
     const modal = new Modal();
+    const validator = new Validator();
 
     const API_BASE_URL = '/index.php?api=alumnos';
     const API_FAMILIAS_URL = '/index.php?api=familias';
@@ -161,15 +162,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     <input type="hidden" name="id" value="${alumno.id}">
                     <div class="form-group">
                         <label for="editEmail">Email:</label>
-                        <input type="email" name="email" id="editEmail" value="${alumno.email}" required>
+                        <input type="email" name="email" id="editEmail" value="${alumno.email}">
                     </div>
                     <div class="form-group">
                         <label for="editNombre">Nombre:</label>
-                        <input type="text" name="nombre" id="editNombre" value="${alumno.nombre}" required>
+                        <input type="text" name="nombre" id="editNombre" value="${alumno.nombre}">
                     </div>
                     <div class="form-group">
                         <label for="editApellidos">Apellidos:</label>
-                        <input type="text" name="apellidos" id="editApellidos" value="${alumno.apellidos}" required>
+                        <input type="text" name="apellidos" id="editApellidos" value="${alumno.apellidos}">
                     </div>
                     <div class="form-group">
                         <label for="editTelefono">Teléfono:</label>
@@ -181,12 +182,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <div class="form-group">
                         <label for="familia">Familia Profesional:</label>
-                        <select name="familia_id" id="familia" required>
+                        <select name="familia_id" id="familia">
                             </select>
                     </div>
                     <div class="form-group">
                         <label for="ciclo">Ciclo Formativo:</label>
-                        <select name="ciclo_id" id="ciclo" required>
+                        <select name="ciclo_id" id="ciclo">
                             </select>
                     </div>
                     <input type="submit" value="Guardar Cambios" class="btn-primary">
@@ -210,6 +211,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     const formData = new FormData(this);
                     const data = Object.fromEntries(formData.entries());
+
+                    validator.setData(data);
+                    
+                    validator.email('email', "El email es obligatorio y debe ser válido.");
+                    validator.requerido('nombre', "El nombre es obligatorio.");
+                    validator.requerido('apellidos', "Los apellidos son obligatorios.");
+                    validator.requerido('familia_id', "La familia profesional es obligatoria.");
+                    validator.requerido('ciclo_id', "El ciclo formativo es obligatorio.");
+                    
+                    if (!validator.validacionPasada()) {
+                        return;
+                    }
 
                     const response = await fetch(API_BASE_URL, {
                         method: 'PUT',
@@ -257,24 +270,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     <h1>Invitación de Alumno</h1>
                     <div class="form-group">
                         <label for="addEmail">Email:</label>
-                        <input type="email" name="email" id="addEmail" required>
+                        <input type="email" name="email" id="addEmail">
                     </div>
                     <div class="form-group">
                         <label for="addNombre">Nombre:</label>
-                        <input type="text" name="nombre" id="addNombre" required>
+                        <input type="text" name="nombre" id="addNombre">
                     </div>
                     <div class="form-group">
                         <label for="addApellidos">Apellidos:</label>
-                        <input type="text" name="apellidos" id="addApellidos" required>
+                        <input type="text" name="apellidos" id="addApellidos">
                     </div>
                     <div class="form-group">
                         <label for="familia">Familia Profesional:</label>
-                        <select name="familia_id" id="addFamilia" required>
+                        <select name="familia_id" id="addFamilia">
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="ciclo">Ciclo Formativo:</label>
-                        <select name="ciclo_id" id="addCiclo" required>
+                        <select name="ciclo_id" id="addCiclo">
                         </select>
                     </div>
                     <div class="form-group">
@@ -311,6 +324,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = Object.fromEntries(formData.entries());
             data.rol_id = 3;
 
+            validator.setData(data);
+
+            validator.email('email', "El email es obligatorio y debe ser válido.");
+            validator.requerido('nombre', "El nombre es obligatorio.");
+            validator.requerido('apellidos', "Los apellidos son obligatorios.");
+            validator.requerido('familia_id', "La familia profesional es obligatoria.");
+            validator.requerido('ciclo_id', "El ciclo formativo es obligatorio.");
+            validator.patronTelefono('telefono', "El formato del teléfono no es válido.");
+            
+            if (!validator.validacionPasada()) {
+                return;
+            }
+
             const response = await fetch(API_BASE_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -331,15 +357,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 <h1 class="modal-title">Invitación Masiva de Alumnos</h1>
                 <div class="form-group">
                 <label for="archivo">Archivo CSV: </label>
-                <input type="file" name="archivo" id="fichero" class="form-control" accept=".csv" required>
+                <input type="file" name="archivo" id="fichero" class="form-control" accept=".csv">
                 </div>
                 <a href="/csv/modelo.csv"><u>modelo.csv</u></a>
                 <div class="form-group">
                 <label for="familia">Familia Profesional:</label>
-                <select name="familia_id" id="massFamilia" required>
+                <select name="familia_id" id="massFamilia">
                     </select>
                 <label for="ciclo">Ciclo Formativo:</label>
-                <select name="ciclo_id" id="massCiclo" required>
+                <select name="ciclo_id" id="massCiclo">
                     </select>
                 </div>
                 <table class="csv-preview-table">
@@ -375,18 +401,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById('massCiclo').disabled = true;
                 }
             });
-            // -----------------------------------------------------------
-
+            
             fichero.onchange = function () {
+                csvPreviewTbody.innerHTML = '';
+
                 if (this.files.length > 0 && this.files[0].type == 'text/csv') {
                     const lector = new FileReader();
 
                     lector.onload = function () {
                         const filas = this.result.split('\n').filter(line => line.trim() !== '');
-                        csvPreviewTbody.innerHTML = '';
                         filas.forEach(filaTexto => {
                             const celdas = filaTexto.split(';');
-                            if (celdas.length >= 3) {
+                            if (celdas.length >= 4) {
                                 let tr = document.createElement('tr');
                                 let tdCheckbox = document.createElement('td');
                                 tdCheckbox.innerHTML = `<input type="checkbox" class="checkbox-input" name="seleccion" value="${celdas.join(';')}" checked>`;
@@ -398,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     tr.appendChild(td);
                                 }
                                 let td = document.createElement('td');
-                                td.innerHTML = celdas[2]+'<br>'+celdas[3];
+                                td.innerHTML = (celdas[2] ? celdas[2].trim() : '') +'<br>'+ (celdas[3] ? celdas[3].trim() : '');
                                 tr.appendChild(td);
 
                                 csvPreviewTbody.appendChild(tr);
@@ -406,8 +432,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
                     lector.readAsText(this.files[0]);
-                } else {
-                    csvPreviewTbody.innerHTML = '';
                 }
             }
 
@@ -415,23 +439,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
 
                 const selectedCheckboxes = document.querySelectorAll('#csv-preview-tbody input[name="seleccion"]:checked');
-                if (selectedCheckboxes.length === 0) {
-                    modal.modalOk("Por favor, selecciona al menos un alumno para invitar.");
-                    return;
-                }
-
                 const familiaId = document.getElementById('massFamilia').value;
                 const cicloId = document.getElementById('massCiclo').value;
+                const archivo = document.getElementById('fichero').files[0];
 
-                if (!familiaId || !cicloId) {
-                    modal.modalOk("Por favor, selecciona una Familia Profesional y un Ciclo Formativo.");
+                const massData = {
+                    familia_id: familiaId,
+                    ciclo_id: cicloId,
+                    archivo: archivo
+                };
+
+                validator.setData(massData);
+
+                validator.requerido('archivo', "El archivo CSV es obligatorio.");
+                validator.requerido('familia_id', "La Familia Profesional es obligatoria.");
+                validator.requerido('ciclo_id', "El Ciclo Formativo es obligatorio.");
+
+                if (selectedCheckboxes.length === 0) {
+                    validator.addError('seleccion', "Debes seleccionar al menos un alumno del CSV.");
+                }
+
+                if (!validator.validacionPasada()) {
                     return;
                 }
 
                 const alumnosToAdd = [];
-                selectedCheckboxes.forEach(checkbox => {
+                let validacionMasivaPasada = true;
+                selectedCheckboxes.forEach((checkbox, index) => {
                     const rowData = checkbox.value.split(';');
-                    alumnosToAdd.push({
+                    const alumno = {
                         nombre: rowData[0] ? rowData[0].trim() : '',
                         apellidos: rowData[1] ? rowData[1].trim() : '',
                         telefono: rowData[2] ? rowData[2].trim() : '',
@@ -440,8 +476,24 @@ document.addEventListener("DOMContentLoaded", function () {
                         familia_id: familiaId,
                         ciclo_id: cicloId,
                         rol_id: 3
-                    });
+                    };
+
+                    const valCSV = new Validator();
+                    valCSV.setData(alumno);
+                    valCSV.requerido('nombre', `Fila ${index + 1}: El nombre es obligatorio.`);
+                    valCSV.requerido('apellidos', `Fila ${index + 1}: Los apellidos son obligatorios.`);
+                    valCSV.email('email', `Fila ${index + 1}: El email es obligatorio y debe ser válido.`);
+                    valCSV.patronTelefono('telefono', `Fila ${index + 1}: El formato del teléfono no es válido.`);
+                    
+                    if (!valCSV.validacionPasada()) {
+                        validacionMasivaPasada = false;
+                        return;
+                    }
+                    alumnosToAdd.push(alumno);
                 });
+
+                if (!validacionMasivaPasada) return;
+
 
                 try {
                     const response = await fetch(`${API_BASE_URL}/mass`, {
@@ -453,13 +505,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const result = await response.json();
                     if (result.success) {
                         modal.cerrarModal();
-                        modal.modalOk("Alumnos invitados correctamente.");
                         fetchAlumnos();
-                    } else {
-                        modal.modalOk(`Error al invitar alumnos: ${result.message || 'Error desconocido'}`);
                     }
                 } catch (error) {
-                    modal.modalOk("Error de conexión al intentar invitar alumnos.");
+                    console.error("Error de conexión al intentar invitar alumnos.");
                 }
             });
         });

@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use App\Models\Alumno;
 use App\Models\User;
-use App\Models\Empresa;
 
 class Adapter {
     public static function alumnoToDTO($alumno)
@@ -46,6 +45,25 @@ class Adapter {
         $dtos = [];
         foreach ($alumnos as $alumno) {
             $dtos[] = self::alumnoToDTO($alumno);
+        }
+        return $dtos;
+    }
+
+    public static function solicitudToDTO($solicitud) {
+        return [
+            'id' => $solicitud->id,
+            'oferta_titulo' => $solicitud->oferta_titulo,
+            'alumno_nombre' => $solicitud->alumno_nombre,
+            'alumno_apellidos' => $solicitud->alumno_apellidos,
+            'fecha_solicitud' => $solicitud->fecha_solicitud,
+            'cv_visto' => $solicitud->cv_visto,
+        ];
+    }
+
+    public static function AllSolicitudToDTO($solicitudes) {
+        $dtos = [];
+        foreach ($solicitudes as $solicitud) {
+            $dtos[] = self::solicitudToDTO($solicitud);
         }
         return $dtos;
     }

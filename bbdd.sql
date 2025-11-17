@@ -5,7 +5,7 @@ CREATE DATABASE IF NOT EXISTS proyectafp CHARACTER SET utf8mb4 COLLATE utf8mb4_u
 
 USE proyectafp;
 
--- select * from users;
+-- select * from alumnos;
 -- update users set rol_id=1 where email='jimenezelichesergio@gmail.com';
 
 CREATE TABLE IF NOT EXISTS roles (
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS familias (
 
 CREATE TABLE IF NOT EXISTS ciclos (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(100) NOT NULL,
+	nombre VARCHAR(100) NOT NULL UNIQUE,
 	nivel VARCHAR(50) NULL,
 	familia_id INT NOT NULL,
 	CONSTRAINT fk_ciclo_familia FOREIGN KEY (familia_id) REFERENCES familias(id) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -42,10 +42,10 @@ CREATE TABLE IF NOT EXISTS alumnos (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(25) NOT NULL,
 	apellidos VARCHAR(50) NOT NULL,
-	direccion VARCHAR(255) NULL,
-	telefono VARCHAR(25) NULL,
-	foto VARCHAR(255) NULL,
-	cv VARCHAR(255) NULL,
+	direccion VARCHAR(255) NOT NULL,
+	telefono VARCHAR(25) NOT NULL,
+	foto VARCHAR(255) NOT NULL,
+	cv VARCHAR(255) NOT NULL,
     ciclo_id INT NOT NULL,
 	user_id INT NOT NULL UNIQUE,
 	CONSTRAINT fk_alumno_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -55,9 +55,9 @@ CREATE TABLE IF NOT EXISTS alumnos (
 CREATE TABLE IF NOT EXISTS empresas (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
-	telefono VARCHAR(25) NULL,
-	direccion VARCHAR(255) NULL,
-	logo VARCHAR(255) NULL,
+	telefono VARCHAR(25) NOT NULL,
+	direccion VARCHAR(255) NOT NULL,
+	logo VARCHAR(255) NOT NULL,
 	user_id INT NOT NULL UNIQUE,
 	CONSTRAINT fk_empresa_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -77,11 +77,11 @@ CREATE TABLE IF NOT EXISTS ofertas (
 CREATE TABLE IF NOT EXISTS solicitudes (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	oferta_id INT NOT NULL,
-	alumno_user_id INT NOT NULL,
+	alumno_id INT NOT NULL,
 	fecha_solicitud DATETIME DEFAULT CURRENT_TIMESTAMP,
 	cv_visto BOOLEAN DEFAULT FALSE,
 	CONSTRAINT fk_solicitud_oferta FOREIGN KEY (oferta_id) REFERENCES ofertas(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_solicitud_alumno_user FOREIGN KEY (alumno_user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT fk_solicitud_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -148,28 +148,27 @@ INSERT INTO ciclos (nombre, nivel, familia_id) VALUES
 ('Especialización en Ciberseguridad en Entornos de las Tecnologías de Operación', 'Curso de Especialización', (SELECT id FROM familias WHERE nombre = 'Electricidad y Electrónica')),
 ('Especialización en Inteligencia Artificial y Big Data', 'Curso de Especialización', (SELECT id FROM familias WHERE nombre = 'Informática y Comunicaciones'));
 
-
--- 4. Alumnos y Empresas (Sin cambios)
+-- 4. Alumnos y Empresas 
 INSERT INTO alumnos (nombre, apellidos, direccion, telefono, foto, cv, ciclo_id, user_id) VALUES
-('Juan', 'Pérez García', 'Calle Falsa 123', '600111222', '/img/alumnos/1.jpg', '../resources/cvs/1.pdf', 1, (SELECT id FROM users WHERE email = 'alumno1@example.com')),
-('María', 'López Fernández', 'Avenida Siempreviva 45', '600333444', null, null, 2, (SELECT id FROM users WHERE email = 'alumno2@example.com')),
-('Carlos', 'Sánchez Ruiz', 'Plaza Mayor 7', '600555666', null, null, 3, (SELECT id FROM users WHERE email = 'alumno3@example.com')),
-('Ana', 'Martín Gómez', 'Ronda del Sol 1', '600777888', null, null, 4, (SELECT id FROM users WHERE email = 'alumno4@example.com')),
-('Pedro', 'Díaz Navarro', 'Pasaje de la Luna 3', '600999000', null, null, 5, (SELECT id FROM users WHERE email = 'alumno5@example.com')),
-('Laura', 'Hernández Gil', 'Calle del Río 8', '611222333', null, null, 6, (SELECT id FROM users WHERE email = 'alumno6@example.com')),
-('Sofía', 'Ramírez Vargas', 'Avenida Central 25', '622333444', null, null, 7, (SELECT id FROM users WHERE email = 'alumno7@example.com')),
-('David', 'Jiménez Castro', 'Paseo de las Flores 10', '633444555', null, null, 8, (SELECT id FROM users WHERE email = 'alumno8@example.com')),
-('Elena', 'Ruiz Moreno', 'Camino Real 15', '644555666', null, null, 9, (SELECT id FROM users WHERE email = 'alumno9@example.com')),
-('Miguel', 'Santos Vidal', 'Calle Estrecha 5', '655666777', null, null, 10, (SELECT id FROM users WHERE email = 'alumno10@example.com'));
+('Juan', 'Pérez García', 'Calle Falsa 123', '600111222', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 1, (SELECT id FROM users WHERE email = 'alumno1@example.com')),
+('María', 'López Fernández', 'Avenida Siempreviva 45', '600333444', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 2, (SELECT id FROM users WHERE email = 'alumno2@example.com')),
+('Carlos', 'Sánchez Ruiz', 'Plaza Mayor 7', '600555666', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 3, (SELECT id FROM users WHERE email = 'alumno3@example.com')),
+('Ana', 'Martín Gómez', 'Ronda del Sol 1', '600777888', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 4, (SELECT id FROM users WHERE email = 'alumno4@example.com')),
+('Pedro', 'Díaz Navarro', 'Pasaje de la Luna 3', '600999000', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 5, (SELECT id FROM users WHERE email = 'alumno5@example.com')),
+('Laura', 'Hernández Gil', 'Calle del Río 8', '611222333', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 6, (SELECT id FROM users WHERE email = 'alumno6@example.com')),
+('Sofía', 'Ramírez Vargas', 'Avenida Central 25', '622333444', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 7, (SELECT id FROM users WHERE email = 'alumno7@example.com')),
+('David', 'Jiménez Castro', 'Paseo de las Flores 10', '633444555', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 8, (SELECT id FROM users WHERE email = 'alumno8@example.com')),
+('Elena', 'Ruiz Moreno', 'Camino Real 15', '644555666', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 9, (SELECT id FROM users WHERE email = 'alumno9@example.com')),
+('Miguel', 'Santos Vidal', 'Calle Estrecha 5', '655666777', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 10, (SELECT id FROM users WHERE email = 'alumno10@example.com'));
 
 INSERT INTO empresas (nombre, telefono, direccion, logo, user_id) VALUES
-('TecnoSoluciones S.L.', '911223344', 'Calle Innovación 10, Madrid', 'uploads/logos/tecnosoluciones.png', (SELECT id FROM users WHERE email = 'empresa1@example.com')),
-('GlobalSoft IT', '933445566', 'Gran Vía 50, Barcelona', 'uploads/logos/globalsoft.png', (SELECT id FROM users WHERE email = 'empresa2@example.com')),
-('Consultoría Alfa', '955667788', 'Paseo de la Castellana 200, Madrid', 'uploads/logos/consultoriaalfa.png', (SELECT id FROM users WHERE email = 'empresa3@example.com')),
-('Marketing Pro', '966778899', 'Calle del Mar 15, Valencia', 'uploads/logos/marketingpro.png', (SELECT id FROM users WHERE email = 'empresa4@example.com')),
-('Hostelería Deluxe', '922113344', 'Avenida de la Playa 7, Málaga', 'uploads/logos/hosteleriadeluxe.png', (SELECT id FROM users WHERE email = 'empresa5@example.com'));
+('TecnoSoluciones S.L.', '911223344', 'Calle Innovación 10, Madrid', 'img/empresas/1.jpg', (SELECT id FROM users WHERE email = 'empresa1@example.com')),
+('GlobalSoft IT', '933445566', 'Gran Vía 50, Barcelona', 'img/empresas/2.jpg', (SELECT id FROM users WHERE email = 'empresa2@example.com')),
+('Consultoría Alfa', '955667788', 'Paseo de la Castellana 200, Madrid', 'img/empresas/3.jpg', (SELECT id FROM users WHERE email = 'empresa3@example.com')),
+('Marketing Pro', '966778899', 'Calle del Mar 15, Valencia', 'img/empresas/4.jpg', (SELECT id FROM users WHERE email = 'empresa4@example.com')),
+('Hostelería Deluxe', '922113344', 'Avenida de la Playa 7, Málaga', 'img/empresas/5.jpg', (SELECT id FROM users WHERE email = 'empresa5@example.com'));
 
--- 6. Ofertas
+-- 5. Ofertas
 INSERT INTO ofertas (empresa_id, titulo, descripcion, ciclo_id, fecha_inicio, fecha_fin) VALUES
 ((SELECT id FROM empresas WHERE nombre = 'TecnoSoluciones S.L.'), 'Desarrollador Web Junior', 'Buscamos un desarrollador web junior con conocimientos en PHP y JavaScript.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web'), '2023-10-26', '2023-11-30'),
 ((SELECT id FROM empresas WHERE nombre = 'GlobalSoft IT'), 'Técnico de Sistemas Junior', 'Se requiere técnico para soporte y administración de redes.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma'),'2023-10-20', '2023-11-15'),
@@ -177,21 +176,8 @@ INSERT INTO ofertas (empresa_id, titulo, descripcion, ciclo_id, fecha_inicio, fe
 ((SELECT id FROM empresas WHERE nombre = 'Marketing Pro'), 'Asistente de Marketing Digital', 'Ayuda en la creación de campañas y gestión de redes sociales.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Gestión Administrativa'), '2023-10-28', '2023-11-20'),
 ((SELECT id FROM empresas WHERE nombre = 'Hostelería Deluxe'), 'Técnico de Mantenimiento Industrial', 'Puesto de técnico para mantenimiento de maquinaria y sistemas automatizados.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Mantenimiento Electromecánico'), '2023-11-01', NULL);
 
--- 7. Ofertas_Ciclos
-INSERT INTO ofertas_ciclos (oferta_id, ciclo_id) VALUES
-((SELECT id FROM ofertas WHERE titulo = 'Desarrollador Web Junior'), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web')),
-((SELECT id FROM ofertas WHERE titulo = 'Desarrollador Web Junior'), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma')),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Sistemas Junior'), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administracion de Sistemas Informáticos en Red')),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Sistemas Junior'), (SELECT id FROM ciclos WHERE nombre = 'Especialización en Ciberseguridad en Entornos de las Tecnologías de Operación')),
-((SELECT id FROM ofertas WHERE titulo = 'Administrativo Contable'), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administración y Finanzas')),
-((SELECT id FROM ofertas WHERE titulo = 'Administrativo Contable'), (SELECT id FROM ciclos WHERE nombre = 'Técnico en Gestión Administrativa')),
-((SELECT id FROM ofertas WHERE titulo = 'Asistente de Marketing Digital'), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Enseñanza y Animación Sociodeportiva')),
-((SELECT id FROM ofertas WHERE titulo = 'Asistente de Marketing Digital'), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Acondicionamiento Físico')),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Mantenimiento Industrial'), (SELECT id FROM ciclos WHERE nombre = 'Técnico en Mantenimiento Electromecánico')),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Mantenimiento Industrial'), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Mecatrónica Industrial'));
-
--- 8. Solicitudes
-INSERT INTO solicitudes (oferta_id, alumno_user_id, fecha_solicitud, cv_visto) VALUES
+-- 6. Solicitudes
+INSERT INTO solicitudes (oferta_id, alumno_id, fecha_solicitud, cv_visto) VALUES
 ((SELECT id FROM ofertas WHERE titulo = 'Desarrollador Web Junior'), (SELECT id FROM users WHERE email = 'alumno1@example.com'), '2023-10-27 10:00:00', FALSE),
 ((SELECT id FROM ofertas WHERE titulo = 'Técnico de Sistemas Junior'), (SELECT id FROM users WHERE email = 'alumno3@example.com'), '2023-10-21 11:30:00', FALSE),
 ((SELECT id FROM ofertas WHERE titulo = 'Administrativo Contable'), (SELECT id FROM users WHERE email = 'alumno4@example.com'), '2023-10-26 14:00:00', FALSE),

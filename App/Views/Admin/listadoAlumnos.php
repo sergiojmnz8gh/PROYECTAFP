@@ -4,6 +4,7 @@
     <script src="js/modal.js"></script>
     <script src="js/tabla.js"></script>
     <script src="js/csv.js"></script>
+    <script src="js/validator.js"></script>
     <script src="js/listadoAlumnos.js"></script>
 <?php $this->stop() ?>
 
@@ -43,7 +44,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="alumnosTableBody">
+                <tbody>
                 </tbody>
             </table>
         </div>

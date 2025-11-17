@@ -10,7 +10,6 @@
 
     <?= $this->section('css') ?>
     <?= $this->section('js') ?>
-    <!-- <script src="js/main.js"></script> -->
     
 </head>
 
@@ -20,16 +19,16 @@
         <nav>
             <ul>
                 <?php
-                if (isset($_SESSION['rol_id'])) {
-                    if ($_SESSION['rol_id'] == '1') {
+                if (isset($_SESSION['user_rol'])) {
+                    if ($_SESSION['user_rol'] == '1') {
                         echo '<li><a href="index.php?page=logout"><button class="btn1">Cerrar Sesión</button></a></li>';
                     }
-                    if ($_SESSION['rol_id'] == '2') {
+                    if ($_SESSION['user_rol'] == '2') {
                         echo '<li><a href="index.php?page=">Nueva oferta</a></li>
                             <li><a href="index.php?page=">Mis ofertas</a></li>
                             <li><a href="index.php?page=logout"><button class="btn1">Cerrar Sesión</button></a></li>';
                     }
-                    if ($_SESSION['rol_id'] == '3') {
+                    if ($_SESSION['user_rol'] == '3') {
                         echo '<li><a href="index.php?page=">Buscar ofertas</a></li>
                             <li><a href="index.php?page=">Mis solicitudes</a></li>
                             <li><a href="index.php?page=logout"><button class="btn1">Cerrar Sesión</button></a></li>';
@@ -47,7 +46,7 @@
     <main>
         <div class="admin-page">
         <?php
-            if ((isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == '1')) { 
+            if ((isset($_SESSION['user_rol']) && $_SESSION['user_rol'] == '1')) {
                 ?>
         <aside class="sidebar">
                     <div class="header-paneladmin">

@@ -6,21 +6,6 @@
     <?php $this->start('contenidoPagina') ?>
         <section>
             <h1 class="page-title">Listado de Ofertas</h1>
-            
-            <div class="search-controls">
-                <div class="search_group">
-                <form action="index.php" method="GET">
-                    <input type="hidden" name="admin" value="empresas">
-                    <input type="text" name="buscarEmpresa" id="buscarEmpresa" placeholder="Buscar empresa..." class="search-input" value="<?= $_GET['buscarEmpresa'] ?? '' ?>">
-                    <button type="submit" id="btnBuscarEmpresa" class="btn btn2">Buscar</button>
-                </form>
-                </div> 
-                <div class="btn-crud-right"> 
-                    <form action="/index.php?admin=invitarempresa" method="POST">
-                        <button type="submit" id="add" class="btn-action btn2">+ Añadir</button>
-                    </form>
-                </div>
-            </div>
 
             <div class="table-container">
                 <table class="data-table">

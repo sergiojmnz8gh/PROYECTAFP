@@ -43,10 +43,6 @@ el contenido del email al elegir los candidatos con boton de me gusta. -> Valora
 
 
 
-ordenar en php
-por la mañana hacer carrusel empresas en landing, mirar todo lo de validaciones
- tanto js como php e implementarlas y repasar cosas raras que cambiar y css
-
-todo lo de solicitudes y ofertas
-hacer carga masiva sin crear alumno hacerlo enviando correos con forms rellenos, 
+toda la logica solicitudes y ofertas en alumno y empresa
 hacer pdf y ver como se hace todo eso y todo lo de docker
+hacer carga masiva sin crear alumno hacerlo enviando correos con forms rellenos, 

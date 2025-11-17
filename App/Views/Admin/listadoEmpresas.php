@@ -9,9 +9,11 @@
             
             <div class="search-controls">
                 <div class="search_group">
-                <form action="index.php" method="GET">
+                <form action="index.php">
                     <input type="hidden" name="admin" value="empresas">
-                    <input type="text" name="buscarEmpresa" id="buscarEmpresa" placeholder="Buscar empresa..." class="search-input" value="<?= $_GET['buscarEmpresa'] ?? '' ?>">
+                    <input type="hidden" name="ordenarpor" value="<?= $_GET['ordenarpor'] ?? 'id'?>">
+                    <input type="hidden" name="orden" value="<?= $_GET['orden'] ?? 'asc'?>">
+                    <input type="text" name="buscarempresa" id="buscarEmpresa" placeholder="Buscar empresa..." class="search-input" value="<?= $_GET['buscarempresa'] ?? '' ?>">
                     <button type="submit" id="btnBuscarEmpresa" class="btn btn2">Buscar</button>
                 </form>
                 </div> 
@@ -26,8 +28,8 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID <img class="icon" src="img/orden.png" alt=""></th>
-                            <th>Nombre <img class="icon" src="img/orden.png" alt=""></th>
+                            <th><a href="?admin=empresas&buscarempresa=<?= ($_GET['buscarempresa'] ?? '') ?>&ordenarpor=id&orden=<?= (($_GET['orden'] ?? 'asc') == 'asc') ? 'desc' : 'asc' ?>">ID <img class="icon" src="img/orden.png" alt=""></a></th>
+                            <th><a href="?admin=empresas&buscarempresa=<?= ($_GET['buscarempresa'] ?? '') ?>&ordenarpor=nombre&orden=<?= (($_GET['orden'] ?? 'asc') == 'asc') ? 'desc' : 'asc' ?>">Nombre <img class="icon" src="img/orden.png" alt=""></a></th>
                             <th>Contacto</th>
                             <th>Acciones</th>
                         </tr>
