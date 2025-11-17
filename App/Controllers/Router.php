@@ -68,16 +68,34 @@ class Router {
                     echo $this->templates->render('Admin/dashboard');
                     break;
                 case 'alumnos': 
-                    (new AlumnoController($this->templates))->list();
+                    echo $this->templates->render('Admin/listadoAlumnos');
                     break;
                 case 'empresas': 
                     (new EmpresaController($this->templates))->list();
+                    break;
+                case 'invitarempresa':
+                    (new EmpresaController($this->templates))->invite();
+                    break;
+                case 'guardarinvitarempresa':
+                    (new EmpresaController($this->templates))->save_invite();
+                    break;
+                case 'editarempresa':
+                    (new EmpresaController($this->templates))->edit();
+                    break;
+                case 'guardareditarempresa':
+                    (new EmpresaController($this->templates))->save_edit();
+                    break;
+                case 'borrarempresa':
+                    (new EmpresaController($this->templates))->delete();
+                    break;
+                case 'fichaempresa':
+                    (new EmpresaController($this->templates))->showFicha();
                     break;
                 case 'ofertas':
                     (new OfertaController($this->templates))->list();
                     break;
                 case 'solicitudes':
-                    (new SolicitudController($this->templates))->list();
+                    echo $this->templates->render('Admin/listadoSolicitudes');
                     break;
                 default:
                     http_response_code(404);
@@ -107,7 +125,16 @@ class Router {
                     break;
                 case 'login':
                     if (Login::estaLogeado()) {
-                        header('Location: /index.php?page=home');
+                        $rol = Login::getLoggedInUserRol();
+                        if ($rol == '1') {
+                            header('Location: /index.php?admin=dashboard');
+                        }
+                        if ($rol == '2') {
+                            header('Location: /index.php?page=misofertas');
+                        }
+                        if ($rol == '3') {
+                            header('Location: /index.php?page=missolicitudes');
+                        }
                         exit;
                     }
                     echo $this->templates->render('Landing/login');

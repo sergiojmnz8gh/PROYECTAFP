@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Helpers;
+
 class Validator {
     private $errors;
 

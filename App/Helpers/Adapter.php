@@ -4,10 +4,10 @@ namespace App\Helpers;
 
 use App\Models\Alumno;
 use App\Models\User;
+use App\Models\Empresa;
 
-class Adapter
-{
-    public static function alumnoToDTO(Alumno $alumno): array
+class Adapter {
+    public static function alumnoToDTO($alumno)
     {
         return [
             'id' => $alumno->id,
@@ -24,7 +24,7 @@ class Adapter
         ];
     }
 
-    public static function DTOtoAlumno(array $data): Alumno
+    public static function DTOtoAlumno($data)
     {
         $alumno = new Alumno();
         $alumno->id = $data['id'] ?? null;
@@ -41,7 +41,7 @@ class Adapter
         return $alumno;
     }
 
-    public static function AllAlumnoToDTO(array $alumnos): array
+    public static function AllAlumnoToDTO($alumnos)
     {
         $dtos = [];
         foreach ($alumnos as $alumno) {
@@ -50,7 +50,19 @@ class Adapter
         return $dtos;
     }
 
-    public static function DTOtoModels(array $data): array
+    public static function DTOtoEmpresa($empresa, $data) {
+    $empresa->id = $data['id'] ?? $empresa->id;
+    $empresa->nombre = $data['nombre'] ?? $empresa->nombre;
+    $empresa->email = $data['email'] ?? $empresa->email;
+    $empresa->telefono = $data['telefono'] ?? $empresa->telefono;
+    $empresa->direccion = $data['direccion'] ?? $empresa->direccion;
+    $empresa->logo = $data['logo'] ?? $empresa->logo;
+    $empresa->activo = $data['activo'] ?? $empresa->activo;
+
+    return $empresa;
+}
+
+    public static function DTOtoModels($data)
     {
         $user = new User();
         $user->id = $data['user_id'] ?? null;
@@ -71,7 +83,7 @@ class Adapter
         return ['alumno' => $alumno, 'user' => $user];
     }
 
-    public static function userToDTO(User $user): array
+    public static function userToDTO($user)
     {
         return [
             'id' => $user->id,

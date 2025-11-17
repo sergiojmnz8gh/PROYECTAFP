@@ -42,6 +42,17 @@ class RepoAlumno {
         return $stmt->fetch();
     }
 
+    public static function findByEmail($email) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE u.email = :email";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindvalue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Alumno::class);
+        return $stmt->fetch();
+    }
+
     public static function findAll() {
         $conexion = self::getConexion();
         $sql = self::getBaseQuery();
@@ -53,7 +64,7 @@ class RepoAlumno {
 
     public static function findSizedList($filtersAndPagination) {
         $page = $filtersAndPagination['page'] ?? 1;
-        $size = $filtersAndPagination['size'] ?? 10;
+        $size = $filtersAndPagination['size'] ?? 5;
         $conexion = self::getConexion();
         $sql = self::getBaseQuery() . " LIMIT :size OFFSET :offset";
         $stmt = $conexion->prepare($sql);
@@ -83,14 +94,17 @@ class RepoAlumno {
 
             $alumno->user_id = $newUserId; 
 
-            $sqlAlumno = "INSERT INTO alumnos (nombre, apellidos, telefono, foto, user_id) 
-                          VALUES (:nombre, :apellidos, :telefono, :foto, :user_id)";
+            $sqlAlumno = "INSERT INTO alumnos (nombre, apellidos, telefono, direccion, foto, cv, ciclo_id, user_id) 
+                          VALUES (:nombre, :apellidos, :telefono, :direccion, :foto, :cv, :ciclo_id, :user_id)";
             $stmtAlumno = $conexion->prepare($sqlAlumno);
             
             $stmtAlumno->bindvalue(':nombre', $alumno->nombre);
             $stmtAlumno->bindvalue(':apellidos', $alumno->apellidos);
             $stmtAlumno->bindvalue(':telefono', $alumno->telefono);
-            $stmtAlumno->bindvalue(':foto', $alumno->foto);
+            $stmtAlumno->bindvalue(':direccion', $alumno->direccion);
+            $stmtAlumno->bindvalue(':foto', '/img/alumnos/'.$alumno->user_id.'.jpg');
+            $stmtAlumno->bindvalue(':cv', '/resources/cvs/'.$alumno->user_id.'.pdf');
+            $stmtAlumno->bindvalue(':ciclo_id', $alumno->ciclo_id, PDO::PARAM_INT);
             $stmtAlumno->bindvalue(':user_id', $alumno->user_id, PDO::PARAM_INT);
             
             $stmtAlumno->execute();

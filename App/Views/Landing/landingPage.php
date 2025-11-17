@@ -35,6 +35,6 @@
                 <div class="card">
                 </div>
             </div>
-    </article>
+        </article>
     </section>
 <?php $this->stop('contenidoPagina') ?>

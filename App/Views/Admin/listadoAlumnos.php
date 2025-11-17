@@ -35,7 +35,7 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th class="ordenable">ID</th>
+                        <th class="ordenable">ID <img class="icon" src="img/orden.png" alt=""></th>
                         <th class="ordenable">Nombre <img class="icon" src="img/orden.png" alt=""></th>
                         <th class="ordenable">Apellidos <img class="icon" src="img/orden.png" alt=""></th>
                         <th>Ciclo Formativo</th>

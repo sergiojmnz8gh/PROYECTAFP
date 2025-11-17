@@ -33,17 +33,39 @@ class RepoEmpresa {
         $conexion = self::getConexion();
         $sql = self::getBaseQuery() . " WHERE e.id = :id";
         $stmt = $conexion->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Empresa::class);
         return $stmt->fetch();
     }
 
-    public static function findAll() {
+    public static function findByEmail($email) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE u.email = :email";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Empresa::class);
+        return $stmt->fetch();
+    }
+
+    public static function findAll($nombre = null) {
         $conexion = self::getConexion();
         $sql = self::getBaseQuery();
-        $stmt = $conexion->query($sql);
+        
+        $params = [];
+        
+        if ($nombre) {
+            $sql .= " WHERE e.nombre LIKE :nombre";
+            $params[':nombre'] = '%' . $nombre . '%';
+        }
+        
+        $sql .= " ORDER BY e.nombre ASC";
+
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute($params);
         
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Empresa::class);
         return $stmt->fetchAll();
@@ -57,10 +79,10 @@ class RepoEmpresa {
                         VALUES (:email, :password, :rol_id, :activo)";
             $stmtUser = $conexion->prepare($sqlUser);
             
-            $stmtUser->bindParam(':email', $empresa->email); 
-            $stmtUser->bindParam(':password', $hashedPassword);
-            $stmtUser->bindParam(':rol_id', 2, PDO::PARAM_INT); 
-            $stmtUser->bindParam(':activo', $empresa->activo, PDO::PARAM_BOOL); 
+            $stmtUser->bindValue(':email', $empresa->email); 
+            $stmtUser->bindValue(':password', $hashedPassword);
+            $stmtUser->bindValue(':rol_id', 2, PDO::PARAM_INT); 
+            $stmtUser->bindValue(':activo', $empresa->activo, PDO::PARAM_BOOL); 
             
             $stmtUser->execute();
             $newUserId = $conexion->lastInsertId();
@@ -71,11 +93,11 @@ class RepoEmpresa {
                           VALUES (:nombre, :telefono, :direccion, :logo, :user_id)";
             $stmtEmpresa = $conexion->prepare($sqlEmpresa);
             
-            $stmtEmpresa->bindParam(':nombre', $empresa->nombre);
-            $stmtEmpresa->bindParam(':telefono', $empresa->telefono);
-            $stmtEmpresa->bindParam(':direccion', $empresa->direccion);
-            $stmtEmpresa->bindParam(':logo', $empresa->logo);
-            $stmtEmpresa->bindParam(':user_id', $empresa->user_id, PDO::PARAM_INT);
+            $stmtEmpresa->bindValue(':nombre', $empresa->nombre);
+            $stmtEmpresa->bindValue(':telefono', $empresa->telefono);
+            $stmtEmpresa->bindValue(':direccion', $empresa->direccion);
+            $stmtEmpresa->bindvalue(':logo', '/img/empresas/'.$empresa->user_id.'.jpg');
+            $stmtEmpresa->bindValue(':user_id', $empresa->user_id, PDO::PARAM_INT);
             
             $stmtEmpresa->execute();
 
@@ -101,13 +123,13 @@ class RepoEmpresa {
             $sqlUser .= " WHERE id = :user_id";
             $stmtUser = $conexion->prepare($sqlUser);
             
-            $stmtUser->bindParam(':email', $empresa->email); 
-            $stmtUser->bindParam(':rol_id', 2, PDO::PARAM_INT); 
-            $stmtUser->bindParam(':activo', $empresa->activo, PDO::PARAM_BOOL); 
+            $stmtUser->bindValue(':email', $empresa->email); 
+            $stmtUser->bindValue(':rol_id', 2, PDO::PARAM_INT); 
+            $stmtUser->bindValue(':activo', $empresa->activo, PDO::PARAM_BOOL); 
             if ($newHashedPassword !== null) {
-                $stmtUser->bindParam(':password', $newHashedPassword);
+                $stmtUser->bindValue(':password', $newHashedPassword);
             }
-            $stmtUser->bindParam(':user_id', $empresa->user_id, PDO::PARAM_INT);
+            $stmtUser->bindValue(':user_id', $empresa->user_id, PDO::PARAM_INT);
             
             $stmtUser->execute();
 
@@ -116,11 +138,11 @@ class RepoEmpresa {
                           WHERE id = :id";
             $stmtEmpresa = $conexion->prepare($sqlEmpresa);
             
-            $stmtEmpresa->bindParam(':nombre', $empresa->nombre);
-            $stmtEmpresa->bindParam(':telefono', $empresa->telefono);
-            $stmtEmpresa->bindParam(':direccion', $empresa->direccion);
-            $stmtEmpresa->bindParam(':logo', $empresa->logo);
-            $stmtEmpresa->bindParam(':id', $empresa->id, PDO::PARAM_INT);
+            $stmtEmpresa->bindValue(':nombre', $empresa->nombre);
+            $stmtEmpresa->bindValue(':telefono', $empresa->telefono);
+            $stmtEmpresa->bindValue(':direccion', $empresa->direccion);
+            $stmtEmpresa->bindValue(':logo', $empresa->logo);
+            $stmtEmpresa->bindValue(':id', $empresa->id, PDO::PARAM_INT);
             
             $stmtEmpresa->execute();
 

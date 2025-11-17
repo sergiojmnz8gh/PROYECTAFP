@@ -3,40 +3,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const API_FAMILIAS_URL = '/index.php?api=familias';
     const API_CICLOS_URL = '/index.php?api=ciclos';
 
-    async function fetchFamilias(selectElementId, selectedValue = null) {
-        const select = document.getElementById(selectElementId);
-
-        select.innerHTML = '<option value="">Cargando familias...</option>';
+    async function obtenerFamilias(idElementoSelect, valorSeleccionado = null) {
+        const select = document.getElementById(idElementoSelect);
+        select.innerHTML = '<option value="" disabled selected>Cargando familias...</option>';
         try {
             const response = await fetch(API_FAMILIAS_URL);
             const result = await response.json();
 
             if (result.success) {
-                select.innerHTML = '<option value="">Selecciona una familia</option>';
+                select.innerHTML = '<option value="" disabled selected>Selecciona una familia</option>';
                 result.data.forEach(familia => {
                     const option = document.createElement('option');
                     option.value = familia.id;
                     option.textContent = familia.nombre;
-                    if (selectedValue !== null && familia.id == selectedValue) {
+                    if (valorSeleccionado !== null && familia.id == valorSeleccionado) {
                         option.selected = true;
                     }
                     select.appendChild(option);
                 });
             } else {
-                select.innerHTML = '<option value="">Error al cargar familias</option>';
+                select.innerHTML = '<option value="" disabled selected>Error al cargar familias</option>';
             }
         } catch (error) {
-            select.innerHTML = '<option value="">Error de conexión</option>';
+            select.innerHTML = '<option value="" disabled selected>Error de conexión</option>';
         }
     }
 
-    async function fetchCiclos(selectElementId, familiaId = null, selectedValue = null) {
-        const select = document.getElementById(selectElementId);
-
-        select.innerHTML = '<option value="">Cargando ciclos...</option>';
+    async function obtenerCiclos(idElementoSelect, idFamilia = null, valorSeleccionado = null) {
+        const select = document.getElementById(idElementoSelect);
+        select.innerHTML = '<option value="" disabled selected>Cargando ciclos...</option>';
         let url = API_CICLOS_URL;
-        if (familiaId) {
-            url += `&familia_id=${familiaId}`;
+        if (idFamilia) {
+            url += `&familia_id=${idFamilia}`;
         }
 
         try {
@@ -44,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const result = await response.json();
 
             if (result.success) {
-                select.innerHTML = '<option value="">Selecciona un ciclo</option>';
+                select.innerHTML = '<option value="" disabled selected>Selecciona un ciclo</option>';
                 if (result.data.length === 0) {
                     select.innerHTML = '<option value="" disabled>No hay ciclos para esta familia</option>';
                 }
@@ -52,34 +50,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     const option = document.createElement('option');
                     option.value = ciclo.id;
                     option.textContent = ciclo.nombre;
-                    if (selectedValue !== null && ciclo.id == selectedValue) {
+                    if (valorSeleccionado !== null && ciclo.id == valorSeleccionado) {
                         option.selected = true;
                     }
                     select.appendChild(option);
                 });
             } else {
-                select.innerHTML = '<option value="">Error al cargar ciclos</option>';
+                select.innerHTML = '<option value="" disabled selected>Error al cargar ciclos</option>';
             }
         } catch (error) {
-            select.innerHTML = '<option value="">Error de conexión</option>';
+            select.innerHTML = '<option value="" disabled selected>Error de conexión</option>';
         }
     }
 
-    fetchFamilias('addFamilia');
-    fetchCiclos('addCiclo');
+    obtenerFamilias('addFamilia');
+    obtenerCiclos('addCiclo');
 
     document.getElementById('addFamilia').addEventListener('change', (event) => {
-        const selectedFamiliaId = event.target.value;
-        if (selectedFamiliaId) {
-            fetchCiclos('addCiclo', selectedFamiliaId);
+        const idFamiliaSeleccionada = event.target.value;
+        if (idFamiliaSeleccionada) {
+            obtenerCiclos('addCiclo', idFamiliaSeleccionada);
         } else {
-            document.getElementById('addCiclo').innerHTML = '<option value="">Selecciona un ciclo</option>';
+            document.getElementById('addCiclo').innerHTML = '<option value="" disabled selected>Selecciona un ciclo</option>';
         }
     });
 
-    window.addEventListener("load", inicializarLogicaCamaraYFoto);
-
-function inicializarLogicaCamaraYFoto() {
     let inputFoto = document.getElementById('foto');
     let elementoVideo = document.getElementById('video');
     let botonCapturar = document.getElementById('snap');
@@ -94,6 +89,7 @@ function inicializarLogicaCamaraYFoto() {
     elementoCanvas.height = ALTO_VIDEO;
 
     let streamCamaraActual = null;
+    let fotoCapturadaPorCamara = null;
 
     function detenerCamara() {
         if (streamCamaraActual) {
@@ -112,6 +108,7 @@ function inicializarLogicaCamaraYFoto() {
     function iniciarCamara() {
         detenerCamara();
         elementoCanvas.style.display = 'none';
+        fotoCapturadaPorCamara = null; 
 
         navigator.mediaDevices.getUserMedia({ video: { width: ANCHO_VIDEO, height: ALTO_VIDEO } })
             .then(stream => {
@@ -132,40 +129,23 @@ function inicializarLogicaCamaraYFoto() {
         elementoCanvas.style.display = 'none';
     }
 
-    function dibujarImagenEnCanvas(rutaImagen) {
-        detenerCamara();
-
-        let imagen = new Image();
-        imagen.onload = function() {
-            contextoCanvas.clearRect(0, 0, elementoCanvas.width, elementoCanvas.height);
-            let relacionAspecto = imagen.width / imagen.height;
-            let anchoDibujo = elementoCanvas.width;
-            let altoDibujo = elementoCanvas.height;
-
-            if (anchoDibujo / altoDibujo > relacionAspecto) {
-                anchoDibujo = altoDibujo * relacionAspecto;
-            } else {
-                altoDibujo = anchoDibujo / relacionAspecto;
-            }
-            let posX = (elementoCanvas.width - anchoDibujo) / 2;
-            let posY = (elementoCanvas.height - altoDibujo) / 2;
-
-            contextoCanvas.drawImage(imagen, posX, posY, anchoDibujo, altoDibujo);
-            elementoCanvas.style.display = 'block';
-        };
-        imagen.src = rutaImagen;
-    }
-
     inputFoto.onchange = function(e) {
         if (e.target.files && e.target.files[0]) {
+            detenerCamara();
+            fotoCapturadaPorCamara = null; 
             let lectorArchivos = new FileReader();
             lectorArchivos.onload = function(evento) {
-                dibujarImagenEnCanvas(evento.target.result);
+                let imagen = new Image();
+                imagen.onload = function() {
+                    contextoCanvas.clearRect(0, 0, elementoCanvas.width, elementoCanvas.height);
+                    contextoCanvas.drawImage(imagen, 0, 0, ANCHO_VIDEO, ALTO_VIDEO);
+                    elementoCanvas.style.display = 'block';
+                };
+                imagen.src = evento.target.result;
             };
             lectorArchivos.readAsDataURL(e.target.files[0]);
         } else {
             limpiarCanvasYOcultar();
-            detenerCamara();
         }
     };
 
@@ -177,6 +157,12 @@ function inicializarLogicaCamaraYFoto() {
         contextoCanvas.drawImage(elementoVideo, 0, 0, ANCHO_VIDEO, ALTO_VIDEO);
         
         detenerCamara();
+
+        elementoCanvas.toBlob(function(blob) {
+            if (blob) {
+                fotoCapturadaPorCamara = new File([blob], "foto_capturada.jpeg", { type: "image/jpeg" });
+            }
+        }, 'image/jpeg');
 
         let botonRepetir = document.getElementById('botonRepetir');
         if (!botonRepetir) {
@@ -200,9 +186,12 @@ function inicializarLogicaCamaraYFoto() {
                 detenerCamara();
                 botonActivarCamara.textContent = "Activar Cámara";
                 limpiarCanvasYOcultar();
+                inputFoto.value = '';
+                fotoCapturadaPorCamara = null;
             } else {
                 iniciarCamara();
                 botonActivarCamara.textContent = "Desactivar Cámara";
+                inputFoto.value = '';
             }
         });
     }
@@ -213,32 +202,66 @@ function inicializarLogicaCamaraYFoto() {
         botonActivarCamara.textContent = "Activar Cámara";
     }
 
-    // Lógica para enviar el formulario con la imagen del canvas
-    let formulario = document.forms[0]; // Asume que es el primer formulario
-    let botonEnviar = formulario["enviar"]; // Asume un input submit con name="enviar"
-
-    botonEnviar.onclick = function(e) {
+    let formulario = document.getElementById('registroAlumnoForm') || document.forms[0]; 
+    
+    formulario.addEventListener('submit', function(e) {
         e.preventDefault();
-        let datosFormulario = new FormData(formulario);
 
-        // Obtener la imagen del canvas como un archivo Blob y añadirla al FormData
-        // Esto es crucial para enviar la imagen correctamente por POST
-        elementoCanvas.toBlob(function(blob) {
-            if (blob) {
-                // 'foto' es el nombre que tu backend PHP esperaría para el archivo de la imagen
-                datosFormulario.append('foto', blob, 'foto_capturada.png'); 
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const reppassword = document.getElementById('reppassword').value;
+        const nombre = document.getElementById('nombre').value;
+        const apellidos = document.getElementById('apellidos').value;
+        const familiaId = document.getElementById('addFamilia').value;
+        const cicloId = document.getElementById('addCiclo').value;
+        const telefono = document.getElementById('telefono').value;
+        const direccion = document.getElementById('direccion').value;
+        const cvFileSelected = document.getElementById('cv').files[0];
+        const fotoFileManuallySelected = document.getElementById('foto').files[0];
+
+
+        if (!email || email.trim() === '') { alert("El email es obligatorio."); return; }
+        if (!password || password.trim() === '') { alert("La contraseña es obligatoria."); return; }
+        if (!reppassword || reppassword.trim() === '') { alert("Repetir contraseña es obligatorio."); return; }
+        if (password !== reppassword) { alert("Las contraseñas no coinciden."); return; }
+        if (!nombre || nombre.trim() === '') { alert("El nombre es obligatorio."); return; }
+        if (!apellidos || apellidos.trim() === '') { alert("Los apellidos son obligatorios."); return; }
+        if (!familiaId || familiaId.trim() === '') { alert("La familia profesional es obligatoria."); return; }
+        if (!cicloId || cicloId.trim() === '') { alert("El ciclo formativo es obligatorio."); return; }
+        if (!telefono || telefono.trim() === '') { alert("El teléfono es obligatorio."); return; }
+        if (!direccion || direccion.trim() === '') { alert("La dirección es obligatoria."); return; }
+        
+        let finalFotoFile = fotoCapturadaPorCamara;
+        if (!finalFotoFile && fotoFileManuallySelected) {
+            finalFotoFile = fotoFileManuallySelected;
+        }
+
+        if (!finalFotoFile) { alert("La foto de perfil es obligatoria."); return; }
+        if (!cvFileSelected) { alert("El CV es obligatorio."); return; }
+        
+        if (cvFileSelected.type !== 'application/pdf') { alert("El CV debe ser un archivo PDF."); return; }
+
+
+        const formData = new FormData(formulario); 
+        
+        formData.set('foto', finalFotoFile, finalFotoFile.name); 
+
+        fetch(formulario.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
             } else {
-                console.warn("No hay imagen en el canvas para enviar.");
+                console.error("Respuesta inesperada del servidor:", response);
+                alert("Hubo un problema con la respuesta del servidor o la redirección.");
             }
+        })
+        .catch(error => {
+            console.error('Error al enviar el formulario:', error);
+            alert('Ocurrió un error inesperado al registrar. Intenta de nuevo.');
+        });
+    });
 
-            // Realizar la petición fetch con el FormData que ahora incluye la imagen
-            fetch("php/index.php", {
-                method: "post",
-                body: datosFormulario
-            })
-            .then((respuesta) => respuesta.text())
-            .then((texto) => {console.log(texto)});
-        }, 'image/png'); // Puedes cambiar a 'image/jpeg' si prefieres ese formato
-    };
-}
 });

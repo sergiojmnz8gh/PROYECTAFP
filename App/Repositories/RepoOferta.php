@@ -23,14 +23,12 @@ class RepoOferta {
 
     private static function getBaseQuery() {
         return "SELECT 
-                    o.*, 
+                    o.id, o.titulo, o.descripcion, o.fecha_inicio, o.fecha_fin,
                     e.nombre AS empresa_nombre, 
-                    c.nombre AS ciclo_nombre,
-                    u.email AS empresa_email
+                    c.nombre AS ciclo_nombre
                 FROM ofertas o 
                 JOIN empresas e ON o.empresa_id = e.id
-                JOIN users u ON e.user_id = u.id
-                LEFT JOIN ciclos c ON o.ciclo_id = c.id";
+                JOIN ciclos c ON o.ciclo_id = c.id";
     }
 
     public static function findById($id) {
@@ -64,8 +62,8 @@ class RepoOferta {
             $stmt->bindParam(':descripcion', $oferta->descripcion);
             $stmt->bindParam(':fecha_inicio', $oferta->fecha_inicio);
             $stmt->bindParam(':fecha_fin', $oferta->fecha_fin);
-            $stmt->bindParam(':empresa_id', $oferta->empresa_id, PDO::PARAM_INT);
-            $stmt->bindParam(':ciclo_id', $oferta->ciclos, PDO::PARAM_INT);
+            $stmt->bindParam(':empresa_id', $oferta->empresa_nombre, PDO::PARAM_INT);
+            $stmt->bindParam(':ciclo_id', $oferta->ciclo_nombre, PDO::PARAM_INT);
             
             $stmt->execute();
             return self::findById($conexion->lastInsertId());
@@ -90,8 +88,8 @@ class RepoOferta {
             $stmt->bindParam(':descripcion', $oferta->descripcion);
             $stmt->bindParam(':fecha_inicio', $oferta->fecha_inicio);
             $stmt->bindParam(':fecha_fin', $oferta->fecha_fin);
-            $stmt->bindParam(':empresa_id', $oferta->empresa_id, PDO::PARAM_INT);
-            $stmt->bindParam(':ciclo_id', $oferta->ciclos, PDO::PARAM_INT);
+            $stmt->bindParam(':empresa_id', $oferta->empresa_nombre, PDO::PARAM_INT);
+            $stmt->bindParam(':ciclo_id', $oferta->ciclo_nombre, PDO::PARAM_INT);
             $stmt->bindParam(':id', $oferta->id, PDO::PARAM_INT);
             
             $stmt->execute();

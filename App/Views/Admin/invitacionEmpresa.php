@@ -6,7 +6,7 @@
 <?php $this->start('contenidoPagina') ?>
     <section class="auth-container">
         <div class="auth-card">
-            <form action="/registro/procesarEmpresa" method="POST" enctype="multipart/form-data">
+            <form action="index.php?admin=guardarinvitarempresa" method="POST" enctype="multipart/form-data">
                 <h1>Invitación de Empresa</h1>
                 
                 <div class="form-group">

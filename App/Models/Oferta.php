@@ -4,10 +4,10 @@ namespace App\Models;
 
 class Oferta {
     public $id;
-    public $empresa_id;
+    public $empresa_nombre;
     public $titulo;
     public $descripcion;
-    public $ciclos = [];
+    public $ciclo_nombre;
     public $fecha_inicio;
     public $fecha_fin;
 

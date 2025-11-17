@@ -30,13 +30,22 @@ class AuthController {
 
             try {
                 $user = RepoUser::findUser($email);
+                Sesion::escribirSesion('rol_id', $user->rol_id);
 
                 if ($user !== null) {
                     if (Security::verifyPassword($password, $user->password)) {
                         $userDTO = Adapter::userToDTO($user);
                         Login::login($userDTO);
                         Sesion::escribirSesion('welcome_message', '¡Bienvenido de nuevo, ' . $user->email . '!');
-                        header('Location: /index.php?page=home');
+                        if ($user->rol_id == 3) {
+                            header('Location: /index.php?page=missolicitudes');
+                        }
+                        if ($user->rol_id == 2) {
+                            header('Location: /index.php?page=misofertas');
+                        }
+                        if ($user->rol_id == 1) {
+                            header('Location: /index.php?admin=dashboard');
+                        }
                         exit;
                     } else {
                         Sesion::escribirSesion('login_error', 'Contraseña incorrecta.');
@@ -70,8 +79,9 @@ class AuthController {
             $ciclo = $_POST['ciclo_id'] ?? '';
             $telefono = $_POST['telefono'] ?? null;
             $direccion = $_POST['direccion'] ?? null;
-            $foto = $_POST['canvas'] ?? null;
+            $foto = $_FILES['foto'] ?? null;
             $cv = $_FILES['cv'] ?? null;
+
 
             if (empty($email) || empty($password) || empty($nombre) || empty($apellidos)) {
                 Sesion::escribirSesion('registro_error', 'Faltan campos obligatorios para el registro de alumno.');
@@ -94,18 +104,20 @@ class AuthController {
                 $alumno->ciclo_id = $ciclo;
                 $alumno->telefono = $telefono;
                 $alumno->direccion = $direccion;
-                $alumno->foto = $foto;
                 $alumno->email = $email;
-                $alumno->cv = $cv;
                 $alumno->activo = true;
 
-                $newAlumno = RepoAlumno::create($alumno, $hashedPassword);
+                RepoAlumno::create($alumno, $hashedPassword);
 
+                $newAlumno = RepoAlumno::findByEmail($email);
                 if ($newAlumno) {
                     $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
+                    move_uploaded_file($foto["tmp_name"], '../public/img/alumnos/' . $newAlumno->user_id . '.jpg');
+                    move_uploaded_file($cv["tmp_name"], '../resources/cvs/' . $newAlumno->user_id . '.pdf');
+
                     Login::login($userDTO);
                     Sesion::escribirSesion('welcome_message', '¡Bienvenido ' . $newAlumno->nombre . ', tu registro ha sido exitoso!');
-                    header('Location: /index.php?page=home');
+                    header('Location: /index.php?page=missolicitudes');
                     exit;
                 } else {
                     Sesion::escribirSesion('registro_error', 'Error al registrar el alumno en la base de datos.');
@@ -133,9 +145,9 @@ class AuthController {
             $nombre = $_POST['nombre'] ?? '';
             $telefono = $_POST['telefono'] ?? null;
             $direccion = $_POST['direccion'] ?? null;
-            $logo = $_POST['logo'] ?? null;
+            $logo = $_FILES['logo'] ?? null;
 
-            if (empty($email) || empty($password) || empty($nombre_empresa)) {
+            if (empty($email) || empty($password) || empty($nombre)) {
                 Sesion::escribirSesion('registro_error', 'Faltan campos obligatorios para el registro de empresa.');
                 header('Location: /index.php?page=registroempresa');
                 exit;
@@ -164,13 +176,14 @@ class AuthController {
                 $empresa->email = $email;
                 $empresa->activo = true;
 
-                $newEmpresa = RepoEmpresa::create($empresa, $hashedPassword);
-
+                RepoEmpresa::create($empresa, $hashedPassword);
+                $newEmpresa = RepoEmpresa::findByEmail($email);
                 if ($newEmpresa) {
                     $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
+                    move_uploaded_file($logo["tmp_name"], '../public/img/empresas/' . $newEmpresa->user_id . '.jpg');
                     Login::login($userDTO);
-                    Sesion::escribirSesion('welcome_message', '¡Bienvenida ' . $newEmpresa->nombre_empresa . ', tu registro ha sido exitoso!');
-                    header('Location: /index.php?page=home');
+                    Sesion::escribirSesion('welcome_message', '¡Bienvenida ' . $newEmpresa->nombre . ', tu registro ha sido exitoso!');
+                    header('Location: /index.php?page=misofertas');
                     exit;
                 } else {
                     Sesion::escribirSesion('registro_error', 'Error al registrar la empresa en la base de datos.');

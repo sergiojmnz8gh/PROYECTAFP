@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Helpers;
+
 spl_autoload_register(function ($clase) {
     $baseProyectoDir = __DIR__ . '/../../'; 
     $rutaRelativaClase = str_replace('\\', '/', $clase);

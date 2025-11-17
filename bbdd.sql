@@ -5,6 +5,9 @@ CREATE DATABASE IF NOT EXISTS proyectafp CHARACTER SET utf8mb4 COLLATE utf8mb4_u
 
 USE proyectafp;
 
+-- select * from users;
+-- update users set rol_id=1 where email='jimenezelichesergio@gmail.com';
+
 CREATE TABLE IF NOT EXISTS roles (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(25) NOT NULL UNIQUE
@@ -49,17 +52,6 @@ CREATE TABLE IF NOT EXISTS alumnos (
     CONSTRAINT fk_alumno_ciclo FOREIGN KEY (ciclo_id) REFERENCES ciclos(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS estudios (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	alumno_id INT NOT NULL,
-	ciclo_id INT NOT NULL,
-	fecha_inicio DATE NOT NULL,
-	fecha_fin DATE NULL,
-	CONSTRAINT fk_estudio_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_estudio_ciclo FOREIGN KEY (ciclo_id) REFERENCES ciclos(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	UNIQUE (alumno_id, ciclo_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE IF NOT EXISTS empresas (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
@@ -75,17 +67,11 @@ CREATE TABLE IF NOT EXISTS ofertas (
 	empresa_id INT NOT NULL,
 	titulo VARCHAR(255) NOT NULL,
 	descripcion TEXT NOT NULL,
+    ciclo_id INT NOT NULL,
 	fecha_inicio DATE NOT NULL,
 	fecha_fin DATE NULL,
+    CONSTRAINT fk_oferta_ciclo FOREIGN KEY (ciclo_id) REFERENCES ciclos(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_oferta_empresa FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS ofertas_ciclos (
-	oferta_id INT NOT NULL,
-	ciclo_id INT NOT NULL,
-	PRIMARY KEY (oferta_id, ciclo_id),
-	CONSTRAINT fk_oc_oferta FOREIGN KEY (oferta_id) REFERENCES ofertas(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_oc_ciclo FOREIGN KEY (ciclo_id) REFERENCES ciclos(id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS solicitudes (
@@ -183,26 +169,13 @@ INSERT INTO empresas (nombre, telefono, direccion, logo, user_id) VALUES
 ('Marketing Pro', '966778899', 'Calle del Mar 15, Valencia', 'uploads/logos/marketingpro.png', (SELECT id FROM users WHERE email = 'empresa4@example.com')),
 ('Hostelería Deluxe', '922113344', 'Avenida de la Playa 7, Málaga', 'uploads/logos/hosteleriadeluxe.png', (SELECT id FROM users WHERE email = 'empresa5@example.com'));
 
--- 5. Estudios
-INSERT INTO estudios (alumno_id, ciclo_id, fecha_inicio, fecha_fin) VALUES
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno1@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web'), '2020-09-01', '2022-06-30'),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno2@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma'), '2021-09-01', '2023-06-30'),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno3@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administracion de Sistemas Informáticos en Red'), '2019-09-01', '2021-06-30'),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno4@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administración y Finanzas'), '2022-09-01', NULL),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno5@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Especialización en Inteligencia Artificial y Big Data'), '2023-09-01', NULL),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno6@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico en Gestión Administrativa'), '2021-09-01', '2023-06-30'),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno7@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico en Instalaciones de Telecomunicaciones'), '2019-09-01', '2021-06-30'),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno8@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Enseñanza y Animación Sociodeportiva'), '2021-09-01', '2023-06-30'),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno9@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Acondicionamiento Físico'), '2020-09-01', '2022-06-30'),
-((SELECT id FROM alumnos WHERE user_id = (SELECT id FROM users WHERE email = 'alumno10@example.com')), (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Mecatrónica Industrial'), '2022-09-01', NULL);
-
 -- 6. Ofertas
-INSERT INTO ofertas (empresa_id, titulo, descripcion, fecha_inicio, fecha_fin) VALUES
-((SELECT id FROM empresas WHERE nombre = 'TecnoSoluciones S.L.'), 'Desarrollador Web Junior', 'Buscamos un desarrollador web junior con conocimientos en PHP y JavaScript.', '2023-10-26', '2023-11-30'),
-((SELECT id FROM empresas WHERE nombre = 'GlobalSoft IT'), 'Técnico de Sistemas Junior', 'Se requiere técnico para soporte y administración de redes.', '2023-10-20', '2023-11-15'),
-((SELECT id FROM empresas WHERE nombre = 'Consultoría Alfa'), 'Administrativo Contable', 'Puesto de administrativo para gestión de facturas y contabilidad básica.', '2023-10-25', '2023-12-05'),
-((SELECT id FROM empresas WHERE nombre = 'Marketing Pro'), 'Asistente de Marketing Digital', 'Ayuda en la creación de campañas y gestión de redes sociales.', '2023-10-28', '2023-11-20'),
-((SELECT id FROM empresas WHERE nombre = 'Hostelería Deluxe'), 'Técnico de Mantenimiento Industrial', 'Puesto de técnico para mantenimiento de maquinaria y sistemas automatizados.', '2023-11-01', NULL);
+INSERT INTO ofertas (empresa_id, titulo, descripcion, ciclo_id, fecha_inicio, fecha_fin) VALUES
+((SELECT id FROM empresas WHERE nombre = 'TecnoSoluciones S.L.'), 'Desarrollador Web Junior', 'Buscamos un desarrollador web junior con conocimientos en PHP y JavaScript.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web'), '2023-10-26', '2023-11-30'),
+((SELECT id FROM empresas WHERE nombre = 'GlobalSoft IT'), 'Técnico de Sistemas Junior', 'Se requiere técnico para soporte y administración de redes.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma'),'2023-10-20', '2023-11-15'),
+((SELECT id FROM empresas WHERE nombre = 'Consultoría Alfa'), 'Administrativo Contable', 'Puesto de administrativo para gestión de facturas y contabilidad básica.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administracion de Sistemas Informáticos en Red'), '2023-10-25', '2023-12-05'),
+((SELECT id FROM empresas WHERE nombre = 'Marketing Pro'), 'Asistente de Marketing Digital', 'Ayuda en la creación de campañas y gestión de redes sociales.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Gestión Administrativa'), '2023-10-28', '2023-11-20'),
+((SELECT id FROM empresas WHERE nombre = 'Hostelería Deluxe'), 'Técnico de Mantenimiento Industrial', 'Puesto de técnico para mantenimiento de maquinaria y sistemas automatizados.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Mantenimiento Electromecánico'), '2023-11-01', NULL);
 
 -- 7. Ofertas_Ciclos
 INSERT INTO ofertas_ciclos (oferta_id, ciclo_id) VALUES

@@ -15,11 +15,7 @@ class ApiAlumno {
 
         switch ($requestMethod) {
             case 'GET':
-                if (empty($requestBody)) {
-                    $this->getFullList();
-                } else {
-                    $this->getSizedList($requestBody); 
-                }
+                $this->getFullList();
                 break;
             case 'POST':
                 $this->saveAlumno($requestBody);
@@ -64,7 +60,7 @@ class ApiAlumno {
 
     function getSizedList($requestBody) {
         $filtersAndPagination = json_decode($requestBody, true);
-        $alumnos = RepoAlumno::findSizedList($filtersAndPagination); 
+        $alumnos = RepoAlumno::findSizedList($filtersAndPagination);
         $alumnosDTO = Adapter::AllAlumnoToDTO($alumnos);
         http_response_code(200);
         echo json_encode($alumnosDTO);
