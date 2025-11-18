@@ -142,7 +142,7 @@ class AuthController {
 
             $newAlumno = RepoAlumno::findByEmail($email);
             if ($newAlumno) {
-                //Correos::enviarCorreoRegistro($email);
+                Correos::enviarCorreoRegistro($email);
                 $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
                 
                 move_uploaded_file($foto["tmp_name"], '../public/img/alumnos/' . $newAlumno->user_id . '.jpg');
@@ -223,7 +223,7 @@ class AuthController {
             RepoEmpresa::create($empresa, $hashedPassword);
             $newEmpresa = RepoEmpresa::findByEmail($email);
             if ($newEmpresa) {
-                //Correos::enviarCorreoRegistro($email);
+                Correos::enviarCorreoRegistro($email);
                 $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
 
                 move_uploaded_file($logo["tmp_name"], '../public/img/empresas/' . $newEmpresa->user_id . '.jpg');

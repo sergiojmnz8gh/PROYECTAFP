@@ -74,8 +74,10 @@
                 <input type="file" name="cv" id="cv" required accept=".pdf">
             </div>
 
-            <input type="checkbox" name="acepto" id="acepto">
-            <label for="acepto">Acepto los <a href="index.php?page=politicaprivacidad">Términos y Condiciones</a></label>
+            <div>
+                <input type="checkbox" name="acepto" id="acepto" required>
+                <label for="acepto">Acepto los <a href="index.php?page=politicaprivacidad">Términos y Condiciones</a></label>
+            </div>
             <input type="submit" value="Registrar" class="btn-primary">
 
         </form>

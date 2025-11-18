@@ -41,7 +41,11 @@
                     <label for="logo">Logo (Imagen):</label>
                     <input type="file" name="logo" id="logo" accept="image/*">
                 </div>
-                
+
+                <div>
+                    <input type="checkbox" name="acepto" id="acepto" required>
+                    <label for="acepto">Acepto los <a href="index.php?page=politicaprivacidad">Términos y Condiciones</a></label>
+                </div>
                 <input type="submit" value="Registrar" class="btn-primary">
                 
             </form>

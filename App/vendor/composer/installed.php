@@ -3,7 +3,7 @@
         'name' => 'sergio/app',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd5a5aa2f1d75dbf3aa3581d88294127dceb59629',
+        'reference' => 'dfca8b5f2c9bf3fa3b171d9f0a71ee157b551999',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -55,6 +55,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v7.0.0',
+            'version' => '7.0.0.0',
+            'reference' => 'c7111310c6116ba508a6a170a89eaaed2129bd42',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'sabberworm/php-css-parser' => array(
             'pretty_version' => 'v8.9.0',
             'version' => '8.9.0.0',
@@ -67,7 +76,7 @@
         'sergio/app' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd5a5aa2f1d75dbf3aa3581d88294127dceb59629',
+            'reference' => 'dfca8b5f2c9bf3fa3b171d9f0a71ee157b551999',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

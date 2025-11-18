@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS alumnos (
 	apellidos VARCHAR(50) NOT NULL,
 	direccion VARCHAR(255) NOT NULL,
 	telefono VARCHAR(25) NOT NULL,
-	foto VARCHAR(255) NOT NULL,
+	foto VARCHAR(255) NULL,
 	cv VARCHAR(255) NOT NULL,
     ciclo_id INT NOT NULL,
 	user_id INT NOT NULL UNIQUE,
@@ -162,15 +162,15 @@ INSERT INTO ciclos (nombre, nivel, familia_id) VALUES
 -- 4. Alumnos y Empresas
 INSERT INTO alumnos (nombre, apellidos, direccion, telefono, foto, cv, ciclo_id, user_id) VALUES
 ('Juan', 'Pérez García', 'Calle Falsa 123', '667281918', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 1, 7),
-('María', 'López Fernández', 'Avenida Siempreviva 45', '616290154', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 2, 8),
-('Carlos', 'Sánchez Ruiz', 'Plaza Mayor 7', '616892615', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 3, 9),
-('Ana', 'Martín Gómez', 'Ronda del Sol 1', '673829134', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 4, 10),
-('Pedro', 'Díaz Navarro', 'Pasaje de la Luna 3', '664020193', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 5, 11),
-('Laura', 'Hernández Gil', 'Calle del Río 8', '612093091', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 6, 12),
-('Sofía', 'Ramírez Vargas', 'Avenida Central 25', '649012345', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 7, 13),
-('David', 'Jiménez Castro', 'Paseo de las Flores 10', '647380291', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 8, 14),
-('Elena', 'Ruiz Moreno', 'Camino Real 15', '647582918', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 9, 15),
-('Miguel', 'Santos Vidal', 'Calle Estrecha 5', '659102983', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 10, 16);
+('María', 'López Fernández', 'Avenida Siempreviva 45', '616290154', null, '/resources/cvs/1.pdf', 2, 8),
+('Carlos', 'Sánchez Ruiz', 'Plaza Mayor 7', '616892615', null, '/resources/cvs/1.pdf', 3, 9),
+('Ana', 'Martín Gómez', 'Ronda del Sol 1', '673829134', null, '/resources/cvs/1.pdf', 4, 10),
+('Pedro', 'Díaz Navarro', 'Pasaje de la Luna 3', '664020193', null, '/resources/cvs/1.pdf', 5, 11),
+('Laura', 'Hernández Gil', 'Calle del Río 8', '612093091', null, '/resources/cvs/1.pdf', 6, 12),
+('Sofía', 'Ramírez Vargas', 'Avenida Central 25', '649012345', null, '/resources/cvs/1.pdf', 7, 13),
+('David', 'Jiménez Castro', 'Paseo de las Flores 10', '647380291', null, '/resources/cvs/1.pdf', 8, 14),
+('Elena', 'Ruiz Moreno', 'Camino Real 15', '647582918', null, '/resources/cvs/1.pdf', 9, 15),
+('Miguel', 'Santos Vidal', 'Calle Estrecha 5', '659102983', null, '/resources/cvs/1.pdf', 10, 16);
 
 INSERT INTO empresas (nombre, telefono, direccion, logo, user_id) VALUES
 ('NTT Data', '953761298', 'Calle Innovación 10', 'img/empresas/1.jpg', 2),
