@@ -12,6 +12,7 @@ class Alumno {
     public $foto;
     public $cv;
     public $ciclo_id;
+    public $ciclo_nombre;
     public $user_id;
     public $remember_token;
     public $activo;

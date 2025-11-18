@@ -92,6 +92,9 @@ class Router {
                 case 'fichaempresa':
                     (new EmpresaController($this->templates))->showFicha();
                     break;
+                case 'generarpdf':
+                    (new EmpresaController($this->templates))->generarPDF();
+                    break;
                 case 'ofertas':
                     (new OfertaController($this->templates))->list();
                     break;
@@ -132,6 +135,15 @@ class Router {
                     break;
                 case 'registroempresapost':
                     (new AuthController($this->templates))->registroEmpresa();
+                    break;
+                case 'mapadelsitio':
+                    echo $this->templates->render('mapaDelSitio');
+                    break;
+                case 'politicaprivacidad':
+                    echo $this->templates->render('politicaPrivacidad');
+                    break;
+                case 'politicacookies':
+                    echo $this->templates->render('politicaCookies');
                     break;
                 case 'login':
                     if (Login::estaLogeado()) {

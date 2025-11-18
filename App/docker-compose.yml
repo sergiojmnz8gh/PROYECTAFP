@@ -1,0 +1,59 @@
+version: "3.9"
+
+services:
+  php-apache:
+    build: .
+    container_name: php_app
+    ports:
+      - "8080:80"
+    environment:
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=mydb
+      - DB_USER=root
+      - DB_PASS=root
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+      - mailhog
+    networks:
+      - red_personalizada
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mydb
+      - MYSQL_CHARSET=utf8mb4
+      - MYSQL_COLLATION=utf8mb4_unicode_ci
+    command: 
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306"
+    networks:
+      - red_personalizada
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - red_personalizada
+
+networks:
+  red_personalizada:
+    driver: bridge
+
+volumes:
+  mysql_data:

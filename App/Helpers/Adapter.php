@@ -18,7 +18,8 @@ class Adapter {
             'direccion' => $alumno->direccion,
             'foto' => $alumno->foto,
             'cv' => $alumno->cv,
-            'ciclo' => $alumno->ciclo_id,
+            'ciclo_id' => $alumno->ciclo_id,
+            'ciclo_nombre' => $alumno->ciclo_nombre,
             'activo' => $alumno->activo,
         ];
     }

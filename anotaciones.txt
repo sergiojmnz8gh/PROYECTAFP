@@ -43,8 +43,5 @@ el contenido del email al elegir los candidatos con boton de me gusta. -> Valora
 
 
 
-checkbox aceptar politicas en registro y hacer paginas del footer
 toda la logica solicitudes y ofertas en alumno y empresa
 hacer pdf del listado de empresas en admin y correos cuando hay un registro, 
-ver como se hace todo eso y todo lo de docker
-hacer carga masiva sin crear alumno hacerlo enviando correos con forms rellenos

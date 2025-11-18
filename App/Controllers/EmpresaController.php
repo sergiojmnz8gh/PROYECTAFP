@@ -7,6 +7,8 @@ use App\Helpers\Sesion;
 use App\Repositories\RepoEmpresa;
 use App\Helpers\Adapter; 
 use App\Helpers\Validator;
+use Dompdf\Dompdf; 
+use Dompdf\Options;
 
 class EmpresaController {
 
@@ -203,5 +205,28 @@ class EmpresaController {
         echo $this->templates->render('Admin/fichaEmpresa', [
             'empresa' => $empresa
         ]);
+    }
+
+    public function generarPDF() {
+        $empresas = RepoEmpresa::findAll();
+
+        $html = $this->templates->render('Admin/listadoEmpresasPDF', [
+            'empresas' => $empresas,
+            'fecha' => date('d-m-Y H:i:s'),
+        ]);
+
+        $options = new Options();
+        $options->set('defaultFont', 'sans-serif');
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream("listadoEmpresas.pdf", [
+            "Attachment" => false
+        ]);
+        exit;
     }
 }

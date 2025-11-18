@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
             c1.innerHTML = alumno.id;
             c2.innerHTML = alumno.nombre;
             c3.innerHTML = alumno.apellidos;
-            c4.innerHTML = alumno.ciclo;
+            c4.innerHTML = alumno.ciclo_nombre;
             c5.innerHTML = alumno.telefono+'<br>'+alumno.email;
 
             let btnFicha = document.createElement("img");

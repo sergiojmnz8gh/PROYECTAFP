@@ -12,6 +12,7 @@ use App\Helpers\Adapter;
 use App\Helpers\Sesion;
 use App\Helpers\Security;
 use App\Helpers\Validator;
+use App\Services\Correos;
 use Exception;
 
 class AuthController {
@@ -141,6 +142,7 @@ class AuthController {
 
             $newAlumno = RepoAlumno::findByEmail($email);
             if ($newAlumno) {
+                //Correos::enviarCorreoRegistro($email);
                 $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
                 
                 move_uploaded_file($foto["tmp_name"], '../public/img/alumnos/' . $newAlumno->user_id . '.jpg');
@@ -221,7 +223,9 @@ class AuthController {
             RepoEmpresa::create($empresa, $hashedPassword);
             $newEmpresa = RepoEmpresa::findByEmail($email);
             if ($newEmpresa) {
+                //Correos::enviarCorreoRegistro($email);
                 $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
+
                 move_uploaded_file($logo["tmp_name"], '../public/img/empresas/' . $newEmpresa->user_id . '.jpg');
                 Login::login($userDTO);
                 Sesion::escribirSesion('welcome_message', '¡Bienvenida ' . $newEmpresa->nombre . ', tu registro ha sido exitoso!');

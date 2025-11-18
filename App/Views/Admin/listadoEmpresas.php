@@ -61,6 +61,9 @@
                         <?php endforeach ?>
                     </tbody>
                 </table>
+                <form class="pdf" action="/index.php?admin=generarpdf" method="POST">
+                    <button type="submit" id="generarPDF" class="btn-action btn2">Generar PDF</button>
+                </form>
             </div>
         </section>
 

@@ -3,12 +3,22 @@ DROP DATABASE IF EXISTS proyectafp;
 
 CREATE DATABASE IF NOT EXISTS proyectafp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+SET character_set_connection = utf8mb4;
+SET character_set_server = utf8mb4;
+SET character_set_database = utf8mb4;
+SET collation_connection = utf8mb4_unicode_ci;
+SET collation_server = utf8mb4_unicode_ci;
+
 USE proyectafp;
 
- select * from ofertas;
- update users set rol_id=1 where email='jimenezelichesergio@gmail.com';
- update ofertas set empresa_id= 6 where id=1;
- select * from ofertas;
+-- select * from alumnos;
+-- update users set rol_id=1 where email='jimenezelichesergio@gmail.com';
+-- update ofertas set empresa_id= 6 where id=1;
+-- update solicitudes set alumno_id=12 where id=1;
+-- update ofertas set ciclo_id=8 where id=1;
+-- select * from ofertas;
 
 CREATE TABLE IF NOT EXISTS roles (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -96,22 +106,22 @@ INSERT INTO roles (id, nombre) VALUES
 (3, 'Alumno');
 
 INSERT INTO users (email, password, rol_id, activo) VALUES
-('admin@proyectafp.com', 'admin1234', 1, TRUE), -- Admin
-('empresa1@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 2, TRUE),
-('empresa2@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 2, TRUE),
-('empresa3@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 2, TRUE),
-('empresa4@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 2, TRUE),
-('empresa5@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 2, TRUE),
-('alumno1@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno2@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno3@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno4@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno5@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno6@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno7@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno8@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno9@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE),
-('alumno10@example.com', '$2y$10$v0a0p.Q1Z7D4H5K6L7M8O9P.C5B3E2F1A0G9H8I7J6K5L4M3N2O1P0/s/Z/X/C/V/B/N/M/1234567890abcdef', 3, TRUE);
+('admin@proyectafp.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 1, TRUE), -- Admin
+('empresa1@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 2, TRUE),
+('empresa2@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 2, TRUE),
+('empresa3@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 2, TRUE),
+('empresa4@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 2, TRUE),
+('empresa5@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 2, TRUE),
+('alumno1@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno2@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno3@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno4@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno5@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno6@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno7@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno8@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno9@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE),
+('alumno10@example.com', '$2y$10$2FH28cJ89YdKMQa9HUqqr..SjnLj8p0G4vjS/0EEkwtt0FA8.ejUu', 3, TRUE);
 
 -- 2. Familias Profesionales
 INSERT INTO familias (nombre) VALUES
@@ -120,7 +130,6 @@ INSERT INTO familias (nombre) VALUES
 ('Informática y Comunicaciones'),
 ('Electricidad y Electrónica'),
 ('Instalación y Mantenimiento'),
-('Fabricación Mecánica'),
 ('Energía y Agua');
 
 -- 3. Ciclos (Adaptados a las familias y niveles de la imagen)
@@ -150,38 +159,38 @@ INSERT INTO ciclos (nombre, nivel, familia_id) VALUES
 ('Especialización en Ciberseguridad en Entornos de las Tecnologías de Operación', 'Curso de Especialización', (SELECT id FROM familias WHERE nombre = 'Electricidad y Electrónica')),
 ('Especialización en Inteligencia Artificial y Big Data', 'Curso de Especialización', (SELECT id FROM familias WHERE nombre = 'Informática y Comunicaciones'));
 
--- 4. Alumnos y Empresas 
+-- 4. Alumnos y Empresas
 INSERT INTO alumnos (nombre, apellidos, direccion, telefono, foto, cv, ciclo_id, user_id) VALUES
-('Juan', 'Pérez García', 'Calle Falsa 123', '600111222', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 1, (SELECT id FROM users WHERE email = 'alumno1@example.com')),
-('María', 'López Fernández', 'Avenida Siempreviva 45', '600333444', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 2, (SELECT id FROM users WHERE email = 'alumno2@example.com')),
-('Carlos', 'Sánchez Ruiz', 'Plaza Mayor 7', '600555666', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 3, (SELECT id FROM users WHERE email = 'alumno3@example.com')),
-('Ana', 'Martín Gómez', 'Ronda del Sol 1', '600777888', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 4, (SELECT id FROM users WHERE email = 'alumno4@example.com')),
-('Pedro', 'Díaz Navarro', 'Pasaje de la Luna 3', '600999000', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 5, (SELECT id FROM users WHERE email = 'alumno5@example.com')),
-('Laura', 'Hernández Gil', 'Calle del Río 8', '611222333', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 6, (SELECT id FROM users WHERE email = 'alumno6@example.com')),
-('Sofía', 'Ramírez Vargas', 'Avenida Central 25', '622333444', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 7, (SELECT id FROM users WHERE email = 'alumno7@example.com')),
-('David', 'Jiménez Castro', 'Paseo de las Flores 10', '633444555', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 8, (SELECT id FROM users WHERE email = 'alumno8@example.com')),
-('Elena', 'Ruiz Moreno', 'Camino Real 15', '644555666', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 9, (SELECT id FROM users WHERE email = 'alumno9@example.com')),
-('Miguel', 'Santos Vidal', 'Calle Estrecha 5', '655666777', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 10, (SELECT id FROM users WHERE email = 'alumno10@example.com'));
+('Juan', 'Pérez García', 'Calle Falsa 123', '667281918', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 1, 7),
+('María', 'López Fernández', 'Avenida Siempreviva 45', '616290154', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 2, 8),
+('Carlos', 'Sánchez Ruiz', 'Plaza Mayor 7', '616892615', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 3, 9),
+('Ana', 'Martín Gómez', 'Ronda del Sol 1', '673829134', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 4, 10),
+('Pedro', 'Díaz Navarro', 'Pasaje de la Luna 3', '664020193', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 5, 11),
+('Laura', 'Hernández Gil', 'Calle del Río 8', '612093091', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 6, 12),
+('Sofía', 'Ramírez Vargas', 'Avenida Central 25', '649012345', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 7, 13),
+('David', 'Jiménez Castro', 'Paseo de las Flores 10', '647380291', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 8, 14),
+('Elena', 'Ruiz Moreno', 'Camino Real 15', '647582918', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 9, 15),
+('Miguel', 'Santos Vidal', 'Calle Estrecha 5', '659102983', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 10, 16);
 
 INSERT INTO empresas (nombre, telefono, direccion, logo, user_id) VALUES
-('TecnoSoluciones S.L.', '911223344', 'Calle Innovación 10, Madrid', 'img/empresas/1.jpg', (SELECT id FROM users WHERE email = 'empresa1@example.com')),
-('GlobalSoft IT', '933445566', 'Gran Vía 50, Barcelona', 'img/empresas/2.jpg', (SELECT id FROM users WHERE email = 'empresa2@example.com')),
-('Consultoría Alfa', '955667788', 'Paseo de la Castellana 200, Madrid', 'img/empresas/3.jpg', (SELECT id FROM users WHERE email = 'empresa3@example.com')),
-('Marketing Pro', '966778899', 'Calle del Mar 15, Valencia', 'img/empresas/4.jpg', (SELECT id FROM users WHERE email = 'empresa4@example.com')),
-('Hostelería Deluxe', '922113344', 'Avenida de la Playa 7, Málaga', 'img/empresas/5.jpg', (SELECT id FROM users WHERE email = 'empresa5@example.com'));
+('NTT Data', '953761298', 'Calle Innovación 10', 'img/empresas/1.jpg', 2),
+('Nter', '953239819', 'Gran Vía 50', 'img/empresas/2.jpg', 3),
+('Asesoría Montijano', '953981234', 'Paseo de la Castellana 200', 'img/empresas/3.jpg', 4),
+('Sumur Digital', '953982309', 'Calle del Mar 15', 'img/empresas/4.jpg', 5),
+('Embarba', '953901243', 'Avenida de la Playa 7', 'img/empresas/5.jpg', 6);
 
 -- 5. Ofertas
 INSERT INTO ofertas (empresa_id, titulo, descripcion, ciclo_id, fecha_inicio, fecha_fin) VALUES
-((SELECT id FROM empresas WHERE nombre = 'TecnoSoluciones S.L.'), 'Desarrollador Web Junior', 'Buscamos un desarrollador web junior con conocimientos en PHP y JavaScript.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web'), '2023-10-26', '2023-11-30'),
-((SELECT id FROM empresas WHERE nombre = 'GlobalSoft IT'), 'Técnico de Sistemas Junior', 'Se requiere técnico para soporte y administración de redes.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma'),'2023-10-20', '2023-11-15'),
-((SELECT id FROM empresas WHERE nombre = 'Consultoría Alfa'), 'Administrativo Contable', 'Puesto de administrativo para gestión de facturas y contabilidad básica.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administracion de Sistemas Informáticos en Red'), '2023-10-25', '2023-12-05'),
-((SELECT id FROM empresas WHERE nombre = 'Marketing Pro'), 'Asistente de Marketing Digital', 'Ayuda en la creación de campañas y gestión de redes sociales.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Gestión Administrativa'), '2023-10-28', '2023-11-20'),
-((SELECT id FROM empresas WHERE nombre = 'Hostelería Deluxe'), 'Técnico de Mantenimiento Industrial', 'Puesto de técnico para mantenimiento de maquinaria y sistemas automatizados.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Mantenimiento Electromecánico'), '2023-11-01', NULL);
+(1, 'Desarrollador Web Junior', 'Buscamos un desarrollador web junior con conocimientos en PHP y JavaScript.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web'), '2025-10-26', '2025-11-30'),
+(2, 'Técnico de Sistemas Junior', 'Se requiere técnico para soporte y administración de redes.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma'),'2025-10-20', '2025-11-15'),
+(3, 'Administrativo Contable', 'Puesto de administrativo para gestión de facturas y contabilidad básica.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administracion de Sistemas Informáticos en Red'), '2025-10-25', '2025-12-05'),
+(4, 'Asistente de Marketing Digital', 'Ayuda en la creación de campañas y gestión de redes sociales.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Gestión Administrativa'), '2025-10-28', '2025-11-20'),
+(5, 'Técnico de Mantenimiento Industrial', 'Puesto de técnico para mantenimiento de maquinaria de ascensores.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Mantenimiento Electromecánico'), '2025-11-01', '2025-12-12');
 
 -- 6. Solicitudes
 INSERT INTO solicitudes (oferta_id, alumno_id, fecha_solicitud, cv_visto) VALUES
-((SELECT id FROM ofertas WHERE titulo = 'Desarrollador Web Junior'), 1, '2023-10-27 10:00:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Sistemas Junior'), 2, '2023-10-21 11:30:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Administrativo Contable'), 3, '2023-10-26 14:00:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Asistente de Marketing Digital'), 4, '2023-10-29 09:00:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Mantenimiento Industrial'), 5, '2023-11-02 12:00:00', FALSE);
+((SELECT id FROM ofertas WHERE titulo = 'Desarrollador Web Junior'), 1, '2025-10-27 10:00:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Técnico de Sistemas Junior'), 2, '2025-10-21 11:30:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Administrativo Contable'), 3, '2025-10-26 14:00:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Asistente de Marketing Digital'), 4, '2025-10-29 09:00:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Técnico de Mantenimiento Industrial'), 5, '2025-11-02 12:00:00', FALSE);

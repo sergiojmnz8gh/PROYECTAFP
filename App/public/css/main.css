@@ -217,6 +217,41 @@ section {
     padding: var(--spacing-md) 0;
 }
 
+.politicas {
+    margin: 0 auto;
+    width: 60%;
+}
+
+.politicas h1, .politicas h2 {
+    padding: var(--spacing-md) 0;
+    text-align: left;
+}
+
+.politicas p {
+    padding:var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+}
+
+.politicas ul {
+    padding-left: 0;
+    margin-left: var(--spacing-xl);
+}
+
+.mapa {
+    justify-content: left;
+    width: 100%;
+}
+
+.pdf {
+    padding: 0;
+    width: 120px;
+}
+
+.mapa p, .mapa h1 {
+    padding: 0;
+    text-align: left;
+}
+
 article {
     padding: var(--spacing-md) 0;
     align-content: center;

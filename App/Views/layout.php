@@ -77,9 +77,9 @@
                 <p class="titulillo">Enlaces de interés</p>
                 <nav>
                     <ul>
-                        <li><a href="">Mapa del sitio</a></li>
-                        <li><a href="">Política de privacidad</a></li>
-                        <li><a href="">Política de cookies</a></li>
+                        <li><a href="index.php?page=mapadelsitio">Mapa del sitio</a></li>
+                        <li><a href="index.php?page=politicaprivacidad">Política de privacidad</a></li>
+                        <li><a href="index.php?page=politicacookies">Política de cookies</a></li>
                     </ul>
                 </nav>
             </div>

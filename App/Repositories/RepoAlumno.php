@@ -25,7 +25,8 @@ class RepoAlumno {
         return "SELECT 
                     a.*, 
                     u.email, u.activo,
-                    c.nombre AS ciclo_id
+                    c.nombre AS ciclo_nombre,
+                    c.id AS ciclo_id
                 FROM alumnos a 
                 JOIN users u ON a.user_id = u.id
                 JOIN ciclos c ON a.ciclo_id = c.id";
