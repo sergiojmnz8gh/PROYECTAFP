@@ -40,6 +40,17 @@ class RepoEmpresa {
         return $stmt->fetch();
     }
 
+    public static function findByUserId($id) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE u.id = :id";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Empresa::class);
+        return $stmt->fetch();
+    }
+
     public static function findByEmail($email) {
         $conexion = self::getConexion();
         $sql = self::getBaseQuery() . " WHERE u.email = :email";

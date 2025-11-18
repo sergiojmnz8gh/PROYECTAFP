@@ -38,24 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
             let c2 = document.createElement("td");
             let c3 = document.createElement("td");
             let c4 = document.createElement("td");
-            let c5 = document.createElement("td");
-            let c6 = document.createElement("td");
 
             const cvVistoTexto = solicitud.cv_visto ? 'Sí' : 'No';
 
             c1.innerHTML = solicitud.id || '';
             c2.innerHTML = solicitud.oferta_titulo;
-            c3.innerHTML = solicitud.alumno_nombre;
-            c4.innerHTML = solicitud.alumno_apellidos;
-            c5.innerHTML = solicitud.fecha_solicitud;
-            c6.innerHTML = cvVistoTexto;
+            c3.innerHTML = solicitud.fecha_solicitud;
+            c4.innerHTML = cvVistoTexto;
 
             fila.appendChild(c1);
             fila.appendChild(c2);
             fila.appendChild(c3);
             fila.appendChild(c4);
-            fila.appendChild(c5);
-            fila.appendChild(c6);
             tbody.appendChild(fila);
         });
     }

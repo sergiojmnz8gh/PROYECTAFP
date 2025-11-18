@@ -53,6 +53,17 @@ class RepoAlumno {
         return $stmt->fetch();
     }
 
+    public static function findByUserId($id) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE u.id = :id";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindvalue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Alumno::class);
+        return $stmt->fetch();
+    }
+
     public static function findAll() {
         $conexion = self::getConexion();
         $sql = self::getBaseQuery();

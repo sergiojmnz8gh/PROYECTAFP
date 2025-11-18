@@ -1,6 +1,7 @@
     <?php $this->layout('layout', ['title' => 'Listado de Ofertas | ProyectaFP']) ?>
 
     <?php $this->start('js') ?>
+    <script src="js/tabla.js"></script>
     <?php $this->stop() ?>
 
     <?php $this->start('contenidoPagina') ?>
@@ -11,13 +12,14 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID <img class="icon" src="img/orden.png" alt=""></th>
+                            <th class="ordenable">ID <img class="icon" src="img/orden.png" alt=""></th>
                             <th>Título <img class="icon" src="img/orden.png" alt=""></th>
                             <th>Descripción</th>
                             <th>Empresa <img class="icon" src="img/orden.png" alt=""></th>
                             <th>Ciclo <img class="icon" src="img/orden.png" alt=""></th>
-                            <th>Fecha Inicio <img class="icon" src="img/orden.png" alt=""></th>
-                            <th>Fecha Fin <img class="icon" src="img/orden.png" alt=""></th>
+                            <th class="ordenable">Fecha Inicio <img class="icon" src="img/orden.png" alt=""></th>
+                            <th class="ordenable">Fecha Fin <img class="icon" src="img/orden.png" alt=""></th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,6 +32,17 @@
                                 <td><?= $oferta->ciclo_nombre ?></td>
                                 <td><?= $oferta->fecha_inicio ?></td>
                                 <td><?= $oferta->fecha_fin ?></td>
+                                <td class="div-actions">
+                                    <div class="div-actions-btns">
+                                        <form action="/index.php?admin=editaroferta" method="POST">
+                                            <input type="hidden" name="id" value="<?= $oferta->id ?>">
+                                            <button type="submit" class="btn-action btn2">Editar</button>
+                                        </form>
+                                        <form action="/index.php?admin=borraroferta" method="POST">
+                                            <input type="hidden" name="id" value="<?= $oferta->id ?>">
+                                            <button type="submit" class="btn-action btn1">Borrar</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach ?>

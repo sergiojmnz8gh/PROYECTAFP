@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => 'Iniciar Sesión | ProyectaFP']) ?>
+<?php $this->layout('layout', ['title' => '404 - | ProyectaFP']) ?>
 
 <?php $this->start('contenidoPagina') ?>
     

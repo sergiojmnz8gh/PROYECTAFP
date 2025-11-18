@@ -24,13 +24,13 @@
                         echo '<li><a href="index.php?page=logout"><button class="btn1">Cerrar Sesión</button></a></li>';
                     }
                     if ($_SESSION['user_rol'] == '2') {
-                        echo '<li><a href="index.php?page=">Nueva oferta</a></li>
-                            <li><a href="index.php?page=">Mis ofertas</a></li>
+                        echo '<li><a href="index.php?page=nuevaoferta">Nueva oferta</a></li>
+                            <li><a href="index.php?page=misofertas">Mis ofertas</a></li>
                             <li><a href="index.php?page=logout"><button class="btn1">Cerrar Sesión</button></a></li>';
                     }
                     if ($_SESSION['user_rol'] == '3') {
-                        echo '<li><a href="index.php?page=">Buscar ofertas</a></li>
-                            <li><a href="index.php?page=">Mis solicitudes</a></li>
+                        echo '<li><a href="index.php?page=buscarofertas">Buscar ofertas</a></li>
+                            <li><a href="index.php?page=missolicitudes">Mis solicitudes</a></li>
                             <li><a href="index.php?page=logout"><button class="btn1">Cerrar Sesión</button></a></li>';
                     }
                 } else {

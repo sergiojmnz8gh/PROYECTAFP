@@ -78,7 +78,18 @@ class Adapter {
     $empresa->activo = $data['activo'] ?? $empresa->activo;
 
     return $empresa;
-}
+    }
+
+    public static function DTOtoOferta($oferta, $data) {
+        $oferta->id = $data['id'] ?? $oferta->id;
+        $oferta->titulo = $data['titulo'] ?? $oferta->titulo;
+        $oferta->descripcion = $data['descripcion'] ?? $oferta->descripcion;
+        $oferta->fecha_inicio = $data['fecha_inicio'] ?? $oferta->fecha_inicio;
+        $oferta->fecha_fin = $data['fecha_fin'] ?? $oferta->fecha_fin;
+        $oferta->empresa_id = $data['empresa_id'] ?? $oferta->empresa_id;
+        $oferta->ciclo_id = $data['ciclo_id'] ?? $oferta->ciclo_id;
+        return $oferta;
+    }
 
     public static function DTOtoModels($data)
     {

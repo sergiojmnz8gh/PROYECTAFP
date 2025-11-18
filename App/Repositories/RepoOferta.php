@@ -25,6 +25,7 @@ class RepoOferta {
         return "SELECT 
                     o.id, o.titulo, o.descripcion, o.fecha_inicio, o.fecha_fin,
                     e.nombre AS empresa_nombre, 
+                    e.id AS empresa_id,
                     c.nombre AS ciclo_nombre
                 FROM ofertas o 
                 JOIN empresas e ON o.empresa_id = e.id
@@ -40,6 +41,28 @@ class RepoOferta {
         
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Oferta::class);
         return $stmt->fetch();
+    }
+
+    public static function findByEmpresa($empresaId) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE o.empresa_id = :empresa_id";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':empresa_id', $empresaId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Oferta::class);
+        return $stmt->fetchAll();
+    }
+
+    public static function findByCiclo($cicloId) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE o.ciclo_id = :ciclo_id";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':ciclo_id', $cicloId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Oferta::class);
+        return $stmt->fetchAll();
     }
 
     public static function findAll() {
@@ -66,9 +89,10 @@ class RepoOferta {
     }
 
     public static function create(Oferta $oferta) {
+        error_log(print_r($oferta, true));        
         $conexion = self::getConexion();
         try {
-            $sql = "INSERT INTO ofertas (titulo, descripcion, fecha_inicio fecha_fin, empresa_id, ciclo_id) 
+            $sql = "INSERT INTO ofertas (titulo, descripcion, fecha_inicio, fecha_fin, empresa_id, ciclo_id) 
                     VALUES (:titulo, :descripcion, :fecha_inicio, :fecha_fin, :empresa_id, :ciclo_id)";
             $stmt = $conexion->prepare($sql);
             
@@ -76,8 +100,8 @@ class RepoOferta {
             $stmt->bindParam(':descripcion', $oferta->descripcion);
             $stmt->bindParam(':fecha_inicio', $oferta->fecha_inicio);
             $stmt->bindParam(':fecha_fin', $oferta->fecha_fin);
-            $stmt->bindParam(':empresa_id', $oferta->empresa_nombre, PDO::PARAM_INT);
-            $stmt->bindParam(':ciclo_id', $oferta->ciclo_nombre, PDO::PARAM_INT);
+            $stmt->bindParam(':empresa_id', $oferta->empresa_id, PDO::PARAM_INT);
+            $stmt->bindParam(':ciclo_id', $oferta->ciclo_id, PDO::PARAM_INT);
             
             $stmt->execute();
             return self::findById($conexion->lastInsertId());
@@ -94,7 +118,7 @@ class RepoOferta {
             $sql = "UPDATE ofertas SET 
                     titulo = :titulo, descripcion = :descripcion, 
                     fecha_inicio = :fecha_inicio, fecha_fin = :fecha_fin, 
-                    empresa_id = :empresa_id, ciclo_id = :ciclo_id 
+                    empresa_id = :empresa_id
                     WHERE id = :id";
             $stmt = $conexion->prepare($sql);
             
@@ -102,8 +126,7 @@ class RepoOferta {
             $stmt->bindParam(':descripcion', $oferta->descripcion);
             $stmt->bindParam(':fecha_inicio', $oferta->fecha_inicio);
             $stmt->bindParam(':fecha_fin', $oferta->fecha_fin);
-            $stmt->bindParam(':empresa_id', $oferta->empresa_nombre, PDO::PARAM_INT);
-            $stmt->bindParam(':ciclo_id', $oferta->ciclo_nombre, PDO::PARAM_INT);
+            $stmt->bindParam(':empresa_id', $oferta->empresa_id, PDO::PARAM_INT);
             $stmt->bindParam(':id', $oferta->id, PDO::PARAM_INT);
             
             $stmt->execute();

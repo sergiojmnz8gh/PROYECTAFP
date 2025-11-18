@@ -5,8 +5,10 @@ CREATE DATABASE IF NOT EXISTS proyectafp CHARACTER SET utf8mb4 COLLATE utf8mb4_u
 
 USE proyectafp;
 
--- select * from alumnos;
--- update users set rol_id=1 where email='jimenezelichesergio@gmail.com';
+ select * from ofertas;
+ update users set rol_id=1 where email='jimenezelichesergio@gmail.com';
+ update ofertas set empresa_id= 6 where id=1;
+ select * from ofertas;
 
 CREATE TABLE IF NOT EXISTS roles (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -178,8 +180,8 @@ INSERT INTO ofertas (empresa_id, titulo, descripcion, ciclo_id, fecha_inicio, fe
 
 -- 6. Solicitudes
 INSERT INTO solicitudes (oferta_id, alumno_id, fecha_solicitud, cv_visto) VALUES
-((SELECT id FROM ofertas WHERE titulo = 'Desarrollador Web Junior'), (SELECT id FROM users WHERE email = 'alumno1@example.com'), '2023-10-27 10:00:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Sistemas Junior'), (SELECT id FROM users WHERE email = 'alumno3@example.com'), '2023-10-21 11:30:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Administrativo Contable'), (SELECT id FROM users WHERE email = 'alumno4@example.com'), '2023-10-26 14:00:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Asistente de Marketing Digital'), (SELECT id FROM users WHERE email = 'alumno8@example.com'), '2023-10-29 09:00:00', FALSE),
-((SELECT id FROM ofertas WHERE titulo = 'Técnico de Mantenimiento Industrial'), (SELECT id FROM users WHERE email = 'alumno10@example.com'), '2023-11-02 12:00:00', FALSE);
+((SELECT id FROM ofertas WHERE titulo = 'Desarrollador Web Junior'), 1, '2023-10-27 10:00:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Técnico de Sistemas Junior'), 2, '2023-10-21 11:30:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Administrativo Contable'), 3, '2023-10-26 14:00:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Asistente de Marketing Digital'), 4, '2023-10-29 09:00:00', FALSE),
+((SELECT id FROM ofertas WHERE titulo = 'Técnico de Mantenimiento Industrial'), 5, '2023-11-02 12:00:00', FALSE);

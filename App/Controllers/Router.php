@@ -95,6 +95,15 @@ class Router {
                 case 'ofertas':
                     (new OfertaController($this->templates))->list();
                     break;
+                case 'editaroferta':
+                    (new OfertaController($this->templates))->edit();
+                    break;
+                case 'guardareditaroferta':
+                    (new OfertaController($this->templates))->save_edit();
+                    break;
+                case 'borraroferta':
+                    (new OfertaController($this->templates))->delete();
+                    break;
                 case 'solicitudes':
                     echo $this->templates->render('Admin/listadoSolicitudes');
                     break;
@@ -146,12 +155,32 @@ class Router {
                 case 'logout':
                     (new AuthController($this->templates))->logout();
                     break;
-                case 'home':
-                    if (!Login::estaLogeado()) {
-                        header('Location: /index.php?page=login');
-                        exit;
-                    }
-                    echo $this->templates->render('home', ['user_email' => Login::getLoggedInUserEmail()]);
+                case 'misofertas':
+                    (new OfertaController($this->templates))->listMisOfertas();
+                    break;
+                case 'nuevaoferta':
+                    (new OfertaController($this->templates))->create();
+                    break;
+                case 'guardarnuevaoferta':
+                    (new OfertaController($this->templates))->save_create();
+                    break;
+                case 'editaroferta':
+                    (new OfertaController($this->templates))->edit_();
+                    break;
+                case 'guardareditaroferta':
+                    (new OfertaController($this->templates))->save_edit_();
+                    break;
+                case 'borraroferta':
+                    (new OfertaController($this->templates))->delete();
+                    break;
+                case 'buscarofertas':
+                    (new OfertaController($this->templates))->listOfertasDisponibles();
+                    break;
+                case 'inscribirseoferta':
+                    (new OfertaController($this->templates))->inscribirseOferta();
+                    break;
+                case 'missolicitudes':
+                    echo $this->templates->render('Alumno/listadoMisSolicitudes');
                     break;
                 default:
                     http_response_code(404);
