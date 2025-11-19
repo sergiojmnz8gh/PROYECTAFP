@@ -3,7 +3,6 @@
 <?php $this->start('js') ?>
     <script src="js/modal.js"></script>
     <script src="js/tabla.js"></script>
-    <script src="js/csv.js"></script>
     <script src="js/listadoSolicitudes.js"></script>
 <?php $this->stop() ?>
 

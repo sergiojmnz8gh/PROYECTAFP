@@ -51,19 +51,24 @@ class OfertaController {
     }
 
     public function listOfertasDisponibles() {
-        if (Login::getLoggedInUserRol() == '3') {
-            $alumno = RepoAlumno::findByUserId(Login::getLoggedInUserId());
-            $excluidas = RepoSolicitud::findOfertasIdByAlumnoId($alumno->id);
-            $ofertas = RepoOferta::findDisponiblesByCiclo($alumno->ciclo_id, $excluidas);
+        try{
+            if (Login::getLoggedInUserRol() == '3') {
+                $alumno = RepoAlumno::findByUserId(Login::getLoggedInUserId());
+                $excluidas = RepoSolicitud::findOfertasIdByAlumnoId($alumno->id);
+                $ofertas = RepoOferta::findDisponiblesByCiclo($alumno->ciclo_id, $excluidas);
 
             echo $this->templates->render('Alumno/listadoOfertas', [
                 'ofertas' => $ofertas,
                 'error' => Sesion::leerSesion('error'),
                 'success' => Sesion::leerSesion('success'),
             ]);
-        } else {
-            header('Location: /index.php');
-            exit;
+            }
+        } catch (Exception) {
+            echo $this->templates->render('Alumno/listadoOfertas', [
+                'ofertas' => null,
+                'error' => Sesion::leerSesion('error'),
+                'success' => Sesion::leerSesion('success'),
+            ]);
         }
     }
 

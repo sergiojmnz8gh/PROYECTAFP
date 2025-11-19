@@ -22,7 +22,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($ofertas as $oferta): ?>
+                        <?php if ($ofertas){
+                        foreach ($ofertas as $oferta): ?>
                             <tr>
                                 <td><?= $oferta->id ?></td>
                                 <td><?= $oferta->titulo ?></td>
@@ -48,7 +49,11 @@
                                     </div>
                                 </td>
                             </tr>
-                        <?php endforeach ?>
+                        <?php endforeach;
+                        } else {
+                            echo '<tr><td colspan="7">No hay ofertas para mostrar.</td></tr>';
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

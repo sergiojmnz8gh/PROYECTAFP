@@ -696,6 +696,7 @@ table tbody tr:hover {
     justify-content: center;
     align-items: center;
     overflow-y: auto;
+    overflow-x: auto;
     opacity: 0;
     visibility: hidden;
     padding: var(--spacing-md);
@@ -719,12 +720,10 @@ table tbody tr:hover {
     flex-direction: column;
     padding: var(--spacing-lg);
     opacity: 0;
-    transform: translateY(-20px);
 }
 
 .velo.active .modal {
     opacity: 1;
-    transform: translateY(0);
 }
 
 .contentModal {

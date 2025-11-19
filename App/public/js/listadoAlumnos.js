@@ -374,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <th>Selección</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
-                            <th>Contacto</th>
+                            <th>Teléfono</th>
                         </tr>
                     </thead>
                     <tbody id="csv-preview-tbody"></tbody> </table>
@@ -424,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     tr.appendChild(td);
                                 }
                                 let td = document.createElement('td');
-                                td.innerHTML = (celdas[2] ? celdas[2].trim() : '') +'<br>'+ (celdas[3] ? celdas[3].trim() : '');
+                                td.innerHTML = (celdas[2] ? celdas[2].trim() : '');
                                 tr.appendChild(td);
 
                                 csvPreviewTbody.appendChild(tr);

@@ -1,7 +1,7 @@
 <?php $this->layout('layout', ['title' => 'Editar Oferta | ProyectaFP']) ?>
 
 <?php $this->start('js') ?>
-<script src="js/listadoOfertas.js"></script>
+<script src="js/fetchCiclosOfertas.js"></script>
 <?php $this->stop() ?>
 
 <?php $this->start('contenidoPagina') ?>
