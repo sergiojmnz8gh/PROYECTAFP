@@ -13,9 +13,9 @@
                     <thead>
                         <tr>
                             <th class="ordenable">ID <img class="icon" src="img/orden.png" alt=""></th>
+                            <th>Empresa <img class="icon" src="img/orden.png" alt=""></th>
                             <th>Título <img class="icon" src="img/orden.png" alt=""></th>
                             <th>Descripción</th>
-                            <th>Empresa <img class="icon" src="img/orden.png" alt=""></th>
                             <th>Ciclo <img class="icon" src="img/orden.png" alt=""></th>
                             <th class="ordenable">Fecha Inicio <img class="icon" src="img/orden.png" alt=""></th>
                             <th class="ordenable">Fecha Fin <img class="icon" src="img/orden.png" alt=""></th>
@@ -26,21 +26,21 @@
                         <?php foreach ($ofertas as $oferta): ?>
                             <tr>
                                 <td><?= $oferta->id ?></td>
+                                <td><?= $oferta->empresa_nombre ?></td>
                                 <td><?= $oferta->titulo ?></td>
                                 <td><?= $oferta->descripcion ?></td>
-                                <td><?= $oferta->empresa_nombre ?></td>
                                 <td><?= $oferta->ciclo_nombre ?></td>
-                                <td><?= $oferta->fecha_inicio ?></td>
-                                <td><?= $oferta->fecha_fin ?></td>
+                                <td><?= date('d/m/Y', strtotime($oferta->fecha_inicio)) ?></td>
+                                <td><?= date('d/m/Y', strtotime($oferta->fecha_fin)) ?></td>
                                 <td class="div-actions">
                                     <div class="div-actions-btns">
                                         <form action="/index.php?admin=editaroferta" method="POST">
                                             <input type="hidden" name="id" value="<?= $oferta->id ?>">
-                                            <button type="submit" class="btn-action btn2">Editar</button>
+                                            <button type="submit" class="btn2">Editar</button>
                                         </form>
                                         <form action="/index.php?admin=borraroferta" method="POST">
                                             <input type="hidden" name="id" value="<?= $oferta->id ?>">
-                                            <button type="submit" class="btn-action btn1">Borrar</button>
+                                            <button type="submit" class="btn1">Borrar</button>
                                         </form>
                                     </div>
                                 </td>

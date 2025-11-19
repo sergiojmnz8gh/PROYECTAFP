@@ -8,6 +8,7 @@ use App\Helpers\Login;
 use App\Helpers\Validator;
 use App\Models\Oferta;
 use App\Repositories\RepoOferta;
+use App\Repositories\RepoSolicitud;
 use App\Repositories\RepoEmpresa;
 use App\Repositories\RepoAlumno;
 use App\Helpers\Adapter;
@@ -52,7 +53,8 @@ class OfertaController {
     public function listOfertasDisponibles() {
         if (Login::getLoggedInUserRol() == '3') {
             $alumno = RepoAlumno::findByUserId(Login::getLoggedInUserId());
-            $ofertas = RepoOferta::findByCiclo($alumno->ciclo_id);
+            $excluidas = RepoSolicitud::findOfertasIdByAlumnoId($alumno->id);
+            $ofertas = RepoOferta::findDisponiblesByCiclo($alumno->ciclo_id, $excluidas);
 
             echo $this->templates->render('Alumno/listadoOfertas', [
                 'ofertas' => $ofertas,

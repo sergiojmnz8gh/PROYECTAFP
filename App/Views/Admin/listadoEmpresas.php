@@ -19,7 +19,7 @@
                 </div> 
                 <div class="btn-crud-right"> 
                     <form action="/index.php?admin=invitarempresa" method="POST">
-                        <button type="submit" id="add" class="btn-action btn2">+ Añadir</button>
+                        <button type="submit" id="add" class="btn2">+ Añadir</button>
                     </form>
                 </div>
             </div>
@@ -49,11 +49,11 @@
                                     <div class="div-actions-btns">
                                         <form action="/index.php?admin=editarempresa" method="POST">
                                             <input type="hidden" name="id" value="<?= $empresa->id ?>">
-                                            <button type="submit" class="btn-action btn2">Editar</button>
+                                            <button type="submit" class="btn2">Editar</button>
                                         </form>
                                         <form action="/index.php?admin=borrarempresa" method="POST">
                                             <input type="hidden" name="id" value="<?= $empresa->id ?>">
-                                            <button type="submit" class="btn-action btn1">Borrar</button>
+                                            <button type="submit" class="btn1">Borrar</button>
                                         </form>
                                     </div>
                                 </td>
@@ -62,7 +62,7 @@
                     </tbody>
                 </table>
                 <form class="pdf" action="/index.php?admin=generarpdf" method="POST">
-                    <button type="submit" id="generarPDF" class="btn-action btn2">Generar PDF</button>
+                    <button type="submit" id="generarPDF" class="btn2">Generar PDF</button>
                 </form>
             </div>
         </section>

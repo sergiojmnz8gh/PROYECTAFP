@@ -24,9 +24,6 @@
             <p>│     ├── Nueva oferta</p>
             <p>│     │</p>
             <p>│     └── Mis ofertas</p>
-            <p>│   </p>
-            <p>│</p>
-            <p>├── Mis solicitudes</p>
             <p>│</p>
             <p>├── Mapa del sitio</p>
             <p>│</p>

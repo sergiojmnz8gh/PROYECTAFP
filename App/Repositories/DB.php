@@ -14,7 +14,7 @@ class DB {
     public static function getConexion() {
         if (self::$conexion === null) {
             try {
-                $host = 'localhost';
+                $host = 'mysql';
                 $dbname = 'proyectafp';
                 $user = 'root';
                 $pass = 'root';

@@ -3,18 +3,18 @@
 <?php $this->start('contenidoPagina') ?>
     <section class="auth-container">
         <?php 
-        use App\Helpers\Sesion;
-        $error = Sesion::leerSesion('login_error');
-        if ($error) {
-            echo '<div class="message error">' . htmlspecialchars($error) . '</div>';
-            Sesion::escribirSesion('login_error', null);
-        }
-        
-        $message = Sesion::leerSesion('login_message');
-        if ($message) {
-            echo '<div class="message success">' . htmlspecialchars($message) . '</div>';
-            Sesion::escribirSesion('login_message', null);
-        }
+            use App\Helpers\Sesion;
+            $error = Sesion::leerSesion('login_error');
+            if ($error) {
+                echo '<div class="error">'. $error .'</div>';
+                Sesion::escribirSesion('login_error', null);
+            }
+            
+            $message = Sesion::leerSesion('login_message');
+            if ($message) {
+                echo '<div>'. $message .'</div>';
+                Sesion::escribirSesion('login_message', null);
+            }
         ?>
 
         <div class="auth-card">

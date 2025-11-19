@@ -31,7 +31,7 @@ class Router {
 
             switch ($api) {
                 case 'alumnos':
-                    (new ApiAlumno())->handleRequest($requestMethod, $requestBody);
+                    (new ApiAlumno())->handleRequest($requestMethod, $requestBody, $_GET);
                     break;
                 case 'familias':
                     (new ApiFamilia())->getAllFamilias();
@@ -41,7 +41,7 @@ class Router {
                     (new ApiCiclo())->getCiclosByFamilia($familiaId);
                     break;
                 case 'solicitudes':
-                    (new ApiSolicitud())->handleRequest($requestMethod, $requestBody);
+                    (new ApiSolicitud())->handleRequest($requestMethod, $requestBody, $_GET);
                     break;
                 default:
                     http_response_code(404);
@@ -65,7 +65,7 @@ class Router {
             $adminPath = strtolower($_GET['admin']);
             switch ($adminPath) {
                 case '':
-                case 'index':
+                case 'dashboard':
                     echo $this->templates->render('Admin/dashboard');
                     break;
                 case 'alumnos': 
@@ -189,11 +189,14 @@ class Router {
                     (new OfertaController($this->templates))->listOfertasDisponibles();
                     break;
                 case 'inscribirseoferta':
-                    (new OfertaController($this->templates))->inscribirseOferta();
+                    $requestBody = json_encode($_POST);
+                    (new ApiSolicitud())->handleRequest($requestMethod, $requestBody);
                     break;
                 case 'missolicitudes':
                     echo $this->templates->render('Alumno/listadoMisSolicitudes');
                     break;
+                case 'verinscritos':
+                    echo $this->templates->render('Empresa/listadoInscritosOferta');
                 default:
                     http_response_code(404);
                     echo $this->templates->render('404');

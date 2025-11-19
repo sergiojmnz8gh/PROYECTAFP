@@ -1,16 +1,39 @@
 document.addEventListener("DOMContentLoaded", function () {
     const tbody = document.querySelectorAll("tbody")[0];    
-    const inputBuscar = document.getElementById("buscar");
-
     const API_SOLICITUDES_URL = '/index.php?api=solicitudes';
+    const API_ALUMNOS_URL = '/index.php?api=alumnos';
 
-    async function fetchSolicitudes() {
+    async function fetchAlumno() {
         try {
-            const response = await fetch(API_SOLICITUDES_URL, {
+            const url = `${API_ALUMNOS_URL}&id=`;
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+            }
+
+            const alumnoJson = await response.json();
+            alumnoId = alumnoJson.alumnoId;
+            return alumnoId;
+        } catch (error) {
+            tbody.innerHTML = '<tr><td colspan="5">Error al cargar alumno. Por favor, intente de nuevo más tarde.</td></tr>';
+        }
+    }
+
+    async function fetchSolicitudes() {
+        const alumnoId = await fetchAlumno();
+        const url = `${API_SOLICITUDES_URL}&alumnoId=${encodeURIComponent(alumnoId)}`;
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
             });
 
             if (!response.ok) {
@@ -43,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             c1.innerHTML = solicitud.id || '';
             c2.innerHTML = solicitud.oferta_titulo;
-            c3.innerHTML = solicitud.fecha_solicitud;
+            c3.innerHTML = formatTimestamp(solicitud.fecha_solicitud);
             c4.innerHTML = cvVistoTexto;
 
             fila.appendChild(c1);
@@ -55,4 +78,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     fetchSolicitudes();
+
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
 });

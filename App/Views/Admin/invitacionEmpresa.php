@@ -34,7 +34,7 @@
                     <input type="file" name="logo" id="logo" accept="image/*">
                 </div>
                 
-                <input type="submit" value="Registrar" class="btn-primary">
+                <input type="submit" value="Registrar" class="btn2">
                 
             </form>
         </div>

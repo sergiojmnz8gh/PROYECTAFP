@@ -13,13 +13,6 @@ SET collation_server = utf8mb4_unicode_ci;
 
 USE proyectafp;
 
--- select * from alumnos;
--- update users set rol_id=1 where email='jimenezelichesergio@gmail.com';
--- update ofertas set empresa_id= 6 where id=1;
--- update solicitudes set alumno_id=12 where id=1;
--- update ofertas set ciclo_id=8 where id=1;
--- select * from ofertas;
-
 CREATE TABLE IF NOT EXISTS roles (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(25) NOT NULL UNIQUE
@@ -161,7 +154,7 @@ INSERT INTO ciclos (nombre, nivel, familia_id) VALUES
 
 -- 4. Alumnos y Empresas
 INSERT INTO alumnos (nombre, apellidos, direccion, telefono, foto, cv, ciclo_id, user_id) VALUES
-('Juan', 'Pérez García', 'Calle Falsa 123', '667281918', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 1, 7),
+('Sergio', 'Jiménez Eliche', 'Calle Falsa 123', '667281918', '/img/alumnos/1.jpg', '/resources/cvs/1.pdf', 12, 7),
 ('María', 'López Fernández', 'Avenida Siempreviva 45', '616290154', null, '/resources/cvs/1.pdf', 2, 8),
 ('Carlos', 'Sánchez Ruiz', 'Plaza Mayor 7', '616892615', null, '/resources/cvs/1.pdf', 3, 9),
 ('Ana', 'Martín Gómez', 'Ronda del Sol 1', '673829134', null, '/resources/cvs/1.pdf', 4, 10),
@@ -182,6 +175,7 @@ INSERT INTO empresas (nombre, telefono, direccion, logo, user_id) VALUES
 -- 5. Ofertas
 INSERT INTO ofertas (empresa_id, titulo, descripcion, ciclo_id, fecha_inicio, fecha_fin) VALUES
 (1, 'Desarrollador Web Junior', 'Buscamos un desarrollador web junior con conocimientos en PHP y JavaScript.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web'), '2025-10-26', '2025-11-30'),
+(2, 'Desarrollador Web Full Stack', 'Buscamos un desarrollador web capaz de trabajar tanto en backend como en frontend.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Web'), '2025-11-18', '2025-11-30'),
 (2, 'Técnico de Sistemas Junior', 'Se requiere técnico para soporte y administración de redes.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma'),'2025-10-20', '2025-11-15'),
 (3, 'Administrativo Contable', 'Puesto de administrativo para gestión de facturas y contabilidad básica.', (SELECT id FROM ciclos WHERE nombre = 'Técnico Superior en Administracion de Sistemas Informáticos en Red'), '2025-10-25', '2025-12-05'),
 (4, 'Asistente de Marketing Digital', 'Ayuda en la creación de campañas y gestión de redes sociales.', (SELECT id FROM ciclos WHERE nombre = 'Técnico en Gestión Administrativa'), '2025-10-28', '2025-11-20'),

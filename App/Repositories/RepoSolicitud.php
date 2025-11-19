@@ -43,6 +43,28 @@ class RepoSolicitud {
         return $stmt->fetch();
     }
 
+    public static function findByAlumnoId($alumnoId) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE s.alumno_id = :alumnoId";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':alumnoId', $alumnoId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Solicitud::class);
+        return $stmt->fetchAll();
+    }
+
+    public static function findByOfertaId($ofertaId) {
+        $conexion = self::getConexion();
+        $sql = self::getBaseQuery() . " WHERE s.oferta_id = :ofertaId";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':ofertaId', $ofertaId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Solicitud::class);
+        return $stmt->fetchAll();
+    }
+
     public static function findAll() {
         $conexion = self::getConexion();
         $sql = self::getBaseQuery();
@@ -54,7 +76,7 @@ class RepoSolicitud {
 
     public static function findSizedList($pagination) {
         $page = $pagination['page'] ?? 1;
-        $size = $pagination['size'] ?? 4;
+        $size = $pagination['size'] ?? 10;
         $conexion = self::getConexion();
         $sql = self::getBaseQuery() . " LIMIT :size OFFSET :offset";
         $stmt = $conexion->prepare($sql);
@@ -66,16 +88,25 @@ class RepoSolicitud {
         return $stmt->fetchAll();
     }
 
-    public static function create(Solicitud $solicitud) {
+    public static function findOfertasIdByAlumnoId($alumnoId) {
+        $conexion = self::getConexion();
+        $sql = "SELECT DISTINCT oferta_id FROM solicitudes WHERE alumno_id = :alumnoId";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':alumnoId', $alumnoId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public static function create($solicitud) {
         $conexion = self::getConexion();
         try {
-            $sql = "INSERT INTO solicitudes (oferta_id, user_id, fecha_solicitud) 
-                    VALUES (:oferta_id, :user_id, :fecha_solicitud)";
+            $sql = "INSERT INTO solicitudes (oferta_id, alumno_id) 
+                    VALUES (:oferta_id, :alumno_id)";
             $stmt = $conexion->prepare($sql);
             
             $stmt->bindParam(':oferta_id', $solicitud->oferta_id, PDO::PARAM_INT);
-            $stmt->bindParam(':user_id', $solicitud->alumno_id, PDO::PARAM_INT);
-            $stmt->bindParam(':fecha_solicitud', $solicitud->fecha_solicitud);
+            $stmt->bindParam(':alumno_id', $solicitud->alumno_id, PDO::PARAM_INT);
             
             $stmt->execute();
             return self::findById($conexion->lastInsertId());
@@ -86,7 +117,7 @@ class RepoSolicitud {
         }
     }
 
-    public static function update(Solicitud $solicitud) {
+    public static function update($solicitud) {
         $conexion = self::getConexion();
         try {
             $sql = "UPDATE solicitudes SET 

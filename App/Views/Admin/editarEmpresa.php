@@ -30,8 +30,7 @@
                     <input type="text" name="telefono" id="telefono" value="<?= $empresa->telefono ?>" required>
                 </div>
 
-                <input type="submit" value="Guardar" class="btn-primary">
-                
+                <input type="submit" value="Guardar" class="btn2">
             </form>
         </div>
     </section>

@@ -28,17 +28,22 @@
                                 <td><?= $oferta->titulo ?></td>
                                 <td><?= $oferta->descripcion ?></td>
                                 <td><?= $oferta->ciclo_nombre ?></td>
-                                <td><?= $oferta->fecha_inicio ?></td>
-                                <td><?= $oferta->fecha_fin ?></td>
+                                <td><?= date('d/m/Y', strtotime($oferta->fecha_inicio)) ?></td>
+                                <td><?= date('d/m/Y', strtotime($oferta->fecha_fin)) ?></td>
                                 <td class="div-actions">
+                                    <form action="/index.php?" method="GET">
+                                        <input type="hidden" name="page" value="verinscritos">
+                                        <input type="hidden" name="ofertaId" value="<?= $oferta->id ?>">
+                                        <button type="submit" class="btn-insc">Ver Inscripciones</button>
+                                    </form>
                                     <div class="div-actions-btns">
                                         <form action="/index.php?page=editaroferta" method="POST">
                                             <input type="hidden" name="id" value="<?= $oferta->id ?>">
-                                            <button type="submit" class="btn-action btn2">Editar</button>
+                                            <button type="submit" class="btn2">Editar</button>
                                         </form>
                                         <form action="/index.php?page=borraroferta" method="POST">
                                             <input type="hidden" name="id" value="<?= $oferta->id ?>">
-                                            <button type="submit" class="btn-action btn1">Borrar</button>
+                                            <button type="submit" class="btn1">Borrar</button>
                                         </form>
                                     </div>
                                 </td>

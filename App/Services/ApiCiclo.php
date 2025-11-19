@@ -11,7 +11,6 @@ class ApiCiclo {
         echo json_encode(['success' => true, 'data' => $ciclos]);
     }
 
-    // Opcional: Para dependencias
     public static function getCiclosByFamilia($familiaId) {
         header('Content-Type: application/json');
         $ciclos = RepoCiclo::findByFamilia($familiaId);

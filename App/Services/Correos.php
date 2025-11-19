@@ -9,7 +9,7 @@ class Correos{
 
     public function __construct() {}
 
-    public static function enviarCorreoRegistro($destinatario) {
+    public static function enviarCorreoRegistro($destinatario, $nombre) {
         $mail = new PHPMailer(true);
 
         try {
@@ -24,12 +24,16 @@ class Correos{
 
             $mail->isHTML(true);
             $mail->Subject = 'Bienvenido';
-            $mail->Body    = 'Usted se ha registrado correctamente en ProyectaFP.';
 
+            $plantillaHTML = file_get_contents('../Views/correoRegistro.html');
+            $plantillaHTML = str_replace('{{nombre}}', $nombre, $plantillaHTML);
+            $plantillaHTML = str_replace('{{link_login}}', 'http://localhost:8080/index.php?page=login', $plantillaHTML);
+
+            $mail->Body = $plantillaHTML;
+            
             $mail->send();
-            echo "✅ Correo enviado correctamente. Ver MailHog en <a href='http://localhost:8025'>localhost:8025</a>";
         } catch (Exception $e) {
-            echo "❌ Error al enviar el correo: {$mail->ErrorInfo}";
+            error_log($e->getMessage());
         }
     }   
 }

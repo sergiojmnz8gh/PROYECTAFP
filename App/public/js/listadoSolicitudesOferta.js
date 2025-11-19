@@ -1,14 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const tbody = document.querySelectorAll("tbody")[0];    
+    const tbody = document.querySelectorAll("tbody")[0];
     const API_SOLICITUDES_URL = '/index.php?api=solicitudes';
+    
+    const url = window.location.search;
+    const urlParams = new URLSearchParams(url);
+    const ofertaId = urlParams.get('ofertaId');
 
     async function fetchSolicitudes() {
+        const url = `${API_SOLICITUDES_URL}&ofertaId=${encodeURIComponent(ofertaId)}`;
         try {
-            const response = await fetch(API_SOLICITUDES_URL, {
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
             });
 
             if (!response.ok) {
@@ -37,23 +42,23 @@ document.addEventListener("DOMContentLoaded", function () {
             let c3 = document.createElement("td");
             let c4 = document.createElement("td");
             let c5 = document.createElement("td");
-            let c6 = document.createElement("td");
 
             const cvVistoTexto = solicitud.cv_visto ? 'Sí' : 'No';
+            const ofertaTitulo = solicitud.oferta_titulo;
+            let titulo = document.getElementById('titulo');
+            titulo.innerHTML ="Solicitudes de la oferta: " + ofertaTitulo;
 
             c1.innerHTML = solicitud.id || '';
-            c2.innerHTML = solicitud.oferta_titulo;
-            c3.innerHTML = solicitud.alumno_nombre;
-            c4.innerHTML = solicitud.alumno_apellidos;
-            c5.innerHTML = formatTimestamp(solicitud.fecha_solicitud);
-            c6.innerHTML = cvVistoTexto;
+            c2.innerHTML = solicitud.alumno_nombre;
+            c3.innerHTML = solicitud.alumno_apellidos;
+            c4.innerHTML = formatTimestamp(solicitud.fecha_solicitud);
+            c5.innerHTML = cvVistoTexto;
 
             fila.appendChild(c1);
             fila.appendChild(c2);
             fila.appendChild(c3);
             fila.appendChild(c4);
             fila.appendChild(c5);
-            fila.appendChild(c6);
             tbody.appendChild(fila);
         });
     }

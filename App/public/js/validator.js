@@ -17,24 +17,6 @@ class Validator {
         return true;
     }
 
-    enteroRango(campo, min, max, mensajeError = `Debe ser un número entero entre ${min} y ${max}.`) {
-        const valor = parseInt(this.data[campo]);
-        if (isNaN(valor) || valor < min || valor > max) {
-            this.addError(campo, mensajeError);
-            return false;
-        }
-        return true;
-    }
-
-    cadenaRango(campo, min, max, mensajeError = `Debe tener entre ${min} y ${max - 1} caracteres.`) {
-        const valor = this.data[campo] ? String(this.data[campo]).length : 0;
-        if (valor < min || valor >= max) {
-            this.addError(campo, mensajeError);
-            return false;
-        }
-        return true;
-    }
-
     email(campo, mensajeError = `Debe ser un email válido.`) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(this.data[campo])) {
@@ -65,8 +47,17 @@ class Validator {
         }
     }
 
-    patron(campo, patron, mensajeError = `El campo ${campo} no cumple el patrón requerido.`) {
-        if (!patron.test(this.data[campo])) {
+    password(campo, mensajeError) {
+        if (this.data[campo].length < 8) {
+            this.addError(campo, mensajeError);
+            return false;
+        }
+        return true;
+    }
+
+    telefono(campo, mensajeError) {
+        const telefonoRegex = /^[679]\d{8}$/;
+        if (!telefonoRegex.test(this.data[campo])) {
             this.addError(campo, mensajeError);
             return false;
         }

@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\DTO\UserDTO;
 use App\Helpers\Sesion;
 
 class Login {
@@ -17,19 +16,19 @@ class Login {
         Sesion::cerrarSesion();
     }
 
-    public static function estaLogeado(): bool {
+    public static function estaLogeado() {
         return Sesion::existeClave('user_id');
     }
 
-    public static function getLoggedInUserId(): ?int {
+    public static function getLoggedInUserId() {
         return Sesion::leerSesion('user_id');
     }
 
-    public static function getLoggedInUserEmail(): ?string {
+    public static function getLoggedInUserEmail() {
         return Sesion::leerSesion('user_email');
     }
 
-    public static function getLoggedInUserRol(): ?int {
+    public static function getLoggedInUserRol() {
         return Sesion::leerSesion('user_rol');
     }
 }

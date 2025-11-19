@@ -39,7 +39,7 @@
                     <input type="date" name="fecha_fin" id="fecha_fin" required>
                 </div>
                 
-                <input type="submit" value="Guardar" class="btn-primary">
+                <input type="submit" value="Guardar" class="btn2">
                 
             </form>
         </div>

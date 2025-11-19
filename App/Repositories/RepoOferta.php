@@ -54,13 +54,16 @@ class RepoOferta {
         return $stmt->fetchAll();
     }
 
-    public static function findByCiclo($cicloId) {
+    public static function findDisponiblesByCiclo($cicloId, $idExcluidas) {
         $conexion = self::getConexion();
-        $sql = self::getBaseQuery() . " WHERE o.ciclo_id = :ciclo_id";
+        $excluidas = implode(',', array_fill(0, count($idExcluidas), '?'));
+        $sqlExclusion = " AND o.id NOT IN ($excluidas)";
+        $sql = self::getBaseQuery() . " WHERE o.ciclo_id = ?" . $sqlExclusion; 
         $stmt = $conexion->prepare($sql);
-        $stmt->bindParam(':ciclo_id', $cicloId, PDO::PARAM_INT);
-        $stmt->execute();
-        
+        $params = [$cicloId];
+        $params = array_merge($params, $idExcluidas); 
+        $stmt->execute($params);
+
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Oferta::class);
         return $stmt->fetchAll();
     }
@@ -76,7 +79,7 @@ class RepoOferta {
 
     public static function findSizedList($pagination) {
         $page = $pagination['page'] ?? 1;
-        $size = $pagination['size'] ?? 5;
+        $size = $pagination['size'] ?? 10;
         $conexion = self::getConexion();
         $sql = self::getBaseQuery() . " LIMIT :size OFFSET :offset";
         $stmt = $conexion->prepare($sql);

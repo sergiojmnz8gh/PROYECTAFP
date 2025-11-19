@@ -94,14 +94,21 @@ class AuthController {
         
         if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
             $validator->Requerido('foto_file_upload');
+            Sesion::escribirSesion('registro_error', 'La foto de perfil es obligatoria.');
         }
         if (!isset($_FILES['cv']) || $_FILES['cv']['error'] !== UPLOAD_ERR_OK) {
             $validator->Requerido('cv_file_upload');
+            Sesion::escribirSesion('registro_error', 'El CV es obligatorio.');
         }
         if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK && $_FILES['cv']['type'] !== 'application/pdf') {
             $validator->ValidaConFuncion('cv_file_type', function() { return false; }, 'El CV debe ser un archivo PDF.');
+            Sesion::escribirSesion('registro_error', 'El CV debe ser un archivo PDF.');
         }
 
+        if ($_POST['password'] !== $_POST['reppassword']) {
+            $validator->ValidaConFuncion('reppassword', function() { return false; }, 'Las contraseñas no coinciden.');
+            Sesion::escribirSesion('registro_error', 'Las contraseñas no coinciden.');
+        }
 
         if (!$validator->ValidacionPasada()) {
             Sesion::escribirSesion('registro_error', 'Por favor, corrige los errores del formulario de registro.');
@@ -142,7 +149,7 @@ class AuthController {
 
             $newAlumno = RepoAlumno::findByEmail($email);
             if ($newAlumno) {
-                Correos::enviarCorreoRegistro($email);
+                Correos::enviarCorreoRegistro($email, $nombre);
                 $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
                 
                 move_uploaded_file($foto["tmp_name"], '../public/img/alumnos/' . $newAlumno->user_id . '.jpg');
@@ -184,10 +191,12 @@ class AuthController {
         
         if (!isset($_FILES['logo']) || $_FILES['logo']['error'] !== UPLOAD_ERR_OK) {
             $validator->Requerido('logo_file_upload');
+            Sesion::escribirSesion('registro_error', 'El logo es obligatorio.');
         }
 
         if ($_POST['password'] !== $_POST['reppassword']) {
             $validator->ValidaConFuncion('reppassword', function() { return false; }, 'Las contraseñas no coinciden.');
+            Sesion::escribirSesion('registro_error', 'Las contraseñas no coinciden.');
         }
 
         if (!$validator->ValidacionPasada()) {
@@ -223,7 +232,7 @@ class AuthController {
             RepoEmpresa::create($empresa, $hashedPassword);
             $newEmpresa = RepoEmpresa::findByEmail($email);
             if ($newEmpresa) {
-                Correos::enviarCorreoRegistro($email);
+                Correos::enviarCorreoRegistro($email, $nombre);
                 $userDTO = Adapter::userToDTO(RepoUser::findUser($email));
 
                 move_uploaded_file($logo["tmp_name"], '../public/img/empresas/' . $newEmpresa->user_id . '.jpg');

@@ -4,18 +4,23 @@ namespace App\Services;
 
 use App\Repositories\RepoAlumno;
 use App\Helpers\Adapter;
+use App\Helpers\Login;
 use App\Helpers\Security;
 
 class ApiAlumno {
 
     public function __construct() {}
 
-    public function handleRequest($requestMethod, $requestBody) {
+    public function handleRequest($requestMethod, $requestBody, $GET) {
         header('Content-Type: application/json');
 
         switch ($requestMethod) {
             case 'GET':
-                $this->getFullList();
+                if (isset($GET['id'])) {
+                    $this->getMe();
+                } else {
+                    $this->getFullList();
+                }
                 break;
             case 'POST':
                 $this->saveAlumno($requestBody);
@@ -34,24 +39,25 @@ class ApiAlumno {
         exit;
     }
 
-    function getAlumno($requestBody) {
-        $id = $requestBody['id'] ?? null;
-        $alumno = RepoAlumno::findById($id);
+    function getMe() {
+        header('Content-Type: application/json');
+        $userId = Login::getLoggedInUserId();
+        $alumno = RepoAlumno::findByUserId($userId);
         if ($alumno) {
-            $alumnoDTO = Adapter::alumnoToDTO($alumno);
             http_response_code(200);
             echo json_encode([
                 'success' => true,
-                'alumno' => $alumnoDTO,
+                'alumnoId' => $alumno->id,
                 'message' => 'Alumno obtenido con éxito.'
             ]);
         } else {
-            http_response_code(404);
+            http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Alumno no encontrado.']);
         }
     }
 
     function getFullList() {
+        header('Content-Type: application/json');
         $alumnos = RepoAlumno::findAll();
         $alumnosDTO = Adapter::AllAlumnoToDTO($alumnos);
         http_response_code(200);
@@ -59,6 +65,7 @@ class ApiAlumno {
     }
 
     function getSizedList($requestBody) {
+        header('Content-Type: application/json');
         $filtersAndPagination = json_decode($requestBody, true);
         $alumnos = RepoAlumno::findSizedList($filtersAndPagination);
         $alumnosDTO = Adapter::AllAlumnoToDTO($alumnos);
@@ -67,6 +74,7 @@ class ApiAlumno {
     }
 
     function saveAlumno($requestBody) {
+        header('Content-Type: application/json');
         $decodedBody = json_decode($requestBody, true);
         $hashedPassword = Security::hashPassword($decodedBody['password']);
         unset($decodedBody['password']);
@@ -88,6 +96,7 @@ class ApiAlumno {
     }
 
     function editAlumno($requestBody) {
+        header('Content-Type: application/json');
         $decodedBody = json_decode($requestBody, true);
         $id = $decodedBody['id'] ?? null;
         if ($id == null) {
@@ -130,6 +139,7 @@ class ApiAlumno {
         }
     }
     function deleteAlumno($requestBody) {
+        header('Content-Type: application/json');
         $decodedBody = json_decode($requestBody, true);
         $id = $decodedBody['id'] ?? null;
         if ($id == null) {

@@ -247,14 +247,16 @@ document.addEventListener("DOMContentLoaded", function () {
         validator.requerido('reppassword', "Repetir contraseña es obligatorio.");
         
         if (validator.getValor('password') !== validator.getValor('reppassword')) {
-             validator.addError('reppassword', "Las contraseñas no coinciden.");
+            validator.addError('reppassword', "Las contraseñas no coinciden.");
         }
+        validator.password('password', "La contraseña debe tener al menos 8 caracteres.");
 
         validator.requerido('nombre', "El nombre es obligatorio.");
         validator.requerido('apellidos', "Los apellidos son obligatorios.");
         validator.requerido('addFamilia', "La familia profesional es obligatoria.");
         validator.requerido('addCiclo', "El ciclo formativo es obligatorio.");
         validator.requerido('telefono', "El teléfono es obligatorio.");
+        validator.telefono('telefono', "El formato del teléfono no es válido.");
         validator.requerido('direccion', "La dirección es obligatoria.");
         
         if (!validator.getValor('foto')) {
@@ -269,12 +271,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!validator.validacionPasada()) {
             const errores = validator.getErrors();
-            let mensajeError = "Corrige los siguientes errores:\n";
             for (const campo in errores) {
-                mensajeError += `- ${errores[campo]}\n`;
+                if (errores.hasOwnProperty(campo)) {
+                    const htmlError = validator.imprimirError(campo);
+                    const contenedorError = document.getElementById(`error_${campo}`);
+                    contenedorError.innerHTML = htmlError;
+                }
             }
             return;
         }
+
 
         const formData = new FormData(formulario); 
         
@@ -302,5 +308,4 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error al enviar el formulario:', error);
         });
     });
-
 });

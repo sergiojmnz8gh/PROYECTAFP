@@ -27,7 +27,7 @@
                 </select>
             </div>
             <div class="btn-crud-right"> 
-                <button type="button" id="add" class="btn-action btn2">+ Añadir</button>
+                <button type="button" id="add" class="btn2">+ Añadir</button>
                 <button type="button" id="massAdd" class="btn-small btn1">++</button>
             </div>
         </div>
