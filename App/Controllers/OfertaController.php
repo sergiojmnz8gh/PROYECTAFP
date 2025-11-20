@@ -25,13 +25,17 @@ class OfertaController {
     }
 
     public function list() {
-        $ofertas = RepoOferta::findAll();
+        if (Login::getLoggedInUserRol() == '1') {
+            $ofertas = RepoOferta::findAll();
 
-        echo $this->templates->render('Admin/listadoOfertas', [
-            'ofertas' => $ofertas,
-            'error' => Sesion::leerSesion('error'),
-            'success' => Sesion::leerSesion('success'),
-        ]);
+            echo $this->templates->render('Admin/listadoOfertas', [
+                'ofertas' => $ofertas,
+                'error' => Sesion::leerSesion('error'),
+                'success' => Sesion::leerSesion('success'),
+            ]);
+        } else {
+            header('Location: /index.php');
+        }
     }
 
     public function listMisOfertas() {
@@ -46,7 +50,6 @@ class OfertaController {
             ]);
         } else {
             header('Location: /index.php');
-            exit;
         }
     }
 
@@ -74,13 +77,11 @@ class OfertaController {
 
     public function create() {
         echo $this->templates->render('Empresa/nuevaOferta');
-        exit;
     }
 
     public function save_create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?page=nuevaoferta');
-            exit;
         }
 
         $this->validator->Requerido('titulo');
@@ -99,7 +100,6 @@ class OfertaController {
             Sesion::escribirSesion('old_input', $_POST);
             
             header("Location: /index.php?page=nuevaoferta");
-            exit;
         }
 
         $titulo = $_POST['titulo'];
@@ -120,12 +120,10 @@ class OfertaController {
             RepoOferta::create($oferta);
             Sesion::escribirSesion('success', 'Oferta creada correctamente.');
             header('Location: /index.php?page=misofertas');
-            exit;
         } catch (Exception $e) {
             error_log("Error de creación de oferta: " . $e->getMessage());
             Sesion::escribirSesion('error', 'Ocurrió un error inesperado durante la creación.');
             header('Location: /index.php?page=nuevaoferta');
-            exit;
         }
     }
 
@@ -133,7 +131,6 @@ class OfertaController {
         if (!isset($_POST['id']) || empty($_POST['id'])) {
             Sesion::escribirSesion('error', 'ID de oferta no proporcionado.');
             header('Location: /index.php?admin=ofertas');
-            exit;
         }
 
         $id = (int)$_POST['id'];
@@ -143,7 +140,6 @@ class OfertaController {
         if (!$oferta) {
             Sesion::escribirSesion('error', 'Oferta no encontrada.');
             header('Location: /index.php?admin=ofertas');
-            exit;
         }
 
         echo $this->templates->render('Admin/editarOferta', [
@@ -158,7 +154,6 @@ class OfertaController {
         if (!isset($_POST['id']) || empty($_POST['id'])) {
             Sesion::escribirSesion('error', 'ID de oferta no proporcionado.');
             header('Location: /index.php?admin=ofertas');
-            exit;
         }
 
         $id = (int)$_POST['id'];
@@ -168,7 +163,6 @@ class OfertaController {
         if (!$oferta) {
             Sesion::escribirSesion('error', 'Oferta no encontrada.');
             header('Location: /index.php?admin=ofertas');
-            exit;
         }
 
         echo $this->templates->render('Empresa/editarOferta', [
@@ -182,7 +176,6 @@ class OfertaController {
     public function save_edit() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?admin=ofertas');
-            exit;
         }
         
         $id = (int)($_POST['id'] ?? 0);
@@ -192,14 +185,12 @@ class OfertaController {
             Sesion::escribirSesion('old_input', $_POST);
             
             header("Location: /index.php?admin=editaroferta&id=$id");
-            exit;
         }
 
         $oferta = RepoOferta::findById($id);
         if (!$oferta) {
             Sesion::escribirSesion('error', 'Oferta a editar no encontrada.');
             header('Location: /index.php?admin=ofertas');
-            exit;
         }
         
         Adapter::DTOtoOferta($oferta, $_POST);
@@ -209,13 +200,11 @@ class OfertaController {
         }
 
         header('Location: /index.php?admin=ofertas');
-        exit;
     }
 
     public function save_edit_() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?page=misofertas');
-            exit;
         }
         
         $id = (int)($_POST['id'] ?? 0);
@@ -225,14 +214,12 @@ class OfertaController {
             Sesion::escribirSesion('old_input', $_POST);
             
             header("Location: /index.php?page=editaroferta&id=$id");
-            exit;
         }
 
         $oferta = RepoOferta::findById($id);
         if (!$oferta) {
             Sesion::escribirSesion('error', 'Oferta a editar no encontrada.');
             header('Location: /index.php?page=misofertas');
-            exit;
         }
         
         Adapter::DTOtoOferta($oferta, $_POST);
@@ -242,22 +229,19 @@ class OfertaController {
         }
 
         header('Location: /index.php?page=misofertas');
-        exit;
     }
     
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             Sesion::escribirSesion('error', 'Petición de borrado inválida.');
-            header('Location: /index.php?admin=ofertas');
-            exit;
+            header('Location: /index.php?page=misofertas');
         }
 
         $this->validator->Requerido('id');
 
         if (!$this->validator->ValidacionPasada()) {
             Sesion::escribirSesion('error', 'ID de oferta no proporcionado para el borrado.');
-            header('Location: /index.php?admin=ofertas');
-            exit;
+            header('Location: /index.php?page=misofertas');
         }
         
         $id = (int)$_POST['id'];
@@ -268,7 +252,6 @@ class OfertaController {
             Sesion::escribirSesion('error', 'Error al intentar eliminar la oferta. Asegúrate de que existe.');
         }
 
-        header('Location: /index.php?admin=ofertas');
-        exit;
+        header('Location: /index.php?page=misofertas');
     }
 }

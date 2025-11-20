@@ -13,8 +13,8 @@
                     <thead>
                         <tr>
                             <th class="ordenable">ID <img class="icon" src="img/orden.png" alt=""></th>
-                            <th>Empresa <img class="icon" src="img/orden.png" alt=""></th>
-                            <th>Título <img class="icon" src="img/orden.png" alt=""></th>
+                            <th>Empresa </th>
+                            <th>Título </th>
                             <th>Descripción</th>
                             <th class="ordenable">Fecha Inicio <img class="icon" src="img/orden.png" alt=""></th>
                             <th class="ordenable">Fecha Fin <img class="icon" src="img/orden.png" alt=""></th>

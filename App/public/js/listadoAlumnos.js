@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <p><strong>Teléfono:</strong> ${alumno.telefono || 'N/A'}</p>
                         <p><strong>Email:</strong> ${alumno.email}</p>
                         <p><strong>Dirección:</strong> ${alumno.direccion || 'N/A'}</p>
-                        <p><strong>Ciclo Formativo:</strong> ${alumno.ciclo || 'N/A'}</p>
+                        <p><strong>Ciclo Formativo:</strong> ${alumno.ciclo_nombre || 'N/A'}</p>
                     </div>
                 `;
                 modal.modalDiv(div);

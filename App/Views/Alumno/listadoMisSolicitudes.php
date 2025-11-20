@@ -14,7 +14,7 @@
                 <thead>
                     <tr>
                         <th class="ordenable">ID <img class="icon" src="img/orden.png" alt=""></th>
-                        <th class="ordenable">Oferta <img class="icon" src="img/orden.png" alt=""></th>
+                        <th>Oferta </th>
                         <th class="ordenable">Fecha <img class="icon" src="img/orden.png" alt=""></th>
                         <th>CV visto</th>
                     </tr>

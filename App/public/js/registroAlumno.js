@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let botonRepetir = document.getElementById('botonRepetir');
         if (!botonRepetir) {
             botonRepetir = document.createElement("button");
+            botonRepetir.classList.add("btn1");
             botonRepetir.id = 'botonRepetir';
             botonRepetir.textContent = "Repetir";
             elementoCanvas.after(botonRepetir);

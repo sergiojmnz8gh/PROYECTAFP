@@ -5,6 +5,7 @@ namespace App\Controllers;
 use League\Plates\Engine;
 use App\Helpers\Sesion; 
 use App\Repositories\RepoEmpresa;
+use App\Helpers\Login;
 use App\Helpers\Adapter; 
 use App\Helpers\Validator;
 use Dompdf\Dompdf; 
@@ -21,17 +22,21 @@ class EmpresaController {
     }
 
     public function list() {
-        $buscarEmpresa = $_GET['buscarempresa'] ?? null;
-        $ordenarPor = $_GET['ordenarpor'] ?? 'id';
-        $orden = $_GET['orden'] ?? 'ASC';
-        
-        $empresas = RepoEmpresa::findAll($buscarEmpresa, $ordenarPor, $orden);
+        if (Login::getLoggedInUserRol() == '1') {
+            $buscarEmpresa = $_GET['buscarempresa'] ?? null;
+            $ordenarPor = $_GET['ordenarpor'] ?? 'id';
+            $orden = $_GET['orden'] ?? 'ASC';
+            
+            $empresas = RepoEmpresa::findAll($buscarEmpresa, $ordenarPor, $orden);
 
-        echo $this->templates->render('Admin/listadoEmpresas', [
-            'empresas' => $empresas,
-            'error' => Sesion::leerSesion('error'),
-            'success' => Sesion::leerSesion('success'),
-        ]);
+            echo $this->templates->render('Admin/listadoEmpresas', [
+                'empresas' => $empresas,
+                'error' => Sesion::leerSesion('error'),
+                'success' => Sesion::leerSesion('success'),
+            ]);
+        } else {
+            header('Location: /index.php');
+        }
     }
     
     public function invite() {
@@ -44,7 +49,6 @@ class EmpresaController {
     public function save_invite() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?admin=empresas');
-            exit;
         }
 
         $this->validator->Requerido('nombre');
@@ -62,7 +66,6 @@ class EmpresaController {
             Sesion::escribirSesion('error', 'Por favor, corrige los errores del formulario.');
             Sesion::escribirSesion('old_input', $_POST);
             header('Location: /index.php?admin=invitarempresa');
-            exit;
         }
 
         $empresa = Adapter::DTOtoEmpresa(null, $_POST);
@@ -75,14 +78,12 @@ class EmpresaController {
         }
 
         header('Location: /index.php?admin=empresas');
-        exit;
     }
     
     public function edit() {
         if (!isset($_POST['id']) || empty($_POST['id'])) {
             Sesion::escribirSesion('error', 'ID de empresa no proporcionado.');
             header('Location: /index.php?admin=empresas');
-            exit;
         }
 
         $id = (int)$_POST['id'];
@@ -92,7 +93,6 @@ class EmpresaController {
         if (!$empresa) {
             Sesion::escribirSesion('error', 'Empresa no encontrada.');
             header('Location: /index.php?admin=empresas');
-            exit;
         }
 
         echo $this->templates->render('Admin/editarEmpresa', [
@@ -106,7 +106,6 @@ class EmpresaController {
     public function save_edit() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?admin=empresas');
-            exit;
         }
         
         $id = (int)($_POST['id'] ?? 0);
@@ -131,14 +130,12 @@ class EmpresaController {
             Sesion::escribirSesion('old_input', $_POST);
             
             header("Location: /index.php?admin=editarempresa&id=$id");
-            exit;
         }
 
         $empresa = RepoEmpresa::findById($id);
         if (!$empresa) {
             Sesion::escribirSesion('error', 'Empresa a editar no encontrada.');
             header('Location: /index.php?admin=empresas');
-            exit;
         }
         
         Adapter::DTOtoEmpresa($empresa, $_POST);
@@ -155,14 +152,12 @@ class EmpresaController {
         }
 
         header('Location: /index.php?admin=empresas');
-        exit;
     }
     
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             Sesion::escribirSesion('error', 'Petición de borrado inválida.');
             header('Location: /index.php?admin=empresas');
-            exit;
         }
 
         $this->validator->Requerido('id');
@@ -170,7 +165,6 @@ class EmpresaController {
         if (!$this->validator->ValidacionPasada()) {
             Sesion::escribirSesion('error', 'ID de empresa no proporcionado para el borrado.');
             header('Location: /index.php?admin=empresas');
-            exit;
         }
         
         $id = (int)$_POST['id'];
@@ -182,14 +176,12 @@ class EmpresaController {
         }
 
         header('Location: /index.php?admin=empresas');
-        exit;
     }
 
     public function showFicha() {
         if (!isset($_GET['id']) || empty($_GET['id'])) {
             Sesion::escribirSesion('error', 'ID de empresa no proporcionado.');
             header('Location: /index.php?admin=empresas');
-            exit;
         }
         
         $id = (int)$_GET['id'];
@@ -199,7 +191,6 @@ class EmpresaController {
         if (!$empresa) {
             Sesion::escribirSesion('error', 'Empresa no encontrada.');
             header('Location: /index.php?admin=empresas');
-            exit;
         }
 
         echo $this->templates->render('Admin/fichaEmpresa', [
@@ -227,6 +218,5 @@ class EmpresaController {
         $dompdf->stream("listadoEmpresas.pdf", [
             "Attachment" => false
         ]);
-        exit;
     }
 }

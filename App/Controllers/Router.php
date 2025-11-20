@@ -197,6 +197,8 @@ class Router {
                     break;
                 case 'verinscritos':
                     echo $this->templates->render('Empresa/listadoInscritosOferta');
+                    exit;
+                    break;
                 default:
                     http_response_code(404);
                     echo $this->templates->render('404');

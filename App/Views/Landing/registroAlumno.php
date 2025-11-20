@@ -30,11 +30,11 @@
                 <label for="foto">Foto:</label>
                 <input type="file" name="foto" id="foto">
                 <div>
-                    <button id="abrirCamara">Activar Cámara</button>
+                    <button class="btn1" id="abrirCamara">Activar Cámara</button>
                     <video id="video" class="video" playsinline autoplay></video>
                 </div>
                 <div class="controller">
-                    <button id="snap">Capturar</button>
+                    <button class="btn1" id="snap">Capturar</button>
                 </div>
                 <canvas id="canvas" class="canvas"></canvas>
             </div>

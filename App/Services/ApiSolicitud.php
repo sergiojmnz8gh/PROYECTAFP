@@ -113,8 +113,7 @@ class Apisolicitud {
             $newSolicitud->alumno_id = $alumnoId;
 
             RepoSolicitud::create($newSolicitud);
-            http_response_code(201);
-            echo json_encode(['success' => true, 'message' => 'Solicitud creada correctamente.']);
+            header('Location: /index.php?page=missolicitudes');
         }
         catch (Exception $e) {
             error_log("Error de creación de solicitud: " . $e->getMessage());

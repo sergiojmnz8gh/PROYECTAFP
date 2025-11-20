@@ -188,9 +188,6 @@ class RepoAlumno {
                 $conexion->rollBack();
                 return false;
             }
-
-            $stmtSolicitudes = $conexion->prepare("DELETE FROM solicitudes WHERE alumno_user_id = :user_id");
-            $stmtSolicitudes->execute([':user_id' => $user_id]);
             
             $sql1 = "DELETE FROM alumnos WHERE id = :id";
             $conexion->prepare($sql1)->execute([':id' => $id]);

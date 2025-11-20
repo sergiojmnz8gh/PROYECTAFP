@@ -1,38 +1,60 @@
 /* ===================================== */
-/* === 1. Variables y Reset Básico === */
+/* === ÍNDICE GENERAL === */
 /* ===================================== */
+/*
+1. Variables y Reset
+2. Tipografía
+3. Layout Principal
+4. Encabezado y Navegación
+5. Banner
+6. Secciones de Contenido
+7. Componentes: Cards, Botones
+8. Formularios
+9. Tablas
+10. Modales
+11. Panel de Administración
+12. Carrusel
+13. Pie de Página
+14. Media
+/* ===================================== */
+
+/* ===================================== */
+/* === 1. Variables y Reset === */
+/* ===================================== */
+
 :root {
     /* Colores */
-    --color-primary: #226fbb;         
-    --color-secondary: #ff8922;       
-    --color-text: #333333;             
-    --color-light-gray: #e0e0e0;      
+    --color-primary: #226fbb;
+    --color-secondary: #ff8922;
+    --color-text: #333333;
+    --color-light-gray: #e0e0e0;
     --color-white: #ffffff;
-    --color-accent: #ff8922;           
-    --color-error: #e74c3c;           
-    --color-success: #2ecc71;         
-    --color-background: #f8f9fa;     
+    --color-error: #e74c3c;
+    --color-success: #2ecc71;
+    --color-background: #f8f9fa;
     --modal-bg: #ffffff;
-    --modal-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-
+    
+    /* Espaciado */
     --spacing-xs: 5px;
     --spacing-sm: 10px;
     --spacing-md: 20px;
     --spacing-lg: 30px;
     --spacing-xl: 50px;
-
+    
+    /* Bordes y Sombras */
     --border-radius-sm: 5px;
     --border-radius-md: 8px;
     --border-radius-lg: 12px;
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.08);
+    --modal-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 * {
-    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -40,38 +62,42 @@ body {
     flex-direction: column;
     background-color: var(--color-background);
     color: var(--color-text);
-    width: 100%;
+    line-height: 1.6;
 }
 
 main {
-    flex: 1;
+    flex: 1 ;
     width: 100%;
-    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 
-/* =========================== */
-/* === 2. Tipografía General === */
-/* =========================== */
+/* ===================================== */
+/* === 2. Tipografía === */
+/* ===================================== */
+
 h1, h2, h3, h4, h5, h6 {
-    padding: var(--spacing-sm) 0 var(--spacing-md);
+    padding: var(--spacing-sm) 0 var(--spacing-sm);
     color: var(--color-primary);
     text-align: center;
     line-height: 1.2;
 }
 
-h1 {
-    font-size: 2.5em;
+h1 { 
+    font-size: 2.5em; 
+    font-weight: 800;
 }
-
-h2 {
-    font-size: 2em;
+h2 { 
+    font-size: 2em; 
+    font-weight: 700;
 }
 
 p {
     padding: var(--spacing-sm) 0;
     text-align: center;
     margin-bottom: var(--spacing-sm);
+    max-width: 800px;
 }
 
 .titulillo {
@@ -91,15 +117,258 @@ a:hover {
 }
 
 
-/* ====================== */
-/* === 3. Botones === */
-/* ====================== */
+/* ===================================== */
+/* === 3. Layout Principal === */
+/* ===================================== */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.page-title {
+    margin: var(--spacing-xl) 0 var(--spacing-lg);
+    font-size: 2.8em;
+    color: var(--color-primary);
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+}
+
+section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+article {
+    padding: var(--spacing-md) 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ===================================== */
+/* === 4. Encabezado y Navegación === */
+/* ===================================== */
+
+header {
+    display: flex;
+    background-color: var(--color-white);
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    width: 100%;
+    height: 90px;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    gap: var(--spacing-lg);
+}
+
+header nav ul li {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+header nav ul li a {
+    color: var(--color-text);
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius-sm);
+}
+
+header nav ul li a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+
+/* ===================================== */
+/* === 5. Banner === */
+/* ===================================== */
+
+.banner {
+    height: 400px;
+    margin: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/banner.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: -1px; /* Para alinear con el header */
+}
+
+.banner-content {
+    max-width: 800px;
+    padding: 0 var(--spacing-md);
+}
+
+.banner h1 {
+    color: var(--color-secondary);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: var(--spacing-md);
+}
+
+.descr {
+    width: 100%;
+    color: var(--color-white);
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+
+/* ===================================== */
+/* === 6. Secciones de Contenido === */
+/* ===================================== */
+
+.politicas {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.politicas h1, .politicas h2 {
+    padding: var(--spacing-md) 0;
+    text-align: left;
+}
+
+.politicas p {
+    padding: var(--spacing-sm) 0;
+    text-align: left;
+    margin-bottom: var(--spacing-sm);
+}
+
+.politicas ul {
+    padding-left: var(--spacing-lg);
+    margin: var(--spacing-sm) 0;
+}
+
+.politicas ul li {
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.6;
+}
+
+.mapa {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mapa p, .mapa h1 {
+    padding: 0;
+    text-align: center;
+}
+
+.pdf {
+    padding: 0;
+    width: 120px;
+}
+
+
+/* ===================================== */
+/* === 7. Componentes: Cards, Botones === */
+/* ===================================== */
+
+/* Cards */
+.cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    width: 100%;
+    max-width: 1200px;
+}
+
+.card {
+    background-color: var(--color-white);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card h2 {
+    font-size: 1.5em;
+    padding: var(--spacing-sm) 0;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.imagen {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-md);
+    object-fit: cover;
+}
+
+/* Botones */
 button {
     border: none;
     border-radius: var(--border-radius-md);
-    width: 120px;
-    height: 40px;
-    padding: 0;
+    padding: var(--spacing-sm) var(--spacing-md);
     cursor: pointer;
     font-weight: 600;
     font-size: 1em;
@@ -107,12 +376,15 @@ button {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    min-width: 120px;
+    height: 40px;
 }
 
 .btn-small {
-    width: 60px;
+    min-width: 60px;
     height: 30px;
     font-size: 0.9em;
+    padding: var(--spacing-xs) var(--spacing-sm);
 }
 
 .btn1 {
@@ -133,235 +405,37 @@ button {
     background-color: #1a5c9f;
 }
 
-
-/* ====================== */
-/* === 4. Encabezado === */
-/* ====================== */
-header {
-    display: flex;
+.btn-ficha {
+    width: 80px;
+    height: 80px;
     background-color: var(--color-white);
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-sm) var(--spacing-md);
-    width: 100%;
-    height: 90px;
-    box-shadow: var(--shadow-sm);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-header img {
-    margin-left: var(--spacing-md);
-    height: 70px;
-    width: auto;
-    object-fit: contain;
-}
-
-nav {
-    align-items: center;
-    margin-right: var(--spacing-md);
-}
-
-header nav ul {
-    list-style: none;
-    display: flex;
-    padding: 0;
-    margin: 0;
-    gap: var(--spacing-lg);
-}
-
-header nav ul li {
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-
-header nav ul li a {
-    color: var(--color-text);
-    font-weight: 500;
-    padding: var(--spacing-xs) 0;
-    display: flex;
-    align-items: center;
-}
-
-header nav ul li a:hover {
-    color: var(--color-primary);
-    text-decoration: none;
-}
-
-
-/* ====================== */
-/* === 5. Secciones y Contenido Principal === */
-/* ====================== */
-.banner {
-    height: 400px;
-    margin: 0;
-    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/banner.jpg');
-    background-size: cover;
-    background-position: center;
-}
-
-.banner h1 {
-    color: var(--color-secondary);
-}
-
-.descr {
-    width: 40%;
-    margin: 0 auto;
+    border-radius: 10%;
+    font-size: 1.2em;
     color: var(--color-white);
-    font-weight: 600;
 }
 
-section {
-    padding: var(--spacing-md) 0;
+.btn-insc {
+    width: 90px;
+    height: 90px;
+    border-radius: 10%;
+    font-size: 0.8em;
+    color: var(--color-white);
+    background-color: var(--color-primary);
 }
 
-.politicas {
-    margin: 0 auto;
-    width: 60%;
+.btn-insc:hover {
+    background-color: #1a5c9f;
 }
 
-.politicas h1, .politicas h2 {
-    padding: var(--spacing-md) 0;
-    text-align: left;
-}
-
-.politicas p {
-    padding:var(--spacing-sm) var(--spacing-md);
-    text-align: left;
-}
-
-.politicas ul {
-    padding-left: 0;
-    margin-left: var(--spacing-xl);
-}
-
-.mapa {
-    justify-content: left;
+.video, .canvas {
     width: 100%;
-}
-
-.pdf {
-    padding: 0;
-    width: 120px;
-}
-
-.mapa p, .mapa h1 {
-    padding: 0;
-    text-align: left;
-}
-
-article {
-    padding: var(--spacing-md) 0;
-    align-content: center;
-}
-
-.cards {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-}
-
-.card {
-    background-color: var(--color-white);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-lg);
-    width: 30%;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.card h2 {
-    font-size: 1.5em;
-    padding-top: var(--spacing-sm);
-    padding-bottom: var(--spacing-sm);
-    color: var(--color-primary);
-}
-
-.imagen {
-    width: 100%;
-    max-width: 250px;
     height: auto;
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: var(--spacing-sm);
-    object-fit: cover;
 }
 
-/* ====================== */
-/* === 6. Pie de Página === */
-/* ====================== */
-footer {
-    color: var(--color-text);
-    background-color: var(--color-light-gray);
-    width: 100%;
-    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-sm);
-    text-align: center;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-}
+/* ===================================== */
+/* === 8. Formularios === */
+/* ===================================== */
 
-.footer-main {
-    display: flex;
-    justify-content: space-around;
-    padding: var(--spacing-md) 0;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-}
-
-footer p {
-    text-align: center;
-    margin-bottom: 0;
-    font-size: 0.9em;
-    color: #555;
-}
-
-footer nav ul {
-    list-style: none;
-    padding-left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-xs);
-}
-
-footer nav ul li {
-    padding-left: 0;
-    text-align: center;
-    margin: 0;
-}
-
-footer nav ul li a {
-    color: var(--color-text);
-    font-weight: 400;
-}
-
-footer nav ul li a:hover {
-    color: var(--color-primary);
-    text-decoration: underline;
-}
-
-.icono {
-    width: 24px;
-    height: 24px;
-    margin-right: var(--spacing-sm);
-    vertical-align: middle;
-}
-
-footer img {
-    height: 40px;
-    margin-top: var(--spacing-sm);
-}
-
-
-/* ====================== */
-/* === 7. Formularios === */
-/* ====================== */
 form {
     display: flex;
     flex-direction: column;
@@ -382,6 +456,7 @@ form h1 {
     text-align: center;
     margin-bottom: var(--spacing-md);
     padding: 0;
+    width: 100%;
 }
 
 .form-group {
@@ -394,15 +469,17 @@ form label {
     color: var(--color-text);
     font-weight: 500;
     font-size: 0.95em;
+    margin-bottom: var(--spacing-xs);
 }
 
 .aceptregistro {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     width: 100%;
     margin-bottom: var(--spacing-sm);
-    gap: 10px;
+    gap: var(--spacing-sm);
 }
 
 input:not([type="submit"]):not([type="checkbox"]),
@@ -422,119 +499,67 @@ input:focus,
 textarea:focus,
 select:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px rgba(34, 111, 187, 0.2);
+    box-shadow: 0 0 0 3px rgba(34, 111, 187, 0.1);
     outline: none;
 }
 
 input[type="submit"] {
     padding: var(--spacing-sm) var(--spacing-md);
     width: auto;
+    min-width: 150px;
     font-weight: 600;
     background-color: var(--color-primary);
     color: var(--color-white);
     cursor: pointer;
     border-radius: var(--border-radius-md);
     font-size: 1em;
+    margin-top: var(--spacing-sm);
 }
 
 input[type="submit"]:hover {
     background-color: #1a5c9f;
 }
 
-.error{
+.error {
     color: var(--color-error);
     font-weight: 700;
+    font-size: 0.9em;
+    margin-top: var(--spacing-xs);
 }
 
-/* ====================== */
-/* === 8. Tablas === */
-/* ====================== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: var(--spacing-md);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-}
-
-table th, table td {
-    padding: var(--spacing-md);
-    border: 1px solid var(--color-light-gray);
-    text-align: left;
-}
-
-table thead {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    font-weight: 600;
-}
-
-table th {
-    white-space: nowrap;
-    display: table-cell;
-    vertical-align: middle;
-}
-
-th a {
-    color: var(--color-white);
-}
-
-th a:hover {
-    text-decoration: none;
-    color: white;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: var(--color-background);
-}
-
-table tbody tr:hover {
-    background-color: #f0f0f0;
-}
-
-.page-title {
-    margin-top: var(--spacing-xl);
-    margin-bottom: var(--spacing-lg);
-    font-size: 2.8em;
-    color: var(--color-primary);
-    font-weight: 700;
-    text-align: center;
-}
-
+/* Controles de búsqueda */
 .search-controls {
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    align-items: flex-end;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
     padding: 0 var(--spacing-sm);
     flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .search-group {
     display: flex;
     gap: var(--spacing-sm);
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .search-controls form {
     display: flex;
-    background-color: transparent;
     margin: 0;
     padding: 0;
     box-shadow: none;
     max-width: none;
     flex-direction: row;
     align-items: center;
+    width: auto;
 }
 
 .search-controls form .form-group {
     margin-bottom: 0;
-}
-
-.search-controls a {
-    color: var(--color-primary);
-    font-weight: 500;
 }
 
 .search-input {
@@ -556,60 +581,142 @@ table tbody tr:hover {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-    align-items: center;
+    align-items: flex-start;
 }
 
 .filter-group label {
     color: var(--color-text);
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .filter-group select {
     border-radius: var(--border-radius-sm);
     padding: var(--spacing-sm) var(--spacing-md);
     background-color: var(--color-background);
-    border: 1px solid;
-    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-light-gray);
+    min-width: 150px;
 }
 
-.video {
+/* Formularios de Login */
+.form-title {
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+    font-size: 2em;
+    font-weight: 700;
+    padding: 0;
+}
+
+.form-row-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
     width: 100%;
-    height: auto;
-    max-width: 600px;
-    display: block;
-    margin: var(--spacing-md) auto;
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-sm);
+    margin-top: var(--spacing-lg);
 }
 
-.canvas {
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--color-text);
+    font-size: 0.95em;
+    gap: var(--spacing-xs);
+}
+
+.recuerdame {
     display: none;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.checkbox-input {
+    accent-color: var(--color-secondary);
+    border-radius: var(--border-radius-sm);
+    width: 16px;
+    height: 16px;
+}
+
+
+/* ===================================== */
+/* === 9. Tablas === */
+/* ===================================== */
+
+.table-section {
     width: 100%;
-    height: auto;
-    max-width: 600px;
-    margin: var(--spacing-md) auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 var(--spacing-md);
 }
 
 .table-container {
-    width: 100%;
-    padding: 0 var(--spacing-sm);
+    max-width: 99%;
     margin-bottom: var(--spacing-xl);
+    overflow-x: auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    background: var(--color-white);
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 0 auto;
     background-color: var(--color-white);
-    box-shadow: var(--shadow-md);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
+    min-width: 800px;
 }
 
+.data-table th, .data-table td {
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-light-gray);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.data-table thead {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.data-table th {
+    font-weight: 600;
+    white-space: nowrap;
+    position: relative;
+    padding-right: var(--spacing-lg);
+}
+
+.data-table th a {
+    color: var(--color-white);
+    display: block;
+    width: 100%;
+}
+
+.data-table th a:hover {
+    text-decoration: none;
+    color: var(--color-white);
+}
+
+.ordenable {
+    cursor: pointer;
+}
+
+.ordenable:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: var(--color-background);
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(34, 111, 187, 0.05);
+}
+
+/* Acciones en tablas */
 .div-actions {
     display: flex;
     gap: var(--spacing-sm);
-    width: auto;
     justify-content: center;
     align-items: center;
     min-width: 150px;
@@ -618,6 +725,7 @@ table tbody tr:hover {
 .div-actions form {
     margin: 0;
     padding: 0;
+    width: auto;
 }
 
 .div-actions img {
@@ -637,6 +745,34 @@ table tbody tr:hover {
 .div-actions-btns {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.btn-crud-right {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.div-ficha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-md);
+    width: 100%;
+}
+
+.div-ficha p {
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.1em;
+    color: var(--color-text);
+    text-align: center;
+}
+
+.div-ficha strong {
+    color: var(--color-primary);
 }
 
 .div-ficha img {
@@ -649,41 +785,11 @@ table tbody tr:hover {
     object-fit: cover;
 }
 
-.btn-ficha {
-    width: 80px;
-    height: 80px;
-    background-color: var(--color-text);
-    border-radius: 10%;
-    font-size: 1.2em;
-}
 
-.btn-insc {
-    width: 90px;
-    height: 90px;
-    border-radius: 10%;
-    font-size: 0.8em;
-    color: var(--color-white);
-    background-color: var(--color-text);
-}
+/* ===================================== */
+/* === 10. Modales === */
+/* ===================================== */
 
-.btn-ficha:hover {
-    background-color: #1a5c9f;
-    color: var(--color-white);
-}
-
-.btn-crud-right {
-    display: flex;
-    gap: var(--spacing-sm);
-    align-items: center;
-}
-
-.ordenable {
-    cursor: pointer;
-}
-
-/* ====================== */
-/* === 9. Modales === */
-/* ====================== */
 .velo {
     position: fixed;
     left: 0;
@@ -696,10 +802,9 @@ table tbody tr:hover {
     justify-content: center;
     align-items: center;
     overflow-y: auto;
-    overflow-x: auto;
+    padding: var(--spacing-md);
     opacity: 0;
     visibility: hidden;
-    padding: var(--spacing-md);
 }
 
 .velo.active {
@@ -714,7 +819,7 @@ table tbody tr:hover {
     box-shadow: var(--modal-shadow);
     border-radius: var(--border-radius-lg);
     max-width: 600px;
-    max-height: 90vh;
+    width: 100%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -747,6 +852,7 @@ table tbody tr:hover {
     border: none;
     background-color: transparent;
     padding-top: var(--spacing-sm);
+    max-width: none;
 }
 
 .contentModal form h1 {
@@ -792,103 +898,34 @@ table tbody tr:hover {
     color: var(--color-white);
 }
 
-.div-ficha {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: var(--spacing-md);
-}
-.div-ficha p {
-    margin-bottom: var(--spacing-xs);
-    font-size: 1.1em;
-    color: var(--color-text);
-}
-.div-ficha strong {
-    color: var(--color-primary);
-}
 
+/* ===================================== */
+/* === 11. Panel de Administración === */
+/* ===================================== */
 
-/* ====================== */
-/* === 10. Formularios de Login === */
-/* ====================== */
-
-.form-title {
-    color: var(--color-white);
-    margin-bottom: var(--spacing-lg);
-    font-size: 2em;
-    font-weight: 700;
-    padding: 0;
-}
-
-.form-group {
-    margin-bottom: var(--spacing-md);
-    text-align: left;
-    width: 100%;
-}
-
-.form-row-actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    margin-top: var(--spacing-lg);
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: var(--color-text);
-    padding-left: var(--spacing-xs);
-    font-size: 0.95em;
-}
-
-.recuerdame {
-    display: flex;
-    align-items: center;
-    gap: 0px;
-}
-
-.checkbox-input {
-    accent-color: var(--color-secondary);
-    border-radius: var(--border-radius-sm);
-    border: 1px solid var(--color-white);
-    width: 15px;
-}
-
-
-/* =========================== */
-/* === 11. Página de Administración (Sidebar) === */
-/* =========================== */
 .admin-page {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: space-evenly;
-    gap: 50px;
+    gap: var(--spacing-lg);
     width: 100%;
-    max-width: none;
-    margin: 0;
     box-sizing: border-box;
     flex: 1;
 }
 
 .sidebar {
     position: sticky;
-    top: 160px;
-    left: 20px;
+    top: 110px;
+    left: 10px;
     background-color: var(--color-white);
-    min-width: 200px;
+    min-width: 250px;
     border: 1px solid var(--color-light-gray);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-sm);
     text-align: left;
     overflow: hidden;
-    margin: 0;
+    height: fit-content;
+    flex-shrink: 0;
 }
 
 .header-paneladmin {
@@ -911,10 +948,8 @@ table tbody tr:hover {
 }
 
 .icon {
-    margin-left: var(--spacing-xs);
     width: 20px;
     height: 20px;
-    filter: brightness(0) invert(1);
 }
 
 .sidebar ul {
@@ -934,11 +969,11 @@ table tbody tr:hover {
     font-weight: 500;
     display: block;
     padding: var(--spacing-xs) 0;
+    width: 100%;
 }
 
 .sidebar ul li:hover {
     background-color: var(--color-light-gray);
-    color: var(--color-primary);
 }
 
 .sidebar ul li:hover a {
@@ -946,28 +981,40 @@ table tbody tr:hover {
     text-decoration: none;
 }
 
+.sidebar ul li.active {
+    background-color: rgba(34, 111, 187, 0.1);
+}
+
+.sidebar ul li.active a {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
 .admin-content {
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
     padding: var(--spacing-md);
     background-color: var(--color-white);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--color-light-gray);
-    margin-left: var(--spacing-lg);
-    width: calc(100% - 250px - var(--spacing-lg));
+    min-height: 500px;
 }
 
-/*12. Carrusel*/
+
+/* ===================================== */
+/* === 12. Carrusel === */
+/* ===================================== */
 
 .seccion-empresas-colaboradoras {
-    padding: 0;
+    padding: var(--spacing-sm) 0;
     text-align: center;
     background-color: transparent;
-    overflow: hidden; 
+    overflow: hidden;
+    width: 100%;
 }
 
 .seccion-empresas-colaboradoras h2 {
-    margin: var(--spacing-md) 0;
     font-size: 2em;
     color: var(--color-primary);
 }
@@ -975,25 +1022,22 @@ table tbody tr:hover {
 .carrusel-contenedor {
     position: relative;
     max-width: 1200px;
-    width: 60%; 
+    width: 80%;
     margin: 0 auto;
-    overflow: hidden; 
-    padding: 0;
-    box-shadow: none;
-    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    padding: var(--spacing-md) 0;
 }
 
 .carrusel-pista {
-    display: flex; 
-    transition: transform 1.0s ease-in-out;
-    gap: 0; 
+    display: flex;
+    gap: 0;
 }
 
 .carrusel-item {
     min-width: calc(100% / 3);
     box-sizing: border-box;
     padding: var(--spacing-md);
-    flex-shrink: 0; 
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1002,117 +1046,285 @@ table tbody tr:hover {
 .logo-empresa {
     max-width: 220px;
     max-height: 140px;
-    width: 100%; 
-    height: auto; 
+    width: 100%;
+    height: auto;
     object-fit: contain;
-    transition: transform 0.3s ease; 
 }
 
 .logo-empresa:hover {
-    transform: scale(1.08);
+    opacity: 1;
 }
 
-@media (max-width: 992px) {
-    .carrusel-item {
-        min-width: calc(100% / 2);
-    }
+
+/* ===================================== */
+/* === 13. Pie de Página === */
+/* ===================================== */
+
+footer {
+    color: var(--color-text);
+    background-color: var(--color-light-gray);
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+    margin-top: auto;
 }
 
-@media (max-width: 576px) {
-    .carrusel-item {
-        min-width: 100%;
-    }
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
 }
 
-/* ====================== */
-/* === 13. Media Queries === */
-/* ====================== */
+.footer-main {
+    display: flex;
+    justify-content: space-around;
+    padding: var(--spacing-md) 0;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+}
 
-/* Estándar Tablet (hasta 768px) */
-@media (max-width: 768px) {
-    /* === GENERAL === */
+footer p {
+    text-align: center;
+    margin-bottom: 0;
+    font-size: 0.9em;
+    color: #555;
+    max-width: none;
+}
+
+footer nav ul {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+footer nav ul li {
+    padding-left: 0;
+    text-align: center;
+    margin: 0;
+}
+
+footer nav ul li a {
+    color: var(--color-text);
+    font-weight: 400;
+}
+
+footer nav ul li a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.icono {
+    width: 24px;
+    height: 24px;
+    margin-right: var(--spacing-sm);
+    vertical-align: middle;
+}
+
+footer img {
+    height: 40px;
+    margin-top: var(--spacing-sm);
+}
+
+
+/* ===================================== */
+/* === 14. Media === */
+/* ===================================== */
+/* Tablet (hasta 1024px) */
+@media (max-width: 1024px) {
+    /* General */
     main {
+        padding: 0;
+    }
+    
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    /* Header y Navegación */
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: var(--spacing-sm);
+    }
+    
+    .header-container {
+        flex-wrap: wrap;
+    }
+    
+    nav {
+        justify-content: center;
+    }
+    
+    nav.active {
+        display: block;
+    }
+    
+    header nav ul {
+        flex-direction: row;
+        gap: 0;
+        width: 100%;
+    }
+    
+    header nav ul li {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid var(--color-light-gray);
+    }
+    
+    header nav ul li:last-child {
+        border-bottom: none;
+    }
+    
+    header nav ul li a {
         padding: var(--spacing-sm);
         width: 100%;
-        max-width: none;
+        justify-content: center;
     }
-
-    /* === HEADER === */
-    header {
-        height: 70px;
-        padding: var(--spacing-xs) var(--spacing-sm);
-    }
+    
     header img {
         height: 50px;
-        margin-left: var(--spacing-sm);
     }
-    header nav ul {
-        gap: var(--spacing-sm);
-        margin-right: var(--spacing-sm);
-    }
-    header nav ul li a {
-        font-size: 0.9em;
-    }
-
-    /* === TÍTULOS === */
-    h1 {
-        font-size: 2em;
-    }
-    h2 {
-        font-size: 1.6em;
-    }
-    .page-title {
+    
+    /* Títulos */
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.6em; }
+    .page-title { 
         font-size: 2.2em;
-        margin-top: var(--spacing-lg);
-        margin-bottom: var(--spacing-md);
+        margin: var(--spacing-lg) 0;
     }
-
-    /* === CARDS === */
+    
+    /* Banner */
+    .banner {
+        width: 100%;
+        height: 300px;
+    }
+    
+    .descr {
+        font-size: 1em;
+    }
+    
+    /* Cards */
     .cards {
         gap: var(--spacing-sm);
     }
+    
     .card {
-        width: calc(100% - var(--spacing-sm) * 2);
+        width: 100%;
         max-width: 400px;
-        margin: 0 auto;
     }
-
-    /* === FORMULARIOS Y BÚSQUEDA === */
+    
+    /* Formularios */
     form {
-        max-width: 90%;
+        max-width: 95%;
         padding: var(--spacing-md);
     }
+    
     .search-controls {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-        padding: 0 var(--spacing-sm);
+        align-items: stretch;
     }
+    
     .search-group {
-        width: 100%;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: stretch;
         gap: var(--spacing-sm);
     }
+    
     .search-input {
-        width: calc(100% - 100px);
-        flex-grow: 1;
+        width: 100%;
     }
+    
     .btn-crud-right {
         width: 100%;
         justify-content: center;
-        flex-wrap: wrap;
     }
+    
     .form-row-actions {
         flex-direction: column;
         gap: var(--spacing-sm);
-        align-items: center;
+        align-items: stretch;
+    }
+    
+    /* Panel de Administración */
+    .admin-page {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm);
     }
 
-    /* === MODALES === */
+    .header-paneladmin {
+        justify-content: center;
+    }
+    
+    .sidebar {
+        position: static;
+        width: 100%;
+        max-width: none;
+    }
+    
+    .sidebar.active {
+        display: block;
+    }
+    
+    .sidebar ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .sidebar ul li {
+        margin: 0 auto;
+        border-radius: 0;
+        border-bottom: 1px solid var(--color-light-gray);
+    }
+    
+    .sidebar ul li:last-child {
+        border-bottom: none;
+    }
+    
+    .admin-content {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    /* Tablas */
+    .table-section {
+        padding: 0 var(--spacing-xs);
+    }
+    
+    .table-container {
+        margin-bottom: var(--spacing-lg);
+        border-radius: var(--border-radius-md);
+    }
+    
+    .data-table {
+        min-width: 700px;
+        font-size: 0.9em;
+    }
+    
+    .data-table th, .data-table td {
+        padding: var(--spacing-sm);
+    }
+    
+    .div-actions {
+        min-width: 120px;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .div-actions img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    /* Modales */
     .velo .modal {
         max-width: 95%;
         padding: var(--spacing-md);
     }
+    
     .btnModal {
         top: var(--spacing-xs);
         right: var(--spacing-xs);
@@ -1120,217 +1332,145 @@ table tbody tr:hover {
         height: 30px;
         font-size: 1rem;
     }
-
-    /* === TABLAS === */
-    .data-table th, .data-table td {
-        padding: var(--spacing-sm);
-        font-size: 0.9em;
+    
+    /* Carrusel */
+    .carrusel-item {
+        min-width: 50%;
     }
-    table th {
-        white-space: nowrap;
+    
+    .carrusel-contenedor {
+        width: 95%;
     }
-    .table-container {
-        overflow-x: auto;
-    }
-    .data-table {
-        min-width: 600px;
-    }
-
-    /* === ADMIN PAGE / SIDEBAR === */
-    .admin-page {
-        flex-direction: column;
-        align-items: center;
-        padding: var(--spacing-md);
-        margin: 0 auto;
-        max-width: 700px;
-        padding-left: var(--spacing-md);
-        padding-right: var(--spacing-md);
-    }
-    .sidebar {
-        width: 100%;
-        max-width: 500px;
-        margin-bottom: var(--spacing-lg);
-        margin-left: 0;
-    }
-    .sidebar ul {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: var(--spacing-sm);
-        padding: var(--spacing-md);
-    }
-    .sidebar ul li {
-        margin: 0;
-        flex-grow: 1;
-        text-align: center;
-        min-width: 120px;
-    }
-    .admin-content {
-        width: 100%;
-        margin-left: 0;
-        max-width: 100%;
+    
+    /* Políticas */
+    .politicas {
+        width: 95%;
+        padding: 0 var(--spacing-sm);
     }
 }
 
-/* Estándar Móvil (hasta 480px) */
+/* Móvil (hasta 480px) */
 @media (max-width: 480px) {
-    /* === GENERAL === */
-    main {
-        padding: var(--spacing-sm) var(--spacing-xs);
+    /* General */
+    .container {
+        padding: 0 var(--spacing-xs);
     }
-
-    /* === HEADER === */
-    header {
-        flex-direction: column;
-        height: auto;
-        padding: var(--spacing-sm) var(--spacing-xs);
-        align-items: center;
-        text-align: center;
+    
+    /* Títulos */
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.4em; }
+    .page-title { 
+        font-size: 1.8em;
+        margin: var(--spacing-md) 0;
     }
-    header img {
-        margin: var(--spacing-xs) 0;
-        height: 45px;
+    
+    /* Banner */
+    .banner {
+        height: 250px;
     }
-    header nav {
-        margin-right: 0;
-        margin-top: var(--spacing-xs);
-        width: 100%;
-    }
-    header nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: var(--spacing-sm);
-        width: 100%;
-    }
-    header nav ul li {
-        flex-basis: auto;
-        margin: 0;
-    }
-    header nav ul li a {
-        padding: var(--spacing-xs);
-        font-size: 0.85em;
-    }
-
-    /* === TÍTULOS === */
-    h1 {
+    
+    .banner h1 {
         font-size: 1.8em;
     }
-    h2 {
-        font-size: 1.4em;
+    
+    .descr {
+        display: none;
     }
-    .page-title {
-        font-size: 1.8em;
-    }
-
-    /* === CARDS === */
-    .cards {
-        padding: var(--spacing-sm) 0;
-    }
+    
+    /* Cards */
     .card {
-        min-width: unset;
-        width: 100%;
-        margin: 0 auto;
-        padding: var(--spacing-sm);
+        padding: var(--spacing-md);
     }
+    
     .imagen {
-        max-width: 180px;
+        max-width: 200px;
     }
-
-    /* === FORMULARIOS === */
+    
+    /* Formularios */
     form {
         max-width: 100%;
         padding: var(--spacing-md);
-        margin: var(--spacing-md) auto;
     }
-    .search-input {
-        width: 100%;
-    }
-    .search-group {
-        flex-direction: column;
-        align-items: center;
-    }
+    
     .search-group button, .search-group input[type="submit"] {
         width: 100%;
-        max-width: 200px;
     }
-    .form-row-actions {
-        flex-direction: column;
-        gap: var(--spacing-xs);
-    }
+    
     .checkbox-label {
         font-size: 0.9em;
     }
-    .submit-button {
-        width: 100%;
+    
+    /* Tablas */
+    .data-table {
+        min-width: 600px;
+        font-size: 0.85em;
     }
-
-    /* === FOOTER === */
-    footer {
-        padding: var(--spacing-sm) var(--spacing-xs);
-        justify-content: center;
+    
+    .data-table th, .data-table td {
+        padding: var(--spacing-xs) var(--spacing-sm);
     }
-    .footer-main {
-        flex-direction: column;
-        gap: var(--spacing-md);
+    
+    .div-actions {
+        min-width: 100px;
     }
-
-    /* === MODALES === */
+    
+    .div-actions img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .btn-ficha, .btn-insc {
+        width: 60px;
+        height: 60px;
+        font-size: 0.9em;
+    }
+    
+    /* Panel de Administración */
+    .admin-page {
+        padding: var(--spacing-xs);
+    }
+    
+    .sidebar ul li {
+        padding: var(--spacing-sm);
+    }
+    
+    .header-paneladmin {
+        padding: var(--spacing-sm);
+    }
+    
+    .admin-content {
+        padding: var(--spacing-sm);
+    }
+    
+    /* Modales */
     .modal {
         max-width: 98%;
         padding: var(--spacing-md) var(--spacing-sm);
     }
+    
     .contentModal h1 {
         font-size: 1.5em;
     }
 
-    /* === TABLAS === */
-    .table-container {
-        padding: 0;
+    /* Carrusel */
+    .carrusel-item {
+        min-width: 100%;
     }
-    .data-table {
-        border-radius: var(--border-radius-md);
-        min-width: unset;
-    }
-    .data-table th, .data-table td {
-        padding: var(--spacing-xs);
-        font-size: 0.85em;
-    }
-    .div-actions {
+    
+    /* Footer */
+    
+    .footer-main {
         flex-direction: column;
-        gap: var(--spacing-xs);
-        min-width: unset;
+        gap: var(--spacing-md);
+        text-align: center;
     }
-    .div-actions img {
-        width: 30px;
-        height: 30px;
+    
+    /* Políticas */
+    .politicas {
+        width: 100%;
     }
-    .btn-ficha {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9em;
-    }
-
-    /* === ADMIN PAGE / SIDEBAR === */
-    .admin-page {
-        padding: var(--spacing-sm) var(--spacing-xs);
-    }
-    .sidebar {
-        max-width: 100%;
-        border-radius: var(--border-radius-md);
-    }
-    .sidebar ul {
-        flex-direction: column;
-        align-items: center;
-    }
-    .sidebar ul li {
-        width: 90%;
-        margin: var(--spacing-xs) 0;
-        padding: var(--spacing-sm);
-    }
-    .header-paneladmin {
-        padding: var(--spacing-sm);
-    }
-    .admin-content {
-        padding: var(--spacing-sm);
+    
+    .politicas ul {
+        margin-left: var(--spacing-md);
     }
 }

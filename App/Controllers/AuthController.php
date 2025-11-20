@@ -20,7 +20,6 @@ class AuthController {
     public static function login() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?page=login');
-            exit;
         }
         
         $validator = new Validator();
@@ -31,7 +30,6 @@ class AuthController {
         if (!$validator->ValidacionPasada()) {
             Sesion::escribirSesion('login_error', 'Por favor, introduce email y contraseña.');
             header('Location: /index.php?page=login');
-            exit;
         }
 
         $email = $_POST['email'];
@@ -55,29 +53,24 @@ class AuthController {
                     } else {
                         header('Location: /index.php');
                     }
-                    exit;
                 } else {
                     Sesion::escribirSesion('login_error', 'Contraseña incorrecta.');
                     header('Location: /index.php?page=login');
-                    exit;
                 }
             } else {
                 Sesion::escribirSesion('login_error', 'Usuario no encontrado.');
                 header('Location: /index.php?page=login');
-                exit;
             }
         } catch (Exception $e) {
             error_log("Error de login: " . $e->getMessage());
             Sesion::escribirSesion('login_error', 'Ocurrió un error inesperado. Intenta de nuevo.');
             header('Location: /index.php?page=login');
-            exit;
         }
     }
 
     public static function registroAlumno() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?page=registroalumno');
-            exit;
         }
 
         $validator = new Validator();
@@ -114,7 +107,6 @@ class AuthController {
             Sesion::escribirSesion('registro_error', 'Por favor, corrige los errores del formulario de registro.');
             Sesion::escribirSesion('old_input', $_POST);
             header('Location: /index.php?page=registroalumno');
-            exit;
         }
         
         $email = $_POST['email'];
@@ -131,7 +123,6 @@ class AuthController {
             if (RepoUser::findUser($email) !== null) {
                 Sesion::escribirSesion('registro_error', 'El email ya está registrado.');
                 header('Location: /index.php?page=registroalumno');
-                exit;
             }
 
             $hashedPassword = Security::hashPassword($password);
@@ -158,24 +149,20 @@ class AuthController {
                 Login::login($userDTO);
                 Sesion::escribirSesion('welcome_message', '¡Bienvenido ' . $newAlumno->nombre . ', tu registro ha sido exitoso!');
                 header('Location: /index.php?page=missolicitudes');
-                exit;
             } else {
                 Sesion::escribirSesion('registro_error', 'Error al registrar el alumno en la base de datos.');
                 header('Location: /index.php?page=registroalumno');
-                exit;
             }
         } catch (Exception $e) {
             error_log("Error de registro de alumno: " . $e->getMessage());
             Sesion::escribirSesion('registro_error', 'Ocurrió un error inesperado durante el registro.');
             header('Location: /index.php?page=registroalumno');
-            exit;
         }
     }
 
     public static function registroEmpresa() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /index.php?page=registroempresa');
-            exit;
         }
         
         $validator = new Validator();
@@ -203,7 +190,6 @@ class AuthController {
             Sesion::escribirSesion('registro_error', 'Por favor, corrige los errores del formulario de registro.');
             Sesion::escribirSesion('old_input', $_POST);
             header('Location: /index.php?page=registroempresa');
-            exit;
         }
 
         $email = $_POST['email'];
@@ -217,7 +203,6 @@ class AuthController {
             if (RepoUser::findUser($email) !== null) {
                 Sesion::escribirSesion('registro_error', 'El email ya está registrado.');
                 header('Location: /index.php?page=registroempresa');
-                exit;
             }
 
             $hashedPassword = Security::hashPassword($password);
@@ -239,17 +224,14 @@ class AuthController {
                 Login::login($userDTO);
                 Sesion::escribirSesion('welcome_message', '¡Bienvenida ' . $newEmpresa->nombre . ', tu registro ha sido exitoso!');
                 header('Location: /index.php?page=misofertas');
-                exit;
             } else {
                 Sesion::escribirSesion('registro_error', 'Error al registrar la empresa en la base de datos.');
                 header('Location: /index.php?page=registroempresa');
-                exit;
             }
         } catch (Exception $e) {
             error_log("Error de registro de empresa: " . $e->getMessage());
             Sesion::escribirSesion('registro_error', 'Ocurrió un error inesperado durante el registro.');
             header('Location: /index.php?page=registroempresa');
-            exit;
         }
     }
     
@@ -258,6 +240,5 @@ class AuthController {
         Sesion::cerrarSesion();
         Sesion::escribirSesion('login_message', 'Has cerrado sesión correctamente.');
         header('Location: /index.php?page=login');
-        exit;
     }
 }

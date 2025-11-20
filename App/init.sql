@@ -13,6 +13,8 @@ SET collation_server = utf8mb4_unicode_ci;
 
 USE proyectafp;
 
+select * from alumnos;
+
 CREATE TABLE IF NOT EXISTS roles (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(25) NOT NULL UNIQUE
